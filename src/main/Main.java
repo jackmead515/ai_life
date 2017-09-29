@@ -57,12 +57,10 @@ public class Main {
 	
 	private static void update(double delta, long time) {
 		player.move();
-		
-		if(time > 0) {
-			for(Item i : registry.items) {
-				if(i instanceof Plant) {
-					((Plant) i).grow(time);
-				}
+	
+		for(Item i : registry.items) {
+			if(i instanceof Plant) {
+				((Plant) i).grow(time);
 			}
 		}
 	}
@@ -111,17 +109,13 @@ public class Main {
 			fps++;
 
 			if (lastFpsTime >= 1000000000) {
-				
-				update(delta, lastFpsTime);
 				setRandom(20);
 	
 				lastFpsTime = 0;
 				fps = 0;
-			} else {
-				
-				update(delta, 0);
-				
 			}
+			
+			update(delta, lastFpsTime);
 
 			render();
 

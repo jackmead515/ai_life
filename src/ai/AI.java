@@ -118,12 +118,6 @@ public class AI extends Entity implements IActions {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void select(Item item) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void draw(Graphics2D g2, JPanel panel) {
@@ -131,6 +125,12 @@ public class AI extends Entity implements IActions {
 		int y = coords[1];
 		
 		g2.drawImage(image, x*20, y*20, panel);
+	}
+
+	@Override
+	public void drop() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

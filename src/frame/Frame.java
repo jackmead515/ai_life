@@ -17,7 +17,6 @@ public class Frame {
 
 	public JFrame frame;
 	public GamePanel gamePanel;
-	public Inventory inventory;
 
 	public Frame() {
 		frame = new JFrame();
@@ -41,19 +40,6 @@ public class Frame {
 			@Override
 			public void mouseClicked(MouseEvent mouse){
 				gamePanel.requestFocus();
-			}
-		});
-	}
-	
-	public void openInventory() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					inventory = new Inventory();
-					inventory.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
 	}

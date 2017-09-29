@@ -15,16 +15,9 @@ public class Entity implements IEntity {
 	public int[] coords;
 	public BufferedImage image;
 	
-	protected ArrayList<Item> inventory;
-	
 	public Entity() {
-		inventory = new ArrayList<Item>();
 		coords = new int[2];
 		name = "";
-	}
-	
-	public ArrayList<Item> getInventory() {
-		return inventory;
 	}
 	
 	public void setName(String name) {
@@ -43,8 +36,10 @@ public class Entity implements IEntity {
 
 	@Override
 	public void draw(Graphics2D g2, JPanel panel) {
-		// TODO Auto-generated method stub
+		int x = coords[0];
+		int y = coords[1];
 		
+		g2.drawImage(image, x*20, y*20, panel);
 	}
 
 }

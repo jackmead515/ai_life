@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import frame.GamePanel;
 import items.Item;
+import items.Tool;
 import items.Wood;
 import main.BMPImages;
 import main.Main;
@@ -29,6 +30,7 @@ public class Player extends Entity implements IActions {
 	
 	private boolean pickUp;
 	private boolean use;
+	private boolean drop;
 	
 	private Item inHand;
 	
@@ -39,7 +41,7 @@ public class Player extends Entity implements IActions {
 		
 		inHand = null;
 		
-		up = down = left = right = pickUp = use = false;
+		up = down = left = right = pickUp = use = drop = false;
 		
 		setName("Player");
 	
@@ -50,6 +52,11 @@ public class Player extends Entity implements IActions {
 	public void move() {
 		int[] now = coords;
 		int[] next = null;
+		
+		if(drop) {
+			drop();
+			drop = false;
+		}
 		
 		if(pickUp) {
 			pickUp();
@@ -80,44 +87,45 @@ public class Player extends Entity implements IActions {
 	}
 	
 	@Override
-	public void use() {
+	public void drop() {
 		if(inHand != null) {
+			LinkedList<Item> items = Main.registry.items;
 			
-			Class<?> c;
-			Constructor<?> cons;
-			Object p = null;
-			try {
-				c = Class.forName(inHand.getClass().getName());
-				cons = c.getConstructor();
-				p = cons.newInstance();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			for(Item i : items) {
+				int xi = i.coords[0];
+				int yi = i.coords[1];
+				
+				if(coords[0] != xi || coords[1] != yi) {
+					if(inHand.place(coords)) {
+						Main.registry.items.add(inHand);
+						image = BMPImages.person;
+						inHand = null;
+						break;
+					}
+				}
 			}
-			
-			((Item) p).coords = coords;
-			((Item) p).place();
-			select(inHand);
-			
 		}
 	}
 	
-	public void draw(Graphics2D g2, GamePanel panel) {
-		int x = coords[0];
-		int y = coords[1];
-		
-		g2.drawImage(image, x*20, y*20, panel);
+	@Override
+	public void use() {
+		if(inHand != null) {
+			LinkedList<Item> items = Main.registry.items;
+			
+			for(Item i : items) {
+				int xi = i.coords[0];
+				int yi = i.coords[1];
+				
+				if(coords[0] == xi && coords[1] == yi) {
+					if(!inHand.use(i)) {
+						
+						image = BMPImages.person;
+						inHand = null;
+					}
+					break;
+				}
+			}
+		}
 	}
 	
 	private void resetMovement() {
@@ -137,48 +145,45 @@ public class Player extends Entity implements IActions {
 	}
 	
 	@Override
-	public void select(Item item) {
-		ArrayList<Item> inv = getInventory();
-		boolean selected = false;
-		for(Item i : inv) {
-			if(i.getClass().equals(item.getClass())) {
-				
-				selected = true;
-				inHand = item;
-				inventory.remove(i);
-				break;
-				
-			}
-		}
-		
-		if(!selected) {
-			inHand = null;
-		}
-	}
-	
-	@Override
 	public void pickUp() {
-		int x = coords[0];
-		int y = coords[1];
-		
 		LinkedList<Item> items = Main.registry.items;
 		
 		for(Item i : items) {
 			int xi = i.coords[0];
 			int yi = i.coords[1];
 			
-			if(x == xi && y == yi) {
+			if(coords[0] == xi && coords[1] == yi) {
 				
-				inventory.add(i);
-				Main.registry.items.remove(i);
-				break;
-				
+				if(inHand != null) {
+					
+					Main.registry.items.remove(i);
+					if(inHand.place(coords)) {
+						inHand = i;
+						
+						if(inHand instanceof Tool) {
+							image = ((Tool) inHand).imageInHand;
+						}
+						
+						break;
+					} else {
+						Main.registry.items.add(i);
+						break;
+					}
+		
+				} else {
+					
+					Main.registry.items.remove(i);
+					inHand = i;
+
+					if(inHand instanceof Tool) {
+						image = ((Tool) inHand).imageInHand;
+					}
+					
+					break;
+					
+				}
 			}
 		}
-	}
-	
-	private void openInventory() {
-		Main.window.openInventory();
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -201,8 +206,8 @@ public class Player extends Entity implements IActions {
 			case KeyEvent.VK_ENTER:
 				use = true;
 				return;
-			case KeyEvent.VK_I:
-				openInventory();
+			case KeyEvent.VK_SHIFT:
+				drop = true;
 				return;
 		}
 		updateMovement();

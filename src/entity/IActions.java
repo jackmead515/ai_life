@@ -8,6 +8,6 @@ public interface IActions {
 	
 	public void use();
 	
-	public void select(Item item);
+	public void drop();
 
 }

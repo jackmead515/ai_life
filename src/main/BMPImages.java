@@ -16,6 +16,11 @@ public class BMPImages {
 	public static BufferedImage wood;
 	public static BufferedImage plant;
 	
+	public static BufferedImage axe;
+	public static BufferedImage axe_in_hand;
+	public static BufferedImage shrub;
+	public static BufferedImage stick;
+	
 	public static void load() {
 		
 		URL i = BMPImages.class.getClassLoader().getResource("images/background.bmp");
@@ -46,6 +51,38 @@ public class BMPImages {
 		
 		try {
 			plant = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/axe.bmp");
+		
+		try {
+			axe = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/axe_in_hand.bmp");
+		
+		try {
+			axe_in_hand = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/shrub.bmp");
+		
+		try {
+			shrub = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/stick.bmp");
+		
+		try {
+			stick = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
