@@ -1,18 +1,9 @@
 package items;
 
-import java.awt.Graphics2D;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.LinkedList;
-
-import javax.imageio.ImageIO;
-
-import frame.GamePanel;
 import main.BMPImages;
 import main.Main;
 
-public class Plant extends Item implements IGrow {
+public class Plant extends Component implements IGrow {
 	
 	protected long cycleTime;
 	protected long elapsedTime;
@@ -40,7 +31,7 @@ public class Plant extends Item implements IGrow {
 			Shrub c = new Shrub();
 			c.coords = coords;
 		
-			Main.registry.addItem(c);
+			Main.registry.items.add(c);
 			
 		}
 	

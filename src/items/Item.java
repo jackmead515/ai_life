@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import entity.Entity;
 import frame.GamePanel;
 import main.Main;
 
@@ -23,7 +24,33 @@ public class Item implements IItem {
 		g2.drawImage(image, x*20, y*20, panel);
 	}
 	
-	public boolean use(Item item) {
+	@Override
+	public boolean use(Object item) {
+		if(item instanceof Weapon) {
+			return useWeapon((Weapon) item);
+		} else if(item instanceof Component) {
+			return useComponent((Component) item);
+		} else if(item instanceof Tool) {
+			return useTool((Tool) item);
+		} else if(item instanceof Entity) {
+			return useEntity((Entity) item);
+		}
+		return false;
+	}
+	
+	protected boolean useEntity(Entity e) {
+		return true;
+	}
+	
+	protected boolean useWeapon(Weapon w) {
+		return true;
+	}
+	
+	protected boolean useComponent(Component c) {
+		return true;
+	}
+	
+	protected boolean useTool(Tool t) {
 		return true;
 	}
 	

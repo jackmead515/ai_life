@@ -9,11 +9,10 @@ import javax.swing.JPanel;
 
 import items.Item;
 
-public class Entity implements IEntity {
+public class Entity extends Item implements IEntity {
 	
 	private String name;
-	public int[] coords;
-	public BufferedImage image;
+	public int health;
 	
 	public Entity() {
 		coords = new int[2];
@@ -29,7 +28,7 @@ public class Entity implements IEntity {
 	}
 
 	@Override
-	public void move() {
+	public void move(long time) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -3,11 +3,11 @@ package items;
 import main.BMPImages;
 import main.Main;
 
-public class Stick extends Component {
+public class Sword extends Weapon {
 	
-	public Stick() {
+	public Sword() {
 		
-		image = BMPImages.stick;
+		image = BMPImages.sword;
 		
 	}
 	

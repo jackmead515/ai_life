@@ -18,8 +18,14 @@ public class BMPImages {
 	
 	public static BufferedImage axe;
 	public static BufferedImage axe_in_hand;
+	public static BufferedImage pickaxe;
+	public static BufferedImage pickaxe_in_hand;
+	public static BufferedImage sword;
+	public static BufferedImage sword_in_hand;
 	public static BufferedImage shrub;
 	public static BufferedImage stick;
+	public static BufferedImage stone;
+	public static BufferedImage rock;
 	
 	public static void load() {
 		

@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import frame.GamePanel;
 import items.Item;
 import items.Tool;
+import items.Weapon;
 import items.Wood;
 import main.BMPImages;
 import main.Main;
@@ -49,10 +50,7 @@ public class Player extends Entity implements IActions {
 	}
 	
 	@Override
-	public void move() {
-		int[] now = coords;
-		int[] next = null;
-		
+	public void move(long time) {
 		if(drop) {
 			drop();
 			drop = false;
@@ -67,6 +65,9 @@ public class Player extends Entity implements IActions {
 			use();
 			use = false;
 		}
+		
+		int[] now = coords;
+		int[] next = null;
 		
 		if(down) {
 			next = new int[]{ now[0], now[1]+1 };
@@ -118,7 +119,6 @@ public class Player extends Entity implements IActions {
 				
 				if(coords[0] == xi && coords[1] == yi) {
 					if(!inHand.use(i)) {
-						
 						image = BMPImages.person;
 						inHand = null;
 					}
@@ -162,6 +162,8 @@ public class Player extends Entity implements IActions {
 						
 						if(inHand instanceof Tool) {
 							image = ((Tool) inHand).imageInHand;
+						} else if(inHand instanceof Weapon) {
+							image = ((Weapon) inHand).imageInHand;
 						}
 						
 						break;
@@ -177,6 +179,8 @@ public class Player extends Entity implements IActions {
 
 					if(inHand instanceof Tool) {
 						image = ((Tool) inHand).imageInHand;
+					} else if(inHand instanceof Weapon) {
+						image = ((Weapon) inHand).imageInHand;
 					}
 					
 					break;

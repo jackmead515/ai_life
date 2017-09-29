@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import entity.Entity;
 import items.Item;
 import main.BMPImages;
 import main.Main;
@@ -69,7 +70,7 @@ public class GamePanel extends JPanel {
 		
 		drawItems(g2);
 		
-		drawPlayer(g2);
+		drawEntites(g2);
 	
 	}
 	
@@ -83,8 +84,10 @@ public class GamePanel extends JPanel {
 		g2.drawImage(BMPImages.background, 0, 0, this);
 	}
 	
-	private void drawPlayer(Graphics2D g2) {
-		Main.player.draw(g2, this);
+	private void drawEntites(Graphics2D g2) {
+		for(Entity i : Main.registry.entities) {
+			i.draw(g2, this);
+		}
 	}
 	
 	private void drawGrid(Graphics2D g2) {

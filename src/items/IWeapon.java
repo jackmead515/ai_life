@@ -1,16 +1,16 @@
 package items;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 
+import entity.Entity;
 import frame.GamePanel;
 
-public interface IItem {
+public interface IWeapon {
 	
 	public void draw(Graphics2D g2, GamePanel panel);
 	
 	public boolean place(int[] coords);
 	
-	public boolean use(Object item);
+	public boolean use(Entity item);
 
 }

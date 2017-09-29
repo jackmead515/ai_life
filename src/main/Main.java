@@ -3,6 +3,7 @@ package main;
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
 
+import entity.Entity;
 import entity.Player;
 import frame.Frame;
 import items.Boundary;
@@ -36,6 +37,8 @@ public class Main {
 		player = new Player();
 		player.setName("Jack");
 		
+		registry.items.add(player);
+		
 		random = false;
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -55,12 +58,12 @@ public class Main {
 		}
 	}
 	
-	private static void update(double delta, long time) {
-		player.move();
-	
+	private static void update(double delta, long time) {	
 		for(Item i : registry.items) {
 			if(i instanceof Plant) {
 				((Plant) i).grow(time);
+			} else if(i instanceof Entity) {
+				((Entity) i).move(time);
 			}
 		}
 	}
