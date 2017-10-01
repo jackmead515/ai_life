@@ -16,18 +16,25 @@ public class Util {
 		int x = next[0];
 		int y = next[1];
 		
-		for(Boundary b : Main.registry.boundaries) {
+		for(Boundary b : Main.realm.boundaries) {
 			int bx = b.coords[0];
 			int by = b.coords[1];
 			
 			if(x == bx && y == by) {
-				if(b.canWalkOver) {
-					return false;
+				if(!b.canWalkOver) {
+					return true;
 				}
 			}
 		}
 		
 		return false;
+	}
+	
+	public static int ordinalIndexOf(String str, String substr, int n) {
+		int pos = str.indexOf(substr);
+		while (--n > 0 && pos != -1)
+			pos = str.indexOf(substr, pos + 1);
+		return pos;
 	}
 
 }

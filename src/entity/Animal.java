@@ -1,11 +1,19 @@
 package entity;
 
-public class Animal extends SimpleAI {
+import interfaces.IMultiple;
+
+public class Animal extends WanderEntity implements IMultiple {
 	
-	public boolean edible;
+	protected long startTime;
+	protected long multipleRate;
+	protected int maxSpawns;
 	
 	public Animal() {
-		edible = true;
+		
+	}
+	
+	public void multiple(long time) {
+		
 	}
 
 }

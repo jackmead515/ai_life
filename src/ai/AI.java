@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.Entity;
-import entity.IActions;
 import frame.GamePanel;
+import interfaces.IActions;
 import items.Item;
 import main.BMPImages;
 import main.Main;

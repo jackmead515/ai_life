@@ -1,6 +1,5 @@
 package items;
 
-import entity.Animal;
 import main.BMPImages;
 import main.Main;
 
@@ -19,8 +18,16 @@ public class Axe extends Tool {
 			health-=1;
 			Stick s = new Stick();
 			s.coords = c.coords;
-			Main.registry.items.remove(c);
-			Main.registry.items.add(s);
+			Main.realm.items.remove(c);
+			Main.realm.items.add(s);
+			
+		} else if(c instanceof Plant) {
+			
+			health-=1;
+			WheatSeed s = new WheatSeed();
+			s.coords = c.coords;
+			Main.realm.items.remove(c);
+			Main.realm.items.add(s);
 			
 		}
 		

@@ -1,6 +1,10 @@
-/items/
-/entity/
 /ai/
+/entity/
 /frame/
+/items/
 /main/
-/PickAxe/
+/util/
+/sounds/
+/interfaces/
+/templates/
+/load/

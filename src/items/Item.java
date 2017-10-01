@@ -6,15 +6,18 @@ import java.util.ArrayList;
 
 import entity.Entity;
 import frame.GamePanel;
+import interfaces.IItem;
 import main.Main;
 
 public class Item implements IItem {
 	
 	public int[] coords;
 	public BufferedImage image;
+	public boolean canPickUp;
 	
 	public Item() {
 		coords = new int[2];
+		canPickUp = true;
 	}
 	
 	public void draw(Graphics2D g2, GamePanel panel) {
@@ -56,7 +59,7 @@ public class Item implements IItem {
 	
 	public boolean place(int[] coords) {
 		this.coords = coords;
-		Main.registry.items.add(this);
+		Main.realm.items.add(this);
 		return true;
 	}
 	

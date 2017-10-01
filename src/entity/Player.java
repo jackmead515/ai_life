@@ -14,12 +14,15 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import frame.GamePanel;
+import interfaces.IActions;
+import items.Food;
 import items.Item;
 import items.Tool;
 import items.Weapon;
 import items.Wood;
 import main.BMPImages;
 import main.Main;
+import main.RealmController;
 import util.Util;
 
 public class Player extends Entity implements IActions {
@@ -32,15 +35,27 @@ public class Player extends Entity implements IActions {
 	private boolean pickUp;
 	private boolean use;
 	private boolean drop;
+
+	public boolean showHUD;
+	public int totalHealth;
+	public long startTime;
+	public long starveRate;
 	
-	private Item inHand;
+	public Item inHand;
 	
 	public Player() {
 		super();
 		
 		image = BMPImages.person;
 		
+		startTime = System.nanoTime();
+		starveRate = 2000000000L;
+		
 		inHand = null;
+		
+		health = totalHealth = 100;
+		
+		showHUD = false;
 		
 		up = down = left = right = pickUp = use = drop = false;
 		
@@ -51,6 +66,9 @@ public class Player extends Entity implements IActions {
 	
 	@Override
 	public void move(long time) {
+		
+		starve(time);
+		
 		if(drop) {
 			drop();
 			drop = false;
@@ -66,31 +84,117 @@ public class Player extends Entity implements IActions {
 			use = false;
 		}
 		
+		calculateNextMovement();
+		
+		/*if(!animating) {
+			if(calculateNextMovement()) {
+				animating = true;
+			}
+		} else {
+			if(animatedPath.size() > 0) {
+				coords = animatedPath.pop();
+			} else {
+				animating = false;
+			}
+		}*/
+	}
+		
+	private void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;
+		int cx = coords[0];
+		int cy = coords[1];
 		
 		if(down) {
 			next = new int[]{ now[0], now[1]+1 };
+			/*for(int i = 0; i < 21; i++) {
+				int[] p = new int[2];
+				p[1] = cy + i;
+				p[0] = cx;
+				animatedPath.add(p);
+			}*/
 		} else if (up) {
 			next = new int[]{ now[0], now[1]-1 };
+			/*for(int i = 0; i < 21; i++) {
+				int[] p = new int[2];
+				p[1] = cy - i;
+				p[0] = cx;
+				animatedPath.add(p);
+			}*/
 		} else if (left) {
 			next = new int[]{ now[0]-1, now[1] };
+			/*for(int i = 0; i < 21; i++) {
+				int[] p = new int[2];
+				p[1] = cy;
+				p[0] = cx - i;
+				animatedPath.add(p);
+			}*/
 		} else if(right) {
 			next = new int[]{ now[0]+1, now[1] };
+			/*for(int i = 0; i < 21; i++) {
+				int[] p = new int[2];
+				p[1] = cy;
+				p[0] = cx + i;
+				animatedPath.add(p);
+			}*/
+		} else {
+			return;
+		}
+			
+		if(!Main.window.gamePanel.outOfBounds(next)) {
+			 if(!Util.inBoundary(next)) {
+				 resetMovement();
+				 coords = next;
+			 }
+		} else {
+			
+			if(up) {
+				
+				coords = new int[]{next[0], Main.window.gamePanel.getHeight() / 20};
+				Main.realmController.upRealm();
+				
+			} else if(down) {
+				
+				coords = new int[]{next[0], 0};
+				Main.realmController.downRealm();
+				
+			} else if(left) {
+				
+				coords = new int[]{Main.window.gamePanel.getWidth() / 20, next[1]};
+				Main.realmController.leftRealm();
+				
+			} else if(right) {
+				
+				coords = new int[]{0, next[1]};
+				Main.realmController.rightRealm();
+				
+			}
+			
 		}
 		
-		if(next != null) {
-			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
-				coords = next;
-			}
-			resetMovement();
-		}
+		resetMovement();
+	}
+	
+	@Override
+	public void draw(Graphics2D g2, GamePanel panel) {
+		int x = coords[0];
+		int y = coords[1];
+		
+		g2.drawImage(image, x*20, y*20, panel);
 	}
 	
 	@Override
 	public void drop() {
 		if(inHand != null) {
-			LinkedList<Item> items = Main.registry.items;
+			LinkedList<Item> items = Main.realm.items;
+			
+			if(items.size() <= 0) {
+				if(inHand.place(coords)) {
+					image = BMPImages.person;
+					inHand = null;
+					return;
+				}
+			}
 			
 			for(Item i : items) {
 				int xi = i.coords[0];
@@ -98,7 +202,6 @@ public class Player extends Entity implements IActions {
 				
 				if(coords[0] != xi || coords[1] != yi) {
 					if(inHand.place(coords)) {
-						Main.registry.items.add(inHand);
 						image = BMPImages.person;
 						inHand = null;
 						break;
@@ -111,9 +214,19 @@ public class Player extends Entity implements IActions {
 	@Override
 	public void use() {
 		if(inHand != null) {
-			LinkedList<Item> items = Main.registry.items;
 			
-			for(Item i : items) {
+			if(inHand instanceof Food) {
+				((Food) inHand).eat(this);
+				inHand = null;
+				if(health > totalHealth) {
+					health = totalHealth;
+				}
+				return;
+			}
+			
+			LinkedList<Item> items = Main.realm.items;
+			
+			for(Item i : items) { 
 				int xi = i.coords[0];
 				int yi = i.coords[1];
 				
@@ -146,35 +259,20 @@ public class Player extends Entity implements IActions {
 	
 	@Override
 	public void pickUp() {
-		LinkedList<Item> items = Main.registry.items;
+		
+		if(inHand != null) {
+			return;
+		}
+		
+		LinkedList<Item> items = Main.realm.items;
 		
 		for(Item i : items) {
 			int xi = i.coords[0];
 			int yi = i.coords[1];
 			
-			if(coords[0] == xi && coords[1] == yi) {
-				
-				if(inHand != null) {
+			if(coords[0] == xi && coords[1] == yi && i.canPickUp) {
 					
-					Main.registry.items.remove(i);
-					if(inHand.place(coords)) {
-						inHand = i;
-						
-						if(inHand instanceof Tool) {
-							image = ((Tool) inHand).imageInHand;
-						} else if(inHand instanceof Weapon) {
-							image = ((Weapon) inHand).imageInHand;
-						}
-						
-						break;
-					} else {
-						Main.registry.items.add(i);
-						break;
-					}
-		
-				} else {
-					
-					Main.registry.items.remove(i);
+					Main.realm.items.remove(i);
 					inHand = i;
 
 					if(inHand instanceof Tool) {
@@ -187,7 +285,6 @@ public class Player extends Entity implements IActions {
 					
 				}
 			}
-		}
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -213,8 +310,19 @@ public class Player extends Entity implements IActions {
 			case KeyEvent.VK_SHIFT:
 				drop = true;
 				return;
+			case KeyEvent.VK_H:
+				showHUD = !showHUD;
+				return;
 		}
 		updateMovement();
 	}
 
+	private void starve(long time) {
+		if(time - startTime >= starveRate) {
+			
+			startTime = time;
+			
+			health-=1;
+		}
+	}
 }

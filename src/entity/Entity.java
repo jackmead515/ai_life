@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
+import interfaces.IEntity;
 import items.Item;
 
 public class Entity extends Item implements IEntity {
@@ -31,14 +32,6 @@ public class Entity extends Item implements IEntity {
 	public void move(long time) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void draw(Graphics2D g2, JPanel panel) {
-		int x = coords[0];
-		int y = coords[1];
-		
-		g2.drawImage(image, x*20, y*20, panel);
 	}
 
 }

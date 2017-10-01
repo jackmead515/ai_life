@@ -1,34 +1,34 @@
 package items;
 
+import interfaces.IGrow;
 import main.BMPImages;
 import main.Main;
 
-public class Shrub extends Plant implements IGrow {
+public class Shrub extends Component implements IGrow {
+	
+	protected long cycleTime;
+	protected long startTime;
 	
 	public Shrub() {
 		
-		elapsedTime = 0;
 		cycleTime = 120000000000L;
 		
 		image = BMPImages.shrub;
+		
+		startTime = System.nanoTime();
 		
 	}
 	
 	@Override
 	public void grow(long time) {
+		if(time - startTime >= cycleTime) {
 		
-		elapsedTime += time;
-		
-		if(elapsedTime >= cycleTime) {
-			
-			elapsedTime = 0;
-		
-			Main.registry.items.remove(this);
+			Main.realm.items.remove(this);
 			
 			Wood c = new Wood();
 			c.coords = coords;
 		
-			Main.registry.items.add(c);
+			Main.realm.items.add(c);
 			
 		}
 	
@@ -40,8 +40,9 @@ public class Shrub extends Plant implements IGrow {
 			
 			Stick a = new Stick();
 			a.coords = item.coords;
-			Main.registry.items.remove(item);
-			Main.registry.items.add(a);
+			Main.realm.items.remove(item);
+			Main.realm.items.remove(this);
+			Main.realm.items.add(a);
 			return false;
 			
 		}

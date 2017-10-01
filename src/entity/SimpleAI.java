@@ -2,43 +2,53 @@ package entity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import main.Main;
+import util.Randomizer;
+import util.Util;
+
 public class SimpleAI extends Entity {
 	
 	protected long movementTimeSpeed;
-	protected long elapsedTime;
+	protected long startTime;
 	
 	public SimpleAI() {
-		elapsedTime = 0L;
-		movementTimeSpeed = 1000000000L;
+		startTime = System.nanoTime();
+		movementTimeSpeed = 500000000L;
 	}
 	
 	@Override
 	public void move(long time) {
-		
-		elapsedTime += time;
-		
-		if(elapsedTime >= movementTimeSpeed) {
+		if(time - startTime >= movementTimeSpeed) {
 			
-			elapsedTime = 0;
+			startTime = time;
 			
-			int rand = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+			int rand = Randomizer.random(0, 4);
 			
 			int[] now = coords;
+			int[] next = null;
 			
 			switch(rand) {
+				case 0:
+					break;
 				case 1:
-					coords = new int[] {now[0], now[1]+1};
-					return;
+					next = new int[] {now[0], now[1]+1};
+					break;
 				case 2:
-					coords = new int[] {now[0], now[1]-1};
-					return;
+					next = new int[] {now[0], now[1]-1};
+					break;
 				case 3:
-					coords = new int[] {now[0]-1, now[1]};
-					return;
+					next = new int[] {now[0]-1, now[1]};
+					break;
 				case 4:
-					coords = new int[] {now[0]+1, now[1]};
-					return;
-			}		
+					next = new int[] {now[0]+1, now[1]};
+					break;
+			}
+			
+			if(next != null) {
+				if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
+					coords = next;
+				}
+			}
 		}
 	}
 	

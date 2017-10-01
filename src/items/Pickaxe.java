@@ -2,6 +2,7 @@ package items;
 
 import main.BMPImages;
 import main.Main;
+import util.SoundEffect;
 
 public class Pickaxe extends Tool {
 	
@@ -16,10 +17,20 @@ public class Pickaxe extends Tool {
 		if(item instanceof Stone) {
 			
 			health-=1;
+			SoundEffect.PICKAXE.play();
 			Rock s = new Rock();
 			s.coords = item.coords;
-			Main.registry.items.remove(item);
-			Main.registry.items.add(s);
+			Main.realm.items.remove(item);
+			Main.realm.items.add(s);
+			
+		} else if(item instanceof IronOre) {
+			
+			health-=1;
+			SoundEffect.PICKAXE.play();
+			Iron s = new Iron();
+			s.coords = item.coords;
+			Main.realm.items.remove(item);
+			Main.realm.items.add(s);
 			
 		}
 		

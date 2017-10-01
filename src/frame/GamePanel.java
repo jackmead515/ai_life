@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import entity.Entity;
+import items.Boundary;
 import items.Item;
 import main.BMPImages;
 import main.Main;
@@ -70,24 +71,73 @@ public class GamePanel extends JPanel {
 		
 		drawItems(g2);
 		
-		drawEntites(g2);
-	
+		drawBoundaries(g2);
+		
+		//drawEntites(g2);
+		
+		drawPlayer(g2);
+		
 	}
 	
+	private void drawPlayer(Graphics2D g2) {
+		Main.player.draw(g2, this);
+		
+		if(Main.player.showHUD) {
+			int p_health = 100 * Main.player.health / Main.player.totalHealth;
+			//Health
+			g2.setColor(new Color(255, 0, 0, 127));
+			g2.fillRect(55, 10, p_health, 10);
+			g2.setColor(Color.WHITE);
+			g2.drawRect(55, 10, 100, 10);
+			g2.drawString("Health: ", 10, 20);
+			
+			//In hand
+			if(Main.player.inHand != null) {
+				String itemInHand = Main.player.inHand.getClass().getSimpleName();
+				g2.drawString(itemInHand, 210, 20);
+				g2.drawRect(200, 5, 75, 75);
+				try {
+					Object p = Main.player.inHand.getClass().newInstance();
+					int type = ((Item) p).image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : ((Item) p).image.getType();
+					BufferedImage resizedImage = new BufferedImage(50, 50, type);
+					Graphics2D g = resizedImage.createGraphics();
+					g2.drawImage(((Item) p).image, 210, 25, 50, 50, null);
+					g.dispose();
+					
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			} 
+				
+			
+		}
+	}
+	
+	private void drawBoundaries(Graphics2D g2) {
+		for(Boundary i : Main.realm.boundaries) {
+			i.draw(g2, this);
+		}
+	}
+
+	private void drawEntites(Graphics2D g2) {
+		for(Entity i : Main.registry.entities) {
+			i.draw(g2, this);
+		}
+	}
+
 	private void drawItems(Graphics2D g2){ 
-		for(Item i : Main.registry.items) {
+		for(Item i : Main.realm.items) {
 			i.draw(g2, this);
 		}
 	}
 	
 	private void drawBackground(Graphics2D g2) {
 		g2.drawImage(BMPImages.background, 0, 0, this);
-	}
-	
-	private void drawEntites(Graphics2D g2) {
-		for(Entity i : Main.registry.entities) {
-			i.draw(g2, this);
-		}
 	}
 	
 	private void drawGrid(Graphics2D g2) {
