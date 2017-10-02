@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.JPanel;
+
 import entity.Entity;
 import frame.GamePanel;
 import interfaces.IItem;
@@ -20,7 +22,7 @@ public class Item implements IItem {
 		canPickUp = true;
 	}
 	
-	public void draw(Graphics2D g2, GamePanel panel) {
+	public void draw(Graphics2D g2, JPanel panel) {
 		int x = coords[0];
 		int y = coords[1];
 		

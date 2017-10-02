@@ -1,10 +1,9 @@
-/ai/
 /entity/
 /frame/
 /items/
 /main/
 /util/
-/sounds/
+/ai/
 /interfaces/
-/templates/
 /load/
+/templates/

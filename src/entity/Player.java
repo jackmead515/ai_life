@@ -55,7 +55,7 @@ public class Player extends Entity implements IActions {
 		
 		health = totalHealth = 100;
 		
-		showHUD = false;
+		showHUD = true;
 		
 		up = down = left = right = pickUp = use = drop = false;
 		
@@ -173,14 +173,6 @@ public class Player extends Entity implements IActions {
 		}
 		
 		resetMovement();
-	}
-	
-	@Override
-	public void draw(Graphics2D g2, GamePanel panel) {
-		int x = coords[0];
-		int y = coords[1];
-		
-		g2.drawImage(image, x*20, y*20, panel);
 	}
 	
 	@Override

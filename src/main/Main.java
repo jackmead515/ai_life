@@ -29,16 +29,12 @@ import util.SoundEffect;
 public class Main {
 	
 	public static Frame window;
-	public static Registry registry;
 	public static Realm realm;
 	public static RealmController realmController;
 	
 	public static Player player;
 
 	public static void main(String[] args) {
-		
-		realm = new Realm();
-		realmController = new RealmController();
 		
 		init();
 		
@@ -49,6 +45,10 @@ public class Main {
 	private static void init() {
 		
 		BMPImages.load();
+		SoundEffect.init();
+		
+		realm = new Realm();
+		realmController = new RealmController();
 		
 		player = new Player();
 		player.setName("Jack");
@@ -56,8 +56,6 @@ public class Main {
 		loadMap();
 		
 		realmController.realms[10][10] = realm;
-		
-		SoundEffect.init();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -246,11 +244,6 @@ public class Main {
 			fps++;
 
 			if (lastFpsTime >= 1000000000) {
-				
-				Randomizer.randomize(new Plant(), 5);
-				//Randomizer.randomize(new Deer(), 2);
-				//Randomizer.randomize(new Wolf(), 2);
-				
 				lastFpsTime = 0;
 				fps = 0;
 			} 

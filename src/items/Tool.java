@@ -2,9 +2,7 @@ package items;
 
 import java.awt.image.BufferedImage;
 
-import interfaces.ITool;
-
-public class Tool extends Item implements ITool {
+public class Tool extends Item {
 	
 	public BufferedImage imageInHand;
 	

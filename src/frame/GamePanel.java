@@ -73,8 +73,6 @@ public class GamePanel extends JPanel {
 		
 		drawBoundaries(g2);
 		
-		//drawEntites(g2);
-		
 		drawPlayer(g2);
 		
 	}
@@ -120,12 +118,6 @@ public class GamePanel extends JPanel {
 	
 	private void drawBoundaries(Graphics2D g2) {
 		for(Boundary i : Main.realm.boundaries) {
-			i.draw(g2, this);
-		}
-	}
-
-	private void drawEntites(Graphics2D g2) {
-		for(Entity i : Main.registry.entities) {
 			i.draw(g2, this);
 		}
 	}
