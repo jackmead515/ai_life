@@ -36,5 +36,53 @@ public class Util {
 			pos = str.indexOf(substr, pos + 1);
 		return pos;
 	}
+	
+	public static Point mouseSnap(Point point) {
+		
+		int x = point.x;
+		int y = point.y;
+		
+		int lowXCount = 0;
+		int lowYCount = 0;
+		int highXCount = 0;
+		int highYCount = 0;
+		
+		for(int i = 0; i < 21; i++){
+			if((x+i) % 20 == 0){
+				lowXCount = i;
+				break;
+			}
+		}
+		for(int i = 0; i < 21; i++){
+			if((y+i) % 20 == 0){
+				lowYCount = i;
+				break;
+			}
+		}
+		for(int i = 0; i < 21; i++){
+			if((y-i) % 20 == 0){
+				highYCount = i;
+				break;
+			}
+		}
+		for(int i = 0; i < 21; i++){
+			if((x-i) % 20 == 0){
+				highXCount = i;
+				break;
+			}
+		}
+		
+		if(highXCount < lowXCount || highYCount < lowYCount){
+			
+			return new Point(x-highXCount, y-highYCount);
+			
+		}else if(lowXCount < highXCount || lowYCount < highYCount){
+			
+			return new Point(x+lowXCount, y+lowYCount);
+			
+		}
+		
+		return point;
+	}
 
 }

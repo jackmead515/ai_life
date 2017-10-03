@@ -66,6 +66,51 @@ public class CreatorPanel extends JPanel {
 		
 		drawBoundaries(g2);
 		
+		drawPaletteGUI(g2);
+		
+		drawSelection(g2);
+		
+	}
+	
+	private void drawSelection(Graphics2D g2) {
+		
+		if(MapCreator.window.palette.boundary_selection != null || 
+		   MapCreator.window.palette.item_selection != null &&
+		   MapCreator.window.palette.selectionPlacement != null) {
+			
+			g2.setColor(new Color(62, 179, 218,150));
+			
+			int x = MapCreator.window.palette.selectionPlacement.x;
+			int y = MapCreator.window.palette.selectionPlacement.y;
+			g2.fillRect(x, y, 20, 20);
+			
+		}
+		
+		if(MapCreator.window.palette.item_description != null) {
+			g2.setColor(Color.BLACK);
+			
+			g2.drawString(MapCreator.window.palette.item_description, this.getWidth()-440, 20);
+		}
+	}
+
+	private void drawPaletteGUI(Graphics2D g2) {
+		//g2.drawImage(MapCreator.window.palette.tabImage, (int) (getWidth()-MapCreator.toLeft),0,this);
+		g2.setColor(new Color(62, 179, 218,150));
+		g2.fillRect( (int) (getWidth()-MapCreator.window.palette.toLeft)+50, 0, 500, getHeight());
+		
+		g2.setColor(Color.BLACK);
+		if(MapCreator.window.palette.opened && !MapCreator.window.palette.clicked) {
+			
+			for(Item i : MapCreator.window.palette.items) {
+				i.draw(g2, this);
+			}
+			
+			for(Boundary i : MapCreator.window.palette.boundaries) {
+				i.draw(g2, this);
+			}
+			
+		}
+		
 	}
 	
 	private void drawBoundaries(Graphics2D g2) {
