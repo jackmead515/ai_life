@@ -13,8 +13,10 @@ import frame.Frame;
 import interfaces.IAnimate;
 import interfaces.IGrow;
 import interfaces.IMultiple;
+import items.Arrow;
 import items.Axe;
 import items.Boundary;
+import items.Bow;
 import items.IronOre;
 import items.Item;
 import items.Pickaxe;
@@ -163,6 +165,41 @@ public class Main {
 			realm.items.add(w);
 		}
 		
+		Bow b = new Bow();
+		b.coords = new int[] {20, 20};
+		
+		Arrow a = new Arrow();
+		a.coords = new int[] {21, 20};
+		Arrow a1 = new Arrow();
+		a1.coords = new int[] {22, 20};
+		Arrow a2 = new Arrow();
+		a2.coords = new int[] {23, 20};
+		Arrow a3 = new Arrow();
+		a3.coords = new int[] {24, 20};
+		Arrow a4 = new Arrow();
+		a4.coords = new int[] {25, 20};
+		Arrow a5 = new Arrow();
+		a5.coords = new int[] {26, 20};
+		Arrow a6 = new Arrow();
+		a6.coords = new int[] {27, 20};
+		Arrow a7 = new Arrow();
+		a7.coords = new int[] {28, 20};
+		Arrow a8 = new Arrow();
+		a8.coords = new int[] {29, 20};
+		Arrow a9 = new Arrow();
+		a9.coords = new int[] {30, 20};
+		
+		realm.items.add(b);
+		realm.items.add(a);
+		realm.items.add(a1);
+		realm.items.add(a2);
+		realm.items.add(a3);
+		realm.items.add(a4);
+		realm.items.add(a5);
+		realm.items.add(a6);
+		realm.items.add(a7);
+		realm.items.add(a8);
+		realm.items.add(a9);
 		
 		realm.items.add(e);
 		realm.items.add(e1);

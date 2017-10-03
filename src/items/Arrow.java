@@ -12,8 +12,9 @@ public class Arrow extends Ammo {
 	
 	public Arrow() {
 		startTime = System.nanoTime();
-		animationDuration = 100000000L;
+		animationDuration = 10000000L;
 		image = BMPImages.arrow;
+		imageInHand = BMPImages.person;
 		tileLife = 20;
 	}
 
@@ -41,10 +42,13 @@ public class Arrow extends Ammo {
 			
 			for(Item i : Main.realm.items) {
 				if(i instanceof Entity) {
-					((Entity) i).health -= 1;
-					if(((Entity) i).health <= 0) {
-						Main.realm.items.remove(i);
-						break;
+					if(((Entity) i).coords[0] == coords[0] && ((Entity) i).coords[1] == coords[1]) {
+						((Entity) i).health -= 1;
+						Main.realm.items.remove(this);
+						if(((Entity) i).health <= 0) {
+							Main.realm.items.remove(i);
+						}
+						return;
 					}
 				}
 			}

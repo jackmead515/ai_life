@@ -348,19 +348,27 @@ public class Player extends Entity implements IActions {
 	}
 	
 	public void mouseMoved(Point p) {
-		Point c = new Point(coords[0]+10, coords[1]+10);
+		Point c = new Point((coords[0]*20)+10, (coords[1]*20)+10);
 		
 		if(p.y < c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x-p.y))) {
 			pointingUp = true;
-		} else if(p.y > c.y && (p.x > (p.y-c.y+c.x)) && (p.x <  (c.y+c.x+p.y))) {
+			updatePointingDirection();
+			return;
+		} else if(p.y > c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x+p.y))) {
 			pointingDown = true;
+			updatePointingDirection();
+			return;
 		} else if(p.x < c.x && (p.y > (p.x-c.x+c.y)) && (p.y < (c.x+c.y-p.x))) {
 			pointingLeft = true;
+			updatePointingDirection();
+			return;
 		} else if(p.x > c.x && (p.y < (p.x-c.x+c.y)) && (p.y > (c.x+c.y-p.x))) {
 			pointingRight = true;
+			updatePointingDirection();
+			return;
 		}
 		
-		updatePointingDirection();
+		
 	}
 
 	private void starve(long time) {

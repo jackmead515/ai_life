@@ -4,13 +4,10 @@ import entity.Entity;
 import main.BMPImages;
 import main.Main;
 
-public class RawVenison extends Food {
+public class RawVenison extends Component {
 	
 	public RawVenison() {
-		
-		health = 5;
 		image = BMPImages.venison;
-		
 	}
 	
 	@Override

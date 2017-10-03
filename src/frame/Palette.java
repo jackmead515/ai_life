@@ -37,6 +37,8 @@ import items.Water;
 import items.Wheat;
 import items.WheatSeed;
 import items.Wood;
+import load.MapLoader;
+import load.MapSaver;
 import main.MapCreator;
 import util.Util;
 
@@ -57,6 +59,8 @@ public class Palette {
 	public Point selectionPlacement;
 	public Point undoPlacement;
 	public Point cancelPlacement;
+	public Point savePlacement;
+	public Point loadPlacement;
 	public String item_description;
 
 	public Palette(CreatorPanel creatorPanel) {
@@ -108,6 +112,8 @@ public class Palette {
 		
 		cancelPlacement = new Point(panel.getWidth()-300, 20);
 		undoPlacement = new Point(panel.getWidth()-280, 20);
+		savePlacement = new Point(panel.getWidth()-200, 20);
+		loadPlacement = new Point(panel.getWidth()-120, 20);
 		
 	}
 	
@@ -218,11 +224,7 @@ public class Palette {
 				
 				Point p = Util.mouseSnap(mouse.getPoint());
 				
-				if(Util.inArea(tabBounds(), p) || Util.inArea(bounds(), p)) {
-					return;
-				}
-				
-				if(Util.inArea(new Rectangle(undoPlacement.x, undoPlacement.y, 20, 20), p)) {
+				if(Util.inArea(new Rectangle(undoPlacement.x, undoPlacement.y-20, 20, 20), p)) {
 					if(lastAdded != null) {
 						if(lastAdded instanceof Item) {
 							MapCreator.realm.items.pop();
@@ -234,9 +236,19 @@ public class Palette {
 					return;
 				}
 				
-				if(Util.inArea(new Rectangle(cancelPlacement.x, cancelPlacement.y, 20, 20), p)) {
+				if(Util.inArea(new Rectangle(cancelPlacement.x, cancelPlacement.y-20, 20, 20), p)) {
 					item_selection = null;
 					boundary_selection = null;
+					return;
+				}
+				
+				if(Util.inArea(new Rectangle(savePlacement.x, savePlacement.y-20, 80, 20), p)) {
+					MapSaver.save();
+					return;
+				}
+				
+				if(Util.inArea(new Rectangle(loadPlacement.x, loadPlacement.y-20, 80, 20), p)) {
+					MapLoader.load();
 					return;
 				}
 				
@@ -245,6 +257,9 @@ public class Palette {
 				
 				if(item_selection != null && boundary_selection == null) {
 					//place item
+					if(Util.inArea(tabBounds(), p) || Util.inArea(bounds(), p)) {
+						return;
+					}
 					try {
 						Object o = item_selection.getClass().newInstance();
 						((Item) o).coords = new int[] {(p.x-5)/20,(p.y-5)/20};
@@ -258,6 +273,9 @@ public class Palette {
 					
 				} else if(item_selection == null && boundary_selection != null) {
 					//place boundary
+					if(Util.inArea(tabBounds(), p) || Util.inArea(bounds(), p)) {
+						return;
+					}
 					try {
 						Object o = boundary_selection.getClass().newInstance();
 						((Boundary) o).coords = new int[] {(p.x-5)/20,(p.y-5)/20};

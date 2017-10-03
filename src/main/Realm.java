@@ -1,11 +1,12 @@
 package main;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import items.Boundary;
 import items.Item;
 
-public class Realm {
+public class Realm implements Serializable {
 	
 	public volatile LinkedList<Boundary> boundaries;
 	public volatile LinkedList<Item> items;

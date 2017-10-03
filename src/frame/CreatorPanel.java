@@ -112,10 +112,13 @@ public class CreatorPanel extends JPanel {
 			
 			Point p = MapCreator.window.palette.cancelPlacement;
 			Point p1 = MapCreator.window.palette.undoPlacement;
+			Point p2 = MapCreator.window.palette.savePlacement;
+			Point p3 = MapCreator.window.palette.loadPlacement;
 			
 			g2.drawString("X", p.x, p.y);
 			g2.drawString("<", p1.x, p1.y);
-			
+			g2.drawString("Save", p2.x, p2.y);
+			g2.drawString("Load", p3.x, p3.y);
 			
 		}
 		

@@ -24,6 +24,7 @@ public class Bow extends Projectile {
 			Arrow p = ammo.pop();
 			p.isShot = true;
 			p.direction = direction;
+			p.coords = Main.player.coords;
 			Main.realm.items.add(p);
 		}
 	}

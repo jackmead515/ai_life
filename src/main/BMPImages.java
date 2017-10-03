@@ -66,6 +66,29 @@ public class BMPImages {
 			e.printStackTrace();
 		}
 		
+		i = BMPImages.class.getClassLoader().getResource("images/bow.bmp");
+		
+		try {
+			bow = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/bow_in_hand.bmp");
+		
+		try {
+			bow_in_hand = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		i = BMPImages.class.getClassLoader().getResource("images/arrow.bmp");
+		
+		try {
+			arrow = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		i = BMPImages.class.getClassLoader().getResource("images/wheat_seed.bmp");
 		
 		try {
