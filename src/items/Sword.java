@@ -24,7 +24,7 @@ public class Sword extends Weapon {
 		
 		if(e.health <= 0) {
 			if(e instanceof Deer) {
-				Venison a = new Venison();
+				RawVenison a = new RawVenison();
 				a.coords = e.coords;
 				Main.realm.items.remove(e);
 				Main.realm.items.add(a);
@@ -37,6 +37,28 @@ public class Sword extends Weapon {
 			return true;
 		}
 		
+	}
+	
+	@Override
+	public boolean useComponent(Component e) {
+		
+		SoundEffect.SWORD.play();
+		health-=1;
+		
+		if(e instanceof Crate) {
+			
+			Item p = Crate.generate();
+			p.coords = e.coords;
+			Main.realm.items.add(p);
+			return false;
+			
+		}
+		
+		if(health <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }

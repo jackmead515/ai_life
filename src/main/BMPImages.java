@@ -50,6 +50,12 @@ public class BMPImages {
 	public static BufferedImage wheat;
 	public static BufferedImage bread;
 	
+	public static BufferedImage bow;
+	public static BufferedImage bow_in_hand;
+	public static BufferedImage raw_venison;
+	public static BufferedImage crate;
+	public static BufferedImage arrow;
+	
 	public static void load() {
 		
 		URL i = BMPImages.class.getClassLoader().getResource("images/pickaxe.bmp");

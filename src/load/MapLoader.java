@@ -3,11 +3,18 @@ package load;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import items.Boundary;
 import items.Item;
@@ -16,88 +23,56 @@ import util.Util;
 
 public class MapLoader {
 
-	public static Realm load(Path path) {
-		LinkedList<Boundary> boundaries = new LinkedList<Boundary>();
-		LinkedList<Item> items = new LinkedList<Item>();
+	public static Realm load() {
 		
-		File file = new File(path.toString());
-		try {
-			Scanner scan = new Scanner(file);
-			
-			while(scan.hasNextLine()) {
-				String line = scan.nextLine();
-				if(!line.startsWith("#")) {
-					readLine(line, boundaries, items);	
-				}
-				
-			}
-			scan.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		Realm realm = null;
 		
-		Realm realm = new Realm();
-		realm.boundaries = boundaries;
-		realm.items = items;
-		return realm;
-	}
-	
-	private static void readLine(String line, LinkedList<Boundary> boundaries, LinkedList<Item> items){
+		JFileChooser jfc = new JFileChooser();
 		
-			String objName = getCode(line);
-			int[] pos = getPosition(line);
-			
+		FileFilter filter = new FileNameExtensionFilter("Map Files", "map");
+
+		jfc.setDialogType(JFileChooser.OPEN_DIALOG);
+		jfc.setDialogTitle("Choose a map");
+		jfc.setFileFilter(filter);
+		
+		int returnValue = jfc.showOpenDialog(null);
+
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jfc.getSelectedFile();
+		
+			FileInputStream fin = null;
+			ObjectInputStream ois = null;
+
 			try {
-				Class<?> cls = Class.forName(objName);
-				Object obj = cls.newInstance();
-				
-				if(obj instanceof Boundary) {
-					
-					((Boundary) obj).coords = pos;
-					boundaries.add((Boundary) obj);
-					
-				} else if(obj instanceof Item) {
-					
-					((Item) obj).coords = pos;
-					items.add((Item) obj);
-					
+
+				fin = new FileInputStream(selectedFile);
+				ois = new ObjectInputStream(fin);
+				realm = (Realm) ois.readObject();
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			} finally {
+
+				if (fin != null) {
+					try {
+						fin.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-				
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				if (ois != null) {
+					try {
+						ois.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+
 			}
-		
-	}
-	
-	private static int[] getPosition(String line) {
-		
-		int x = Integer.parseInt(line.substring(line.indexOf("(")+1, Util.ordinalIndexOf(line, ",", 1)));
-		int y = Integer.parseInt(line.substring(Util.ordinalIndexOf(line, ",", 1)+1, line.indexOf(")")));
-		
-		return new int[] {x ,  y};
-	}
-	
-	private static int getSpecialAmount(String line) {
-		try {
-			return Integer.parseInt(line.substring(line.indexOf("[")+1, line.indexOf("]")));
-		} catch (Exception e) {
-			return -1;
 		}
-	}
-	
-	private static String getSpecialStringAmount(String line) {
-		return line.substring(line.indexOf("[")+1, line.indexOf("]"));
-	}
-	
-	private static String getCode(String line){
-		return line.substring(0, line.indexOf("("));
+		
+		return realm;
 	}
 
 

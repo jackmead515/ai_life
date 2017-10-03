@@ -59,6 +59,10 @@ public class Item implements IItem {
 		return true;
 	}
 	
+	protected boolean useEmpty() {
+		return true;
+	}
+	
 	public boolean place(int[] coords) {
 		this.coords = coords;
 		Main.realm.items.add(this);

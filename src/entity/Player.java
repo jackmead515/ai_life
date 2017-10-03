@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import frame.GamePanel;
 import interfaces.IActions;
 import items.Food;
 import items.Item;
+import items.Projectile;
 import items.Tool;
 import items.Weapon;
 import items.Wood;
@@ -31,6 +33,11 @@ public class Player extends Entity implements IActions {
 	private boolean down;
 	private boolean left;
 	private boolean right;
+	
+	private boolean pointingUp;
+	private boolean pointingDown;
+	private boolean pointingLeft;
+	private boolean pointingRight;
 	
 	private boolean pickUp;
 	private boolean use;
@@ -57,6 +64,7 @@ public class Player extends Entity implements IActions {
 		
 		showHUD = true;
 		
+		pointingUp = pointingDown = pointingLeft = pointingRight = false;
 		up = down = left = right = pickUp = use = drop = false;
 		
 		setName("Player");
@@ -216,6 +224,24 @@ public class Player extends Entity implements IActions {
 				return;
 			}
 			
+			if(inHand instanceof Projectile) {
+				int direction = 0;
+				if(pointingUp) {
+					direction = 1;
+				} else if(pointingDown) {
+					direction = 2;
+				} else if(pointingLeft) {
+					direction = 3;
+				} else if(pointingRight) {
+					direction = 4;
+				}
+				if(direction != 0) {
+					((Projectile) inHand).shoot(direction);
+				}
+				
+				return;
+			}
+			
 			LinkedList<Item> items = Main.realm.items;
 			
 			for(Item i : items) { 
@@ -246,6 +272,18 @@ public class Player extends Entity implements IActions {
 			right = up = down = false;
 		} else if(right) {
 			up = down = left = false;
+		}
+	}
+	
+	private void updatePointingDirection() {
+		if(pointingDown) {
+			pointingUp = pointingLeft = pointingRight = false;
+		} else if (pointingUp) {
+			pointingDown = pointingLeft = pointingRight = false;
+		} else if (left) {
+			pointingRight = pointingUp = pointingDown = false;
+		} else if(pointingRight) {
+			pointingUp = pointingDown = pointingLeft = false;
 		}
 	}
 	
@@ -307,6 +345,22 @@ public class Player extends Entity implements IActions {
 				return;
 		}
 		updateMovement();
+	}
+	
+	public void mouseMoved(Point p) {
+		Point c = new Point(coords[0]+10, coords[1]+10);
+		
+		if(p.y < c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x-p.y))) {
+			pointingUp = true;
+		} else if(p.y > c.y && (p.x > (p.y-c.y+c.x)) && (p.x <  (c.y+c.x+p.y))) {
+			pointingDown = true;
+		} else if(p.x < c.x && (p.y > (p.x-c.x+c.y)) && (p.y < (c.x+c.y-p.x))) {
+			pointingLeft = true;
+		} else if(p.x > c.x && (p.y < (p.x-c.x+c.y)) && (p.y > (c.x+c.y-p.x))) {
+			pointingRight = true;
+		}
+		
+		updatePointingDirection();
 	}
 
 	private void starve(long time) {

@@ -2,6 +2,8 @@ package frame;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -30,7 +32,7 @@ import items.Sparker;
 import items.Stick;
 import items.Stone;
 import items.Sword;
-import items.Venison;
+import items.RawVenison;
 import items.Water;
 import items.Wheat;
 import items.WheatSeed;
@@ -48,9 +50,13 @@ public class Palette {
 	public boolean clicked;
 	public int toLeft;
 	
+	private Object lastAdded;
+	
 	public Item item_selection;
 	public Boundary boundary_selection;
 	public Point selectionPlacement;
+	public Point undoPlacement;
+	public Point cancelPlacement;
 	public String item_description;
 
 	public Palette(CreatorPanel creatorPanel) {
@@ -62,12 +68,13 @@ public class Palette {
 		boundaries = new LinkedList<Boundary>();
 		item_description = null;
 		selectionPlacement = null;
+		lastAdded = null;
 		addItems();
 		addBoundaries();
 		addIBBounds();
 		attachListeners();
 	}
-	
+
 	private void addIBBounds() {
 		int x = panel.getWidth()-440;
 		int y = 40;
@@ -98,6 +105,10 @@ public class Palette {
 				x+=40;
 			}
 		}
+		
+		cancelPlacement = new Point(panel.getWidth()-300, 20);
+		undoPlacement = new Point(panel.getWidth()-280, 20);
+		
 	}
 	
 	private void addBoundaries() {
@@ -123,7 +134,7 @@ public class Palette {
 		items.add(new Stick());
 		items.add(new Stone());
 		items.add(new Sword());
-		items.add(new Venison());
+		items.add(new RawVenison());
 		items.add(new Wheat());
 		items.add(new WheatSeed());
 		items.add(new Wood());
@@ -134,8 +145,30 @@ public class Palette {
 	private void attachListeners() {
 		attachMakeSelectionListener();
 		attachMouseMotionListener();
+		attachKeyListener();
 	}
 	
+	private void attachKeyListener() {
+		panel.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if ((e.getKeyCode() == KeyEvent.VK_S) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+					
+		        }
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_P) {
+					opened = false;
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {}
+		});
+	}
+
 	private void attachMouseMotionListener() {
 		panel.addMouseMotionListener(new MouseMotionListener(){
 			@Override
@@ -147,11 +180,6 @@ public class Palette {
 				
 				if(item_selection != null || boundary_selection != null) {
 					selectionPlacement = p;
-				}
-				
-				if(!opened) {
-					item_description = null;
-					return;
 				}
 				
 				for(Item b : items) {
@@ -189,31 +217,56 @@ public class Palette {
 			private void makeSelection(MouseEvent mouse) {
 				
 				Point p = Util.mouseSnap(mouse.getPoint());
+				
+				if(Util.inArea(tabBounds(), p) || Util.inArea(bounds(), p)) {
+					return;
+				}
+				
+				if(Util.inArea(new Rectangle(undoPlacement.x, undoPlacement.y, 20, 20), p)) {
+					if(lastAdded != null) {
+						if(lastAdded instanceof Item) {
+							MapCreator.realm.items.pop();
+						} else if(lastAdded instanceof Boundary) {
+							MapCreator.realm.boundaries.pop();
+						}
+						lastAdded = null;
+					}
+					return;
+				}
+				
+				if(Util.inArea(new Rectangle(cancelPlacement.x, cancelPlacement.y, 20, 20), p)) {
+					item_selection = null;
+					boundary_selection = null;
+					return;
+				}
+				
 				p.x = p.x+5;
 				p.y = p.y+5;
 				
 				if(item_selection != null && boundary_selection == null) {
 					//place item
-					item_selection.coords = new int[] {(p.x-5)/20,(p.y-5)/20};
-					MapCreator.realm.items.add(item_selection);
 					try {
-						item_selection = item_selection.getClass().newInstance();
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						Object o = item_selection.getClass().newInstance();
+						((Item) o).coords = new int[] {(p.x-5)/20,(p.y-5)/20};
+						MapCreator.realm.items.add(((Item) o));
+						lastAdded = new Item();
+					} catch (InstantiationException e1) {
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						e1.printStackTrace();
 					}
 					
 				} else if(item_selection == null && boundary_selection != null) {
 					//place boundary
-					boundary_selection.coords = new int[] {(p.x-5)/20,(p.y-5)/20};
-					MapCreator.realm.boundaries.add(boundary_selection);
 					try {
-						boundary_selection = boundary_selection.getClass().newInstance();
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
+						Object o = boundary_selection.getClass().newInstance();
+						((Boundary) o).coords = new int[] {(p.x-5)/20,(p.y-5)/20};
+						MapCreator.realm.boundaries.add(((Boundary) o));
+						lastAdded = new Boundary();
+					} catch (InstantiationException e1) {
+						e1.printStackTrace();
+					} catch (IllegalAccessException e1) {
+						e1.printStackTrace();
 					}
 					
 				} else {

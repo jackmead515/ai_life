@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import main.Main;
 import main.MapCreator;
 import main.Realm;
-import main.Registry;
 
 public class MapCreatorFrame {
 	

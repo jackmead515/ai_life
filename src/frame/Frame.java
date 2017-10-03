@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class Frame {
 
@@ -41,6 +42,17 @@ public class Frame {
 			public void mouseClicked(MouseEvent mouse){
 				gamePanel.requestFocus();
 			}
+		});
+		
+		gamePanel.addMouseMotionListener(new MouseMotionListener() {
+			@Override
+			public void mouseDragged(MouseEvent e) {}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				Main.player.mouseMoved(e.getPoint());
+			}
+			
 		});
 	}
 		

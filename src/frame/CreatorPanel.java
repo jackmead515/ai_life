@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -85,12 +86,6 @@ public class CreatorPanel extends JPanel {
 			g2.fillRect(x, y, 20, 20);
 			
 		}
-		
-		if(MapCreator.window.palette.item_description != null) {
-			g2.setColor(Color.BLACK);
-			
-			g2.drawString(MapCreator.window.palette.item_description, this.getWidth()-440, 20);
-		}
 	}
 
 	private void drawPaletteGUI(Graphics2D g2) {
@@ -108,6 +103,19 @@ public class CreatorPanel extends JPanel {
 			for(Boundary i : MapCreator.window.palette.boundaries) {
 				i.draw(g2, this);
 			}
+			
+			if(MapCreator.window.palette.item_description != null) {
+				g2.setColor(Color.BLACK);
+				
+				g2.drawString(MapCreator.window.palette.item_description, this.getWidth()-440, 20);
+			}
+			
+			Point p = MapCreator.window.palette.cancelPlacement;
+			Point p1 = MapCreator.window.palette.undoPlacement;
+			
+			g2.drawString("X", p.x, p.y);
+			g2.drawString("<", p1.x, p1.y);
+			
 			
 		}
 		

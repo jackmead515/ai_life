@@ -11,8 +11,8 @@ public class Food extends Component {
 	}
 	
 	public void eat(Entity e) {
-		
-	};
+		e.health += health;
+	}
 
 }
 
