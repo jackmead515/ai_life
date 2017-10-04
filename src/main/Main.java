@@ -3,6 +3,8 @@ package main;
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
 
+import boundaries.Boundary;
+import boundaries.Water;
 import entity.Animal;
 import entity.Deer;
 import entity.Entity;
@@ -13,20 +15,18 @@ import frame.Frame;
 import interfaces.IAnimate;
 import interfaces.IGrow;
 import interfaces.IMultiple;
-import items.Arrow;
-import items.Axe;
-import items.Boundary;
-import items.Bow;
 import items.IronOre;
 import items.Item;
-import items.Pickaxe;
 import items.Plant;
 import items.ShallowWater;
 import items.Stone;
-import items.Sword;
-import items.Water;
+import tools.Axe;
+import tools.Pickaxe;
 import util.Randomizer;
 import util.SoundEffect;
+import weapons.Arrow;
+import weapons.Bow;
+import weapons.Sword;
 
 public class Main {
 	
@@ -47,19 +47,30 @@ public class Main {
 	private static void init() {
 		
 		BMPImages.load();
-		SoundEffect.init();
+		SoundEffect.load();
 		
 		realm = new Realm();
 		realmController = new RealmController();
 		
 		player = new Player();
-		player.setName("Jack");
 		
 		loadMap();
 		
 		realmController.realms[10][10] = realm;
 		
-		EventQueue.invokeLater(new Runnable() {
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				try {
+					window = new Frame();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		t.start();
+		
+		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					window = new Frame();
@@ -73,7 +84,7 @@ public class Main {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	private static void loadMap() {
@@ -126,19 +137,19 @@ public class Main {
 		for(int x = 0; x < 10; x++){
 			Water w = new Water();
 			w.coords = new int[] {40, 20+x};
-			realm.boundaries.add(w);
+			realm.items.add(w);
 		}
 		
 		for(int x = 0; x < 10; x++){
 			Water w = new Water();
 			w.coords = new int[] {41, 20+x};
-			realm.boundaries.add(w);
+			realm.items.add(w);
 		}
 		
 		for(int x = 0; x < 10; x++){
 			Water w = new Water();
 			w.coords = new int[] {42, 20+x};
-			realm.boundaries.add(w);
+			realm.items.add(w);
 		}
 		
 		for(int x = 0; x < 10; x++){
@@ -238,14 +249,6 @@ public class Main {
 					((IMultiple) i).multiple(time);
 				}
 			}
-			
-			if(i instanceof IAnimate) {
-				((IAnimate) i).animate(time);
-			}
-		}
-		
-		for(int x = 0; x < realm.boundaries.size(); x++) {
-			Boundary i = realm.boundaries.get(x);
 			
 			if(i instanceof IAnimate) {
 				((IAnimate) i).animate(time);

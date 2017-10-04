@@ -1,28 +1,31 @@
 package items;
 
 import entity.Entity;
+import food.Venison;
 import main.BMPImages;
 import main.Main;
 
-public class RawVenison extends Component {
+public class RawVenison extends Item {
 	
 	public RawVenison() {
 		image = BMPImages.venison;
 	}
 	
 	@Override
-	public boolean useComponent(Component e) {
-		if(e instanceof Fire || e instanceof Furnace) {
+	public boolean use(Entity e) {
+		for(Item i : Main.realm.items) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+				if(i instanceof Fire || i instanceof Furnace) {
+					Venison a = new Venison();
+					a.coords = e.coords;
+					Main.realm.items.remove(this);
+					Main.realm.items.add(a);
+					return false;
+				}
 			
-			Venison a = new Venison();
-			a.coords = e.coords;
-			Main.realm.items.remove(this);
-			Main.realm.items.add(a);
-			return false;
-			
+			}
 		}
-		
-		return false;
+		return true;
 	}
 	
 	

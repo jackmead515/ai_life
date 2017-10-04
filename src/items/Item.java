@@ -16,12 +16,15 @@ public class Item implements IItem {
 	public int[] coords;
 	public BufferedImage image;
 	public boolean canPickUp;
+	public boolean canWalkOver;
 	
 	public Item() {
 		coords = new int[2];
 		canPickUp = true;
+		canWalkOver = true;
 	}
 	
+	@Override
 	public void draw(Graphics2D g2, JPanel panel) {
 		int x = coords[0];
 		int y = coords[1];
@@ -29,40 +32,27 @@ public class Item implements IItem {
 		g2.drawImage(image, x*20, y*20, panel);
 	}
 	
+	/**
+	 * returns false if entity should update itself.
+	 * returns true if entity does not need to change anything.
+	 */
 	@Override
-	public boolean use(Object item) {
-		if(item instanceof Weapon) {
-			return useWeapon((Weapon) item);
-		} else if(item instanceof Component) {
-			return useComponent((Component) item);
-		} else if(item instanceof Tool) {
-			return useTool((Tool) item);
-		} else if(item instanceof Entity) {
-			return useEntity((Entity) item);
-		}
-		return false;
-	}
-	
-	protected boolean useEntity(Entity e) {
+	public boolean use(Entity e) {
 		return true;
 	}
 	
-	protected boolean useWeapon(Weapon w) {
+	@Override
+	public boolean pickUp(Entity e) {
+		e.image = image;
 		return true;
 	}
 	
-	protected boolean useComponent(Component c) {
-		return true;
+	@Override
+	public String description() {
+		return this.getClass().getSimpleName();
 	}
 	
-	protected boolean useTool(Tool t) {
-		return true;
-	}
-	
-	protected boolean useEmpty() {
-		return true;
-	}
-	
+	@Override
 	public boolean place(int[] coords) {
 		this.coords = coords;
 		Main.realm.items.add(this);

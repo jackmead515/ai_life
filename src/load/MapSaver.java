@@ -1,19 +1,23 @@
 package load;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import items.Item;
 import main.MapCreator;
+import main.Realm;
 
 public class MapSaver {
 	
-	public static void save() {
+	public static void save(Realm realm) {
 		
 		JFileChooser jfc = new JFileChooser();
 		
@@ -27,43 +31,27 @@ public class MapSaver {
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
-		
-			FileOutputStream fout = null;
-			ObjectOutputStream oos = null;
-
+			
 			try {
-
-				fout = new FileOutputStream(selectedFile);
-				oos = new ObjectOutputStream(fout);
+				PrintWriter print = new PrintWriter(selectedFile);
 				
-				oos.writeObject(MapCreator.realm);
-
-			} catch (Exception ex) {
-
-				ex.printStackTrace();
-
-			} finally {
-
-				if (fout != null) {
-					try {
-						fout.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				print.flush();
+				for(Item i : realm.items) {
+					print.println(parseItem(i));
 				}
+				print.close();
 
-				if (oos != null) {
-					try {
-						oos.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-
-		
+	}
+	
+	private static String parseItem(Item i) {
+		String s = i.getClass().getName();
+		s.concat("(" + i.coords[0] + "," + i.coords[1] + ")");
+		return s;
 	}
 
 }

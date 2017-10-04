@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import items.Boundary;
+import boundaries.Boundary;
 import items.Item;
 import main.BMPImages;
 import main.Main;
@@ -65,8 +65,6 @@ public class CreatorPanel extends JPanel {
 		
 		drawItems(g2);
 		
-		drawBoundaries(g2);
-		
 		drawPaletteGUI(g2);
 		
 		drawSelection(g2);
@@ -75,8 +73,7 @@ public class CreatorPanel extends JPanel {
 	
 	private void drawSelection(Graphics2D g2) {
 		
-		if(MapCreator.window.palette.boundary_selection != null || 
-		   MapCreator.window.palette.item_selection != null &&
+		if(MapCreator.window.palette.selection != null &&
 		   MapCreator.window.palette.selectionPlacement != null) {
 			
 			g2.setColor(new Color(62, 179, 218,150));
@@ -100,10 +97,6 @@ public class CreatorPanel extends JPanel {
 				i.draw(g2, this);
 			}
 			
-			for(Boundary i : MapCreator.window.palette.boundaries) {
-				i.draw(g2, this);
-			}
-			
 			if(MapCreator.window.palette.item_description != null) {
 				g2.setColor(Color.BLACK);
 				
@@ -122,12 +115,6 @@ public class CreatorPanel extends JPanel {
 			
 		}
 		
-	}
-	
-	private void drawBoundaries(Graphics2D g2) {
-		for(Boundary i : MapCreator.realm.boundaries) {
-			i.draw(g2, this);
-		}
 	}
 
 	private void drawItems(Graphics2D g2){ 

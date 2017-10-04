@@ -1,8 +1,9 @@
-package items;
+package weapons;
 
+import entity.Entity;
 import interfaces.IAnimate;
 
-public class Ammo extends Weapon implements IAnimate {
+public class Projectile extends Weapon implements IAnimate {
 	
 	protected long startTime;
 	protected long animationDuration;
@@ -10,7 +11,7 @@ public class Ammo extends Weapon implements IAnimate {
 	public int direction;
 	protected int tileLife;
 	
-	public Ammo() {
+	public Projectile() {
 		isShot = false;
 		direction = 0;
 	}

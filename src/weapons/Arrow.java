@@ -1,14 +1,17 @@
-package items;
+package weapons;
 
 import entity.Entity;
+import items.Fire;
+import items.Item;
+import items.Wood;
 import main.BMPImages;
 import main.Main;
 
-public class Arrow extends Ammo {
+public class Arrow extends Projectile {
 	
 	protected long startTime;
 	protected long animationDuration;
-	public int direction;
+	public boolean isShot;
 	
 	public Arrow() {
 		startTime = System.nanoTime();
@@ -20,7 +23,6 @@ public class Arrow extends Ammo {
 
 	@Override
 	public void animate(long time) {
-		
 		if(tileLife < 0) {
 			Main.realm.items.remove(this);
 			return;
@@ -30,6 +32,9 @@ public class Arrow extends Ammo {
 			
 			startTime = time;
 			
+			/*
+			 * Direction: 1 for up, 2 for down, 3 for left, and 4 for right.
+			 */
 			if(direction == 1) {
 				coords = new int[] {coords[0], coords[1]-1};
 			} else if(direction == 2) {
@@ -41,14 +46,14 @@ public class Arrow extends Ammo {
 			}
 			
 			for(Item i : Main.realm.items) {
-				if(i instanceof Entity) {
-					if(((Entity) i).coords[0] == coords[0] && ((Entity) i).coords[1] == coords[1]) {
+				if(coords[0] == i.coords[0] && coords[1] == i.coords[1]) {
+					if(i instanceof Entity) {
 						((Entity) i).health -= 1;
 						Main.realm.items.remove(this);
 						if(((Entity) i).health <= 0) {
 							Main.realm.items.remove(i);
 						}
-						return;
+						break;
 					}
 				}
 			}
@@ -59,14 +64,19 @@ public class Arrow extends Ammo {
 	}
 	
 	@Override
-	public boolean useWeapon(Weapon w) {
-		if(w instanceof Bow) {
-			Main.realm.items.remove(this);
-			((Bow) w).ammo.add(this);
-			return false;
+	public boolean use(Entity e) {
+		for(Item i : Main.realm.items) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+				if(i instanceof Bow) {
+					((Bow) i).ammo.add(this);
+					Main.realm.items.remove(this);
+					return false;
+					
+				}
+			}
 		}
-		
 		return true;
+		
 	}
 
 }

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import interfaces.IAnimate;
 import main.BMPImages;
 
-public class ShallowWater extends Component implements IAnimate {
+public class ShallowWater extends Item implements IAnimate {
 	
 	protected BufferedImage[] animation;
 	protected int imageIndex;

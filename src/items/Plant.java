@@ -4,7 +4,7 @@ import interfaces.IGrow;
 import main.BMPImages;
 import main.Main;
 
-public class Plant extends Component implements IGrow {
+public class Plant extends Item implements IGrow {
 	
 	protected long cycleTime;
 	protected long startTime;

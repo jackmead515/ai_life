@@ -3,7 +3,8 @@ package util;
 import java.awt.Point;
 import java.awt.Shape;
 
-import items.Boundary;
+import boundaries.Boundary;
+import items.Item;
 import main.Main;
 
 public class Util {
@@ -16,7 +17,7 @@ public class Util {
 		int x = next[0];
 		int y = next[1];
 		
-		for(Boundary b : Main.realm.boundaries) {
+		for(Item b : Main.realm.items) {
 			int bx = b.coords[0];
 			int by = b.coords[1];
 			

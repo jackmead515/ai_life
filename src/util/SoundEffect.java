@@ -58,7 +58,8 @@ public enum SoundEffect {
    }
    
    // Optional static method to pre-load all the sound files.
-   public static void init() {
+   public static void load() {
       values(); // calls the constructor for all the elements
    }
+
 }

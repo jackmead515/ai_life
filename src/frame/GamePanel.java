@@ -15,8 +15,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import boundaries.Boundary;
 import entity.Entity;
-import items.Boundary;
 import items.Item;
 import main.BMPImages;
 import main.Main;
@@ -71,8 +71,6 @@ public class GamePanel extends JPanel {
 		
 		drawItems(g2);
 		
-		drawBoundaries(g2);
-		
 		drawPlayer(g2);
 		
 	}
@@ -113,12 +111,6 @@ public class GamePanel extends JPanel {
 			} 
 				
 			
-		}
-	}
-	
-	private void drawBoundaries(Graphics2D g2) {
-		for(Boundary i : Main.realm.boundaries) {
-			i.draw(g2, this);
 		}
 	}
 

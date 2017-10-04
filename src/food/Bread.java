@@ -1,4 +1,4 @@
-package items;
+package food;
 
 import entity.Entity;
 import main.BMPImages;
@@ -6,14 +6,12 @@ import main.BMPImages;
 public class Bread extends Food {
 	
 	public Bread() {
-		
-		health = 25;
+		health = 10;
 		image = BMPImages.bread;
-		
 	}
 	
 	@Override
-	public void eat(Entity e) {
-		e.health += health;
+	public String description() {
+		return "Bread (" + health + ")";
 	}
 }

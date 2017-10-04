@@ -16,7 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import items.Boundary;
+import boundaries.Boundary;
 import items.Item;
 import main.Realm;
 import util.Util;
@@ -25,7 +25,7 @@ public class MapLoader {
 
 	public static Realm load() {
 		
-		Realm realm = null;
+		Realm realm = new Realm();
 		
 		JFileChooser jfc = new JFileChooser();
 		
@@ -40,39 +40,47 @@ public class MapLoader {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 		
-			FileInputStream fin = null;
-			ObjectInputStream ois = null;
-
 			try {
-
-				fin = new FileInputStream(selectedFile);
-				ois = new ObjectInputStream(fin);
-				realm = (Realm) ois.readObject();
-
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			} finally {
-
-				if (fin != null) {
-					try {
-						fin.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				Scanner scan = new Scanner(selectedFile);
+				
+				while(scan.hasNextLine()) {
+					realm.items.add(parseItem(scan.nextLine()));
 				}
-
-				if (ois != null) {
-					try {
-						ois.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
+				
+				scan.close();
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
 		return realm;
+	}
+	
+	private static Item parseItem(String line) {
+		String objName = line.substring(0, line.indexOf('('));
+		int x = Integer.parseInt(line.substring(line.indexOf('(')+1, line.indexOf(',')));
+		int y = Integer.parseInt(line.substring(line.indexOf(',')+1, line.lastIndexOf(')')));
+		
+		Class<?> cls;
+		Item i = null;
+		try {
+			cls = Class.forName(objName);
+			i = (Item) cls.newInstance();
+			i.coords = new int[] {x, y};
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return i;
 	}
 
 

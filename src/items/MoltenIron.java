@@ -2,7 +2,7 @@ package items;
 
 import main.BMPImages;
 
-public class MoltenIron extends Component {
+public class MoltenIron extends Item {
 	
 	public MoltenIron() {
 		

@@ -4,11 +4,11 @@ import interfaces.IGrow;
 import main.BMPImages;
 import main.Main;
 
-public class WheatSeed extends Component implements IGrow {
+public class WheatSeed extends Item implements IGrow {
 	
 	protected long cycleTime;
 	protected long startTime;
-	public boolean startGrowing;
+	//public boolean startGrowing;
 	
 	public WheatSeed() {
 		
@@ -18,7 +18,7 @@ public class WheatSeed extends Component implements IGrow {
 		
 		startTime = System.nanoTime();
 		
-		startGrowing = false;
+		//startGrowing = false;
 		
 	}
 

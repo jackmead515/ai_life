@@ -3,7 +3,7 @@ package items;
 import main.BMPImages;
 import main.Main;
 
-public class Furnace extends Component {
+public class Furnace extends Item {
 	
 	public Furnace() {
 		

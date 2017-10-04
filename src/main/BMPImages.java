@@ -55,6 +55,8 @@ public class BMPImages {
 	public static BufferedImage raw_venison;
 	public static BufferedImage crate;
 	public static BufferedImage arrow;
+	public static BufferedImage barrel;
+	public static BufferedImage chest;
 	
 	public static void load() {
 		
@@ -62,6 +64,46 @@ public class BMPImages {
 		
 		try {
 			pickaxe = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/chest.bmp");
+		
+		try {
+			chest = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/barrel.bmp");
+		
+		try {
+			barrel = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow.bmp");
+		
+		try {
+			arrow = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/crate.bmp");
+		
+		try {
+			crate = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/raw_venison.bmp");
+		
+		try {
+			raw_venison = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,4 +1,4 @@
-package items;
+package boundaries;
 
 import java.awt.image.BufferedImage;
 
@@ -20,8 +20,6 @@ public class Water extends Boundary implements IAnimate {
 		
 		animation = new BufferedImage[] {BMPImages.water_1, BMPImages.water_2, BMPImages.water_3};
 		imageIndex = 0;
-		
-		canWalkOver = false;
 		
 	}
 	

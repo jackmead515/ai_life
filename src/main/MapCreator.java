@@ -3,10 +3,10 @@ package main;
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
 
+import boundaries.Boundary;
 import frame.MapCreatorFrame;
 import frame.Palette;
 import interfaces.IAnimate;
-import items.Boundary;
 import items.Item;
 import util.SoundEffect;
 
@@ -14,6 +14,8 @@ public class MapCreator {
 	
 	public static Realm realm;
 	public static MapCreatorFrame window;
+	
+	public static Item item;
 
 	public static void main(String[] args) {
 		
@@ -28,8 +30,9 @@ public class MapCreator {
 		realm = new Realm();
 		
 		BMPImages.load();
+		SoundEffect.load();
 		
-		SoundEffect.init();
+		item = null;
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -50,6 +53,11 @@ public class MapCreator {
 	
 	private static void update(double delta, long time) {
 		
+		if(item != null) {
+			realm.items.add(item);
+			item = null;
+		}
+		
 		window.palette.move(delta);
 		
 		for(int x = 0; x < realm.items.size(); x++) {
@@ -58,20 +66,8 @@ public class MapCreator {
 				((IAnimate) i).animate(time);
 			}
 		}
-		for(int x = 0; x < realm.boundaries.size(); x++) {
-			Boundary i = realm.boundaries.get(x);
-			if(i instanceof IAnimate) {
-				((IAnimate) i).animate(time);
-			}
-		}
 		for(int x = 0; x < window.palette.items.size(); x++) {
 			Item i = window.palette.items.get(x);
-			if(i instanceof IAnimate) {
-				((IAnimate) i).animate(time);
-			}
-		}
-		for(int x = 0; x < window.palette.boundaries.size(); x++) {
-			Boundary i = window.palette.boundaries.get(x);
 			if(i instanceof IAnimate) {
 				((IAnimate) i).animate(time);
 			}

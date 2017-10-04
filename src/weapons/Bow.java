@@ -1,12 +1,13 @@
-package items;
+package weapons;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import entity.Entity;
 import main.BMPImages;
 import main.Main;
 
-public class Bow extends Projectile {
+public class Bow extends Weapon {
 	
 	public LinkedList<Arrow> ammo;
 	
@@ -19,14 +20,24 @@ public class Bow extends Projectile {
 	}
 
 	@Override
-	public void shoot(int direction) {
+	public boolean use(Entity e) {
 		if(ammo.size() > 0) {
 			Arrow p = ammo.pop();
 			p.isShot = true;
-			p.direction = direction;
-			p.coords = Main.player.coords;
+			if(e.pointingDown) {
+				p.direction = 2;
+			} else if (e.pointingUp) {
+				p.direction = 1;
+			} else if (e.pointingLeft) {
+				p.direction = 3;
+			} else if(e.pointingRight) {
+				p.direction = 4;
+			}
+			p.coords = e.coords;
 			Main.realm.items.add(p);
 		}
+		
+		return true;
 	}
 	
 	

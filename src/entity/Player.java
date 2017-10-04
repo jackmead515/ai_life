@@ -14,45 +14,32 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import food.Food;
 import frame.GamePanel;
 import interfaces.IActions;
-import items.Food;
 import items.Item;
-import items.Projectile;
-import items.Tool;
-import items.Weapon;
 import items.Wood;
 import main.BMPImages;
 import main.Main;
 import main.RealmController;
+import tools.Tool;
 import util.Util;
+import weapons.Projectile;
+import weapons.Weapon;
 
-public class Player extends Entity implements IActions {
-	
-	private boolean up;
-	private boolean down;
-	private boolean left;
-	private boolean right;
-	
-	private boolean pointingUp;
-	private boolean pointingDown;
-	private boolean pointingLeft;
-	private boolean pointingRight;
+public class Player extends Entity {
 	
 	private boolean pickUp;
 	private boolean use;
 	private boolean drop;
 
 	public boolean showHUD;
-	public int totalHealth;
 	public long startTime;
 	public long starveRate;
 	
 	public Item inHand;
 	
-	public Player() {
-		super();
-		
+	public Player() {		
 		image = BMPImages.person;
 		
 		startTime = System.nanoTime();
@@ -66,8 +53,6 @@ public class Player extends Entity implements IActions {
 		
 		pointingUp = pointingDown = pointingLeft = pointingRight = false;
 		up = down = left = right = pickUp = use = drop = false;
-		
-		setName("Player");
 	
 		coords = new int[]{0, 0};
 	}
@@ -93,58 +78,20 @@ public class Player extends Entity implements IActions {
 		}
 		
 		calculateNextMovement();
-		
-		/*if(!animating) {
-			if(calculateNextMovement()) {
-				animating = true;
-			}
-		} else {
-			if(animatedPath.size() > 0) {
-				coords = animatedPath.pop();
-			} else {
-				animating = false;
-			}
-		}*/
 	}
 		
 	private void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;
-		int cx = coords[0];
-		int cy = coords[1];
 		
 		if(down) {
 			next = new int[]{ now[0], now[1]+1 };
-			/*for(int i = 0; i < 21; i++) {
-				int[] p = new int[2];
-				p[1] = cy + i;
-				p[0] = cx;
-				animatedPath.add(p);
-			}*/
 		} else if (up) {
 			next = new int[]{ now[0], now[1]-1 };
-			/*for(int i = 0; i < 21; i++) {
-				int[] p = new int[2];
-				p[1] = cy - i;
-				p[0] = cx;
-				animatedPath.add(p);
-			}*/
 		} else if (left) {
 			next = new int[]{ now[0]-1, now[1] };
-			/*for(int i = 0; i < 21; i++) {
-				int[] p = new int[2];
-				p[1] = cy;
-				p[0] = cx - i;
-				animatedPath.add(p);
-			}*/
 		} else if(right) {
 			next = new int[]{ now[0]+1, now[1] };
-			/*for(int i = 0; i < 21; i++) {
-				int[] p = new int[2];
-				p[1] = cy;
-				p[0] = cx + i;
-				animatedPath.add(p);
-			}*/
 		} else {
 			return;
 		}
@@ -155,106 +102,38 @@ public class Player extends Entity implements IActions {
 				 coords = next;
 			 }
 		} else {
-			
 			if(up) {
-				
 				coords = new int[]{next[0], Main.window.gamePanel.getHeight() / 20};
 				Main.realmController.upRealm();
-				
 			} else if(down) {
-				
 				coords = new int[]{next[0], 0};
 				Main.realmController.downRealm();
-				
 			} else if(left) {
-				
 				coords = new int[]{Main.window.gamePanel.getWidth() / 20, next[1]};
 				Main.realmController.leftRealm();
-				
 			} else if(right) {
-				
 				coords = new int[]{0, next[1]};
 				Main.realmController.rightRealm();
-				
 			}
-			
 		}
 		
 		resetMovement();
 	}
 	
-	@Override
 	public void drop() {
 		if(inHand != null) {
-			LinkedList<Item> items = Main.realm.items;
-			
-			if(items.size() <= 0) {
-				if(inHand.place(coords)) {
-					image = BMPImages.person;
-					inHand = null;
-					return;
-				}
-			}
-			
-			for(Item i : items) {
-				int xi = i.coords[0];
-				int yi = i.coords[1];
-				
-				if(coords[0] != xi || coords[1] != yi) {
-					if(inHand.place(coords)) {
-						image = BMPImages.person;
-						inHand = null;
-						break;
-					}
-				}
+			if(inHand.place(coords)) {
+				image = BMPImages.person;
+				inHand = null; 
 			}
 		}
 	}
 	
-	@Override
 	public void use() {
 		if(inHand != null) {
-			
-			if(inHand instanceof Food) {
-				((Food) inHand).eat(this);
+			if(!inHand.use(this)) {
+				image = BMPImages.person;
 				inHand = null;
-				if(health > totalHealth) {
-					health = totalHealth;
-				}
-				return;
-			}
-			
-			if(inHand instanceof Projectile) {
-				int direction = 0;
-				if(pointingUp) {
-					direction = 1;
-				} else if(pointingDown) {
-					direction = 2;
-				} else if(pointingLeft) {
-					direction = 3;
-				} else if(pointingRight) {
-					direction = 4;
-				}
-				if(direction != 0) {
-					((Projectile) inHand).shoot(direction);
-				}
-				
-				return;
-			}
-			
-			LinkedList<Item> items = Main.realm.items;
-			
-			for(Item i : items) { 
-				int xi = i.coords[0];
-				int yi = i.coords[1];
-				
-				if(coords[0] == xi && coords[1] == yi) {
-					if(!inHand.use(i)) {
-						image = BMPImages.person;
-						inHand = null;
-					}
-					break;
-				}
 			}
 		}
 	}
@@ -265,13 +144,21 @@ public class Player extends Entity implements IActions {
 	
 	private void updateMovement() {
 		if(down) {
+			pointingDown = true;
 			up = left = right = false;
+			updatePointingDirection();
 		} else if (up) {
+			pointingUp = true;
 			down = left = right = false;
+			updatePointingDirection();
 		} else if (left) {
+			pointingLeft = true;
 			right = up = down = false;
+			updatePointingDirection();
 		} else if(right) {
+			pointingRight = true;
 			up = down = left = false;
+			updatePointingDirection();
 		}
 	}
 	
@@ -280,41 +167,30 @@ public class Player extends Entity implements IActions {
 			pointingUp = pointingLeft = pointingRight = false;
 		} else if (pointingUp) {
 			pointingDown = pointingLeft = pointingRight = false;
-		} else if (left) {
+		} else if (pointingLeft) {
 			pointingRight = pointingUp = pointingDown = false;
 		} else if(pointingRight) {
 			pointingUp = pointingDown = pointingLeft = false;
 		}
 	}
-	
-	@Override
-	public void pickUp() {
-		
-		if(inHand != null) {
-			return;
-		}
-		
-		LinkedList<Item> items = Main.realm.items;
-		
-		for(Item i : items) {
-			int xi = i.coords[0];
-			int yi = i.coords[1];
-			
-			if(coords[0] == xi && coords[1] == yi && i.canPickUp) {
-					
-					Main.realm.items.remove(i);
-					inHand = i;
 
-					if(inHand instanceof Tool) {
-						image = ((Tool) inHand).imageInHand;
-					} else if(inHand instanceof Weapon) {
-						image = ((Weapon) inHand).imageInHand;
-					}
-					
+	public void pickUp() {
+		if(inHand == null) {
+			LinkedList<Item> items = Main.realm.items;
+			
+			for(Item i : items) {
+				int xi = i.coords[0];
+				int yi = i.coords[1];
+				
+				if(coords[0] == xi && coords[1] == yi && i.canPickUp) {	
+					Main.realm.items.remove(i);
+					i.pickUp(this);
+					inHand = i;
 					break;
-					
+						
 				}
 			}
+		}
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -367,13 +243,10 @@ public class Player extends Entity implements IActions {
 			updatePointingDirection();
 			return;
 		}
-		
-		
 	}
 
 	private void starve(long time) {
 		if(time - startTime >= starveRate) {
-			
 			startTime = time;
 			
 			health-=1;

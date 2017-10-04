@@ -1,9 +1,11 @@
 package items;
 
+import entity.Entity;
 import main.BMPImages;
 import main.Main;
+import tools.Sparker;
 
-public class Rock extends Component {
+public class Rock extends Item {
 	
 	public Rock() {
 		
@@ -12,27 +14,30 @@ public class Rock extends Component {
 	}
 	
 	@Override
-	public boolean useComponent(Component item) {
-		if(item instanceof Stone) {
-			
-			Furnace a = new Furnace();
-			a.coords = item.coords;
-			Main.realm.items.remove(item);
-			Main.realm.items.remove(this);
-			Main.realm.items.add(a);
-			return false;
-			
-		} else if(item instanceof IronTrinket) {
-			
-			Sparker a = new Sparker();
-			a.coords = item.coords;
-			Main.realm.items.remove(item);
-			Main.realm.items.remove(this);
-			Main.realm.items.add(a);
-			return false;
-			
+	public boolean use(Entity e) {
+		for(Item i : Main.realm.items) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+				if(i instanceof Stone) {
+					
+					Furnace a = new Furnace();
+					a.coords = i.coords;
+					Main.realm.items.remove(i);
+					Main.realm.items.remove(this);
+					Main.realm.items.add(a);
+					return false;
+					
+				} else if(i instanceof IronTrinket) {
+					
+					Sparker a = new Sparker();
+					a.coords = i.coords;
+					Main.realm.items.remove(i);
+					Main.realm.items.remove(this);
+					Main.realm.items.add(a);
+					return false;
+					
+				}
+			}
 		}
-		
 		return true;
 	}
 
