@@ -26,7 +26,9 @@ public class Chest extends Item {
 			case 2:
 				return new Sword();
 			case 3:
-				return new Arrow();
+				ArrowBundle b = new ArrowBundle();
+				b.amount = 10;
+				return b;
 			case 4:
 				return new Sparker();
 			case 5:

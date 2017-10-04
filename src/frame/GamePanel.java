@@ -89,8 +89,7 @@ public class GamePanel extends JPanel {
 			
 			//In hand
 			if(Main.player.inHand != null) {
-				String itemInHand = Main.player.inHand.getClass().getSimpleName();
-				g2.drawString(itemInHand, 210, 20);
+				g2.drawString(Main.player.inHand.description(), 210, 20);
 				g2.drawRect(200, 5, 75, 75);
 				try {
 					Object p = Main.player.inHand.getClass().newInstance();

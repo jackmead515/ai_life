@@ -138,6 +138,25 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void pickUp() {
+		if(inHand == null) {
+			LinkedList<Item> items = Main.realm.items;
+			
+			for(Item i : items) {
+				int xi = i.coords[0];
+				int yi = i.coords[1];
+				
+				if(coords[0] == xi && coords[1] == yi && i.canPickUp) {	
+					Main.realm.items.remove(i);
+					i.pickUp(this);
+					inHand = i;
+					break;
+						
+				}
+			}
+		}
+	}
+	
 	private void resetMovement() {
 		up = down = left = right = false;
 	}
@@ -171,25 +190,6 @@ public class Player extends Entity {
 			pointingRight = pointingUp = pointingDown = false;
 		} else if(pointingRight) {
 			pointingUp = pointingDown = pointingLeft = false;
-		}
-	}
-
-	public void pickUp() {
-		if(inHand == null) {
-			LinkedList<Item> items = Main.realm.items;
-			
-			for(Item i : items) {
-				int xi = i.coords[0];
-				int yi = i.coords[1];
-				
-				if(coords[0] == xi && coords[1] == yi && i.canPickUp) {	
-					Main.realm.items.remove(i);
-					i.pickUp(this);
-					inHand = i;
-					break;
-						
-				}
-			}
 		}
 	}
 	

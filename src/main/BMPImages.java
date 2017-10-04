@@ -57,6 +57,7 @@ public class BMPImages {
 	public static BufferedImage arrow;
 	public static BufferedImage barrel;
 	public static BufferedImage chest;
+	public static BufferedImage arrow_bundle;
 	
 	public static void load() {
 		
