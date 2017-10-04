@@ -13,6 +13,7 @@ public class Weapon extends Item {
 	public BufferedImage imageInHand;
 	
 	public int health;
+	public int damage;
 
 	public Weapon() {}
 	

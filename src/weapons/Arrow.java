@@ -24,12 +24,15 @@ public class Arrow extends Projectile {
 		image = BMPImages.arrow;
 		imageInHand = BMPImages.person;
 		tileLife = 20;
+		damage = 1;
 	}
 
 	@Override
 	public void animate(long time) {
 		if(tileLife < 0) {
-			Main.realm.items.remove(this);
+			//Main.realm.items.remove(this);
+			isShot = false;
+			tileLife = 20;
 			return;
 		}
 		
@@ -53,7 +56,7 @@ public class Arrow extends Projectile {
 			for(Item i : Main.realm.items) {
 				if(coords[0] == i.coords[0] && coords[1] == i.coords[1]) {
 					if(i instanceof Deer) {
-						((Entity) i).health-=1;
+						((Entity) i).health-=damage;
 						Main.realm.items.remove(this);
 						if(((Entity) i).health <= 0) {
 							RawVenison a = new RawVenison();

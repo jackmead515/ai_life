@@ -17,7 +17,7 @@ public class Sword extends Weapon {
 		health = 20;
 		image = BMPImages.sword;
 		imageInHand = BMPImages.sword_in_hand;
-		
+		damage = 1;
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class Sword extends Weapon {
 				SoundEffect.SWORD.play();
 				health -= 1;
 				if(i instanceof Deer) {
-					((Entity) i).health-=1;
+					((Entity) i).health-=damage;
 					if(((Entity) i).health <= 0) {
 						RawVenison a = new RawVenison();
 						a.coords = i.coords;
