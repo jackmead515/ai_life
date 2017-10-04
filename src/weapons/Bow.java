@@ -18,6 +18,11 @@ public class Bow extends Weapon {
 		imageInHand = BMPImages.bow_in_hand;
 		
 	}
+	
+	@Override
+	public String description() {
+		return "Bow (" + ammo.size() + ")";
+	}
 
 	@Override
 	public boolean use(Entity e) {
