@@ -1,5 +1,10 @@
 package weapons;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
+import javax.swing.JPanel;
+
 import entity.Deer;
 import entity.Entity;
 import items.Barrel;
@@ -25,6 +30,29 @@ public class Arrow extends Projectile {
 		imageInHand = BMPImages.person;
 		tileLife = 20;
 		damage = 1;
+		direction = 1;
+	}
+	
+	@Override
+	public void draw(Graphics2D g2, JPanel p) {
+		int x = coords[0]*20;
+		int y = coords[1]*20;
+		
+		AffineTransform at = new AffineTransform();
+		
+		if(direction == 2) {
+			at.rotate(Math.PI);
+			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+		} else if(direction == 3) {
+			at.rotate(-Math.PI/2);
+			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+		} else if(direction == 4) {
+			at.rotate(Math.PI/2);
+			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+		}
+		
+		
+		g2.drawImage(image, at, p);
 	}
 
 	@Override
