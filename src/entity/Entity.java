@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import interfaces.IEntity;
 import items.Item;
+import weapons.Projectile;
 
 public class Entity extends Item implements IEntity {
 	
@@ -24,9 +25,11 @@ public class Entity extends Item implements IEntity {
 	public boolean pointingDown;
 	public boolean pointingLeft;
 	public boolean pointingRight;
+	public LinkedList<Projectile> projs;
 	
 	public Entity() {
 		coords = new int[2];
+		projs = new LinkedList<Projectile>();
 	}
 	
 	@Override

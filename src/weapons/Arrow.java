@@ -51,50 +51,10 @@ public class Arrow extends Projectile {
 		
 		g2.drawImage(image, x, y, p);
 	}
-	
-	public void shoot() {		
-		for(Item i : Main.realm.items) {
-			if(coords[0] == i.coords[0] && coords[1] == i.coords[1]) {
-				if(i instanceof Deer) {
-					((Entity) i).health-=damage;
-					Main.realm.items.remove(this);
-					if(((Entity) i).health <= 0) {
-						RawVenison a = new RawVenison();
-						a.coords = i.coords;
-						Main.realm.items.add(a);
-						Main.realm.items.remove(i);
-					}
-					
-				} else if(i instanceof Crate) {
-					Item p = Crate.generate();
-					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					
-				} else if(i instanceof Barrel) {
-					Item p = Barrel.generate();
-					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					
-				} else if(i instanceof Chest) {
-					Item p = Chest.generate();
-					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					
-				}
-			}
-		}
-	}
 
 	@Override
 	public void animate(long time) {
 		if(tileLife < 0) {
-			Main.realm.items.remove(this);
 			return;
 		}
 		

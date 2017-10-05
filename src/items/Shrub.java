@@ -5,7 +5,7 @@ import interfaces.IGrow;
 import main.BMPImages;
 import main.Main;
 
-public class Shrub extends Item implements IGrow {
+public class Shrub extends Item {
 	
 	protected long cycleTime;
 	protected long startTime;
@@ -18,21 +18,6 @@ public class Shrub extends Item implements IGrow {
 		
 		startTime = System.nanoTime();
 		
-	}
-	
-	@Override
-	public void grow(long time) {
-		if(time - startTime >= cycleTime) {
-		
-			Main.realm.items.remove(this);
-			
-			Wood c = new Wood();
-			c.coords = coords;
-		
-			Main.realm.items.add(c);
-			
-		}
-	
 	}
 	
 	@Override

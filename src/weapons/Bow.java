@@ -39,7 +39,7 @@ public class Bow extends Weapon {
 				p.direction = 4;
 			}
 			p.coords = e.coords;
-			Main.realm.items.add(p);
+			e.projs.add(p);
 		}
 		
 		return true;

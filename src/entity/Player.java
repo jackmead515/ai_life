@@ -17,7 +17,11 @@ import javax.swing.JPanel;
 import food.Food;
 import frame.GamePanel;
 import interfaces.IActions;
+import items.Barrel;
+import items.Chest;
+import items.Crate;
 import items.Item;
+import items.RawVenison;
 import items.Wood;
 import main.BMPImages;
 import main.Main;
@@ -62,6 +66,8 @@ public class Player extends Entity {
 		
 		starve(time);
 		
+		shoot(time);
+		
 		if(drop) {
 			drop();
 			drop = false;
@@ -80,6 +86,53 @@ public class Player extends Entity {
 		calculateNextMovement();
 	}
 		
+	private void shoot(long time) {
+		for(int x = 0; x < projs.size(); x++) {
+			Projectile p = projs.get(x);
+			p.animate(time);
+			for(int x1 = 0; x1 < Main.realm.items.size(); x1++) {
+				Item i = Main.realm.items.get(x1);
+				if(p.coords[0] == i.coords[0] && p.coords[1] == i.coords[1]) {
+					if(i instanceof Deer) {
+						((Entity) i).health-=p.damage;
+						projs.remove(p);
+						if(((Entity) i).health <= 0) {
+							RawVenison a = new RawVenison();
+							a.coords = i.coords;
+							Main.realm.items.add(a);
+							Main.realm.items.remove(i);
+						}
+						
+					} else if(i instanceof Crate) {
+						Item p1 = Crate.generate();
+						p1.coords = i.coords;
+						Main.realm.items.add(p1);
+						Main.realm.items.remove(i);
+						projs.remove(p);
+						
+					} else if(i instanceof Barrel) {
+						Item p1 = Barrel.generate();
+						p1.coords = i.coords;
+						Main.realm.items.add(p1);
+						Main.realm.items.remove(i);
+						projs.remove(p);
+						
+					} else if(i instanceof Chest) {
+						Item p1 = Chest.generate();
+						p1.coords = i.coords;
+						Main.realm.items.add(p1);
+						Main.realm.items.remove(i);
+						projs.remove(p);
+						
+					}
+				}
+			}
+			if(p.tileLife <= 0) {
+				projs.remove(p);
+			}
+		}
+	}
+
 	private void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;

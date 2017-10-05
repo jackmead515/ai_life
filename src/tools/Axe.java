@@ -3,6 +3,7 @@ package tools;
 import entity.Entity;
 import items.Item;
 import items.Plant;
+import items.Shrub;
 import items.Stick;
 import items.WheatSeed;
 import items.Wood;
@@ -33,7 +34,7 @@ public class Axe extends Tool {
 					Main.realm.items.remove(i);
 					Main.realm.items.add(s);
 					
-				} else if(i instanceof Plant) {
+				} else if(i instanceof Plant || i instanceof Shrub) {
 					WheatSeed s = new WheatSeed();
 					s.coords = i.coords;
 					Main.realm.items.remove(i);

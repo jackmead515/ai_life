@@ -9,7 +9,7 @@ public class Projectile extends Weapon implements IAnimate {
 	protected long animationDuration;
 	public boolean isShot;
 	public int direction;
-	protected int tileLife;
+	public int tileLife;
 	
 	public Projectile() {
 		isShot = false;

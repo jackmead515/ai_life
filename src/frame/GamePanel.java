@@ -21,6 +21,7 @@ import items.Item;
 import main.BMPImages;
 import main.Main;
 import util.Randomizer;
+import weapons.Projectile;
 
 public class GamePanel extends JPanel {
 	
@@ -77,6 +78,10 @@ public class GamePanel extends JPanel {
 	
 	private void drawPlayer(Graphics2D g2) {
 		Main.player.draw(g2, this);
+		
+		for(Projectile p : Main.player.projs) {
+			p.draw(g2, this);
+		}
 		
 		if(Main.player.showHUD) {
 			int p_health = 100 * Main.player.health / Main.player.totalHealth;

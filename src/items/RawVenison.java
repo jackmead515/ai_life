@@ -8,7 +8,7 @@ import main.Main;
 public class RawVenison extends Item {
 	
 	public RawVenison() {
-		image = BMPImages.venison;
+		image = BMPImages.raw_venison;
 	}
 	
 	@Override
