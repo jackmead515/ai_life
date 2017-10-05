@@ -33,6 +33,7 @@ import items.ShallowWater;
 import items.Shrub;
 import items.Stick;
 import items.Stone;
+import items.Twine;
 import items.RawVenison;
 import items.Wheat;
 import items.WheatSeed;
@@ -47,6 +48,8 @@ import tools.Sparker;
 import util.Util;
 import weapons.Arrow;
 import weapons.Bow;
+import weapons.FireSpell;
+import weapons.Staff;
 import weapons.Sword;
 
 public class Palette {
@@ -109,6 +112,8 @@ public class Palette {
 		items.add(new Sword());
 		items.add(new Bow());
 		items.add(new Arrow());
+		items.add(new Staff());
+		items.add(new FireSpell());
 		
 		items.add(new Fire());
 		items.add(new Furnace());
@@ -130,6 +135,7 @@ public class Palette {
 		items.add(new Chest());
 		items.add(new Crate());
 		items.add(new ArrowBundle());
+		items.add(new Twine());
 		
 		items.add(new Bread());
 		items.add(new Venison());

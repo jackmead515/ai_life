@@ -1,4 +1,4 @@
-package util;
+package main;
 
 import java.io.*;
 import java.net.URL;
@@ -15,7 +15,12 @@ import javax.sound.sampled.*;
  */
 public enum SoundEffect {
    PICKAXE("sounds/pickaxe.wav"),
-   SWORD("sounds/sword.wav");
+   SWORD("sounds/sword.wav"), 
+   BOW("sounds/bow.wav"),
+   DROP("sounds/drop.wav"),
+   FIRE_SPELL("sounds/fire_spell.wav"),
+   HAMMER("sounds/hammer.wav"),
+   PICKUP("sounds/pickup.wav");
    
    // Nested class for specifying volume
    public static enum Volume {

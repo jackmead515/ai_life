@@ -1,36 +1,44 @@
 package weapons;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
+import entity.Deer;
 import entity.Entity;
+import items.Barrel;
+import items.Chest;
+import items.Crate;
+import items.Item;
+import items.RawVenison;
 import main.BMPImages;
 import main.Main;
 import main.SoundEffect;
 
-public class Bow extends Weapon {
+public class Staff extends Weapon {
 	
-	public LinkedList<Arrow> ammo;
+	public LinkedList<Spell> ammo;
 	
-	public Bow() {
-		health = 100;
-		ammo = new LinkedList<Arrow>();
-		image = BMPImages.bow;
-		imageInHand = BMPImages.bow_in_hand;
+	public Staff() {
+		health = 50;
+		ammo = new LinkedList<Spell>();
+		image = BMPImages.staff;
+		imageInHand = BMPImages.staff_in_hand;
+		damage = 1;
 	}
 	
 	@Override
 	public String description() {
-		return "Bow (" + health + ")(" + ammo.size() + ")";
+		return "Staff (" + health + ")(" + ammo.size() + ")";
 	}
-
+	
 	@Override
 	public boolean use(Entity e) {
 		if(ammo.size() > 0) {
-			SoundEffect.BOW.play();
 			health -= 1;
-			Arrow p = ammo.pop();
+			Spell p = ammo.pop();
 			p.isShot = true;
+			if(p instanceof FireSpell) {
+				SoundEffect.FIRE_SPELL.play();
+			}
 			if(e.pointingDown) {
 				p.direction = 2;
 			} else if (e.pointingUp) {
@@ -49,9 +57,6 @@ public class Bow extends Weapon {
 		} else {
 			return true;
 		}
-		
 	}
-	
-	
 
 }

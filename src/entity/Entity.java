@@ -25,11 +25,11 @@ public class Entity extends Item implements IEntity {
 	public boolean pointingDown;
 	public boolean pointingLeft;
 	public boolean pointingRight;
-	public LinkedList<Projectile> projs;
+	public LinkedList<Projectile> projectiles;
 	
 	public Entity() {
 		coords = new int[2];
-		projs = new LinkedList<Projectile>();
+		projectiles = new LinkedList<Projectile>();
 	}
 	
 	@Override

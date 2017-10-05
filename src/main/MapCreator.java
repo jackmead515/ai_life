@@ -8,7 +8,6 @@ import frame.MapCreatorFrame;
 import frame.Palette;
 import interfaces.IAnimate;
 import items.Item;
-import util.SoundEffect;
 
 public class MapCreator {
 	

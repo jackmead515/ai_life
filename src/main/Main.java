@@ -24,7 +24,6 @@ import load.MapLoader;
 import tools.Axe;
 import tools.Pickaxe;
 import util.Randomizer;
-import util.SoundEffect;
 import weapons.Arrow;
 import weapons.Bow;
 import weapons.Projectile;

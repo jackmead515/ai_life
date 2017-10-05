@@ -55,13 +55,28 @@ public class BMPImages {
 	public static BufferedImage bow;
 	public static BufferedImage bow_in_hand;
 	public static BufferedImage barrel;
-	
 	public static BufferedImage arrow_up;
 	public static BufferedImage arrow_down;
 	public static BufferedImage arrow_left;
 	public static BufferedImage arrow_right;
-	
 	public static BufferedImage arrow_bundle;
+	
+	public static BufferedImage twine;
+	public static BufferedImage staff;
+	public static BufferedImage staff_in_hand;
+	public static BufferedImage fire_spell_up_1;
+	public static BufferedImage fire_spell_up_2;
+	public static BufferedImage fire_spell_up_3;
+	public static BufferedImage fire_spell_down_1;
+	public static BufferedImage fire_spell_down_2;
+	public static BufferedImage fire_spell_down_3;
+	public static BufferedImage fire_spell_left_1;
+	public static BufferedImage fire_spell_left_2;
+	public static BufferedImage fire_spell_left_3;
+	public static BufferedImage fire_spell_right_1;
+	public static BufferedImage fire_spell_right_2;
+	public static BufferedImage fire_spell_right_3;
+	public static BufferedImage fire_spell;
 	
 	public static void load() {
 		

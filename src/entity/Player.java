@@ -26,6 +26,7 @@ import items.Wood;
 import main.BMPImages;
 import main.Main;
 import main.RealmController;
+import main.SoundEffect;
 import tools.Tool;
 import util.Util;
 import weapons.Projectile;
@@ -40,6 +41,7 @@ public class Player extends Entity {
 	public boolean showHUD;
 	public long startTime;
 	public long starveRate;
+	public int starveAmount;
 	
 	public Item inHand;
 	
@@ -48,6 +50,7 @@ public class Player extends Entity {
 		
 		startTime = System.nanoTime();
 		starveRate = 2000000000L;
+		starveAmount = 1;
 		
 		inHand = null;
 		
@@ -87,15 +90,15 @@ public class Player extends Entity {
 	}
 		
 	private void shoot(long time) {
-		for(int x = 0; x < projs.size(); x++) {
-			Projectile p = projs.get(x);
+		for(int x = 0; x < projectiles.size(); x++) {
+			Projectile p = projectiles.get(x);
 			p.animate(time);
 			for(int x1 = 0; x1 < Main.realm.items.size(); x1++) {
 				Item i = Main.realm.items.get(x1);
 				if(p.coords[0] == i.coords[0] && p.coords[1] == i.coords[1]) {
 					if(i instanceof Deer) {
 						((Entity) i).health-=p.damage;
-						projs.remove(p);
+						projectiles.remove(p);
 						if(((Entity) i).health <= 0) {
 							RawVenison a = new RawVenison();
 							a.coords = i.coords;
@@ -108,27 +111,27 @@ public class Player extends Entity {
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
-						projs.remove(p);
+						projectiles.remove(p);
 						
 					} else if(i instanceof Barrel) {
 						Item p1 = Barrel.generate();
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
-						projs.remove(p);
+						projectiles.remove(p);
 						
 					} else if(i instanceof Chest) {
 						Item p1 = Chest.generate();
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
-						projs.remove(p);
+						projectiles.remove(p);
 						
 					}
 				}
 			}
 			if(p.tileLife <= 0) {
-				projs.remove(p);
+				projectiles.remove(p);
 			}
 		}
 	}
@@ -175,6 +178,7 @@ public class Player extends Entity {
 	
 	public void drop() {
 		if(inHand != null) {
+			SoundEffect.DROP.play();
 			if(inHand.place(coords)) {
 				image = BMPImages.person;
 				inHand = null; 
@@ -200,6 +204,7 @@ public class Player extends Entity {
 				int yi = i.coords[1];
 				
 				if(coords[0] == xi && coords[1] == yi && i.canPickUp) {	
+					SoundEffect.PICKUP.play();
 					Main.realm.items.remove(i);
 					i.pickUp(this);
 					inHand = i;
@@ -294,7 +299,7 @@ public class Player extends Entity {
 		if(time - startTime >= starveRate) {
 			startTime = time;
 			
-			health-=1;
+			health-=starveAmount;
 		}
 	}
 }

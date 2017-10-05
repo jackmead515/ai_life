@@ -2,8 +2,8 @@ package items;
 
 import main.BMPImages;
 import main.Main;
+import main.SoundEffect;
 import util.Randomizer;
-import util.SoundEffect;
 
 public class Crate extends Item {
 	
@@ -14,7 +14,7 @@ public class Crate extends Item {
 	}
 	
 	public static Item generate() {
-		int rand = Randomizer.random(1, 5);
+		int rand = Randomizer.random(1, 6);
 		switch(rand) {
 			case 1:
 				return new Stick();
@@ -26,6 +26,8 @@ public class Crate extends Item {
 				return new Wheat();
 			case 5:
 				return new IronTrinket();
+			case 6:
+				return new Twine();
 		}
 		return null;
 	}

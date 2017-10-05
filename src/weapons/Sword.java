@@ -9,7 +9,7 @@ import items.Item;
 import items.RawVenison;
 import main.BMPImages;
 import main.Main;
-import util.SoundEffect;
+import main.SoundEffect;
 
 public class Sword extends Weapon {
 	

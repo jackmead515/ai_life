@@ -8,7 +8,7 @@ import items.Rock;
 import items.Stone;
 import main.BMPImages;
 import main.Main;
-import util.SoundEffect;
+import main.SoundEffect;
 
 public class Pickaxe extends Tool {
 	

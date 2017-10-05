@@ -79,7 +79,7 @@ public class GamePanel extends JPanel {
 	private void drawPlayer(Graphics2D g2) {
 		Main.player.draw(g2, this);
 		
-		for(Projectile p : Main.player.projs) {
+		for(Projectile p : Main.player.projectiles) {
 			p.draw(g2, this);
 		}
 		

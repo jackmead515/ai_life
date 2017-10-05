@@ -6,6 +6,7 @@ import items.Item;
 import items.MoltenIron;
 import main.BMPImages;
 import main.Main;
+import main.SoundEffect;
 
 public class Hammer extends Tool {
 	
@@ -20,6 +21,7 @@ public class Hammer extends Tool {
 		for(Item i : Main.realm.items) {
 			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
 				health -= 1;
+				SoundEffect.HAMMER.play();
 				if(i instanceof MoltenIron) {
 					IronTrinket a = new IronTrinket();
 					a.coords = i.coords;
