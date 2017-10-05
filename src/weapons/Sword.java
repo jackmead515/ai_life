@@ -21,6 +21,11 @@ public class Sword extends Weapon {
 	}
 	
 	@Override
+	public String description() {
+		return "Sword (" + health + ")";
+	}
+	
+	@Override
 	public boolean use(Entity e) {
 		for(Item i : Main.realm.items) {
 			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {

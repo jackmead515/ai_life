@@ -43,7 +43,6 @@ public class Item implements IItem {
 	
 	@Override
 	public boolean pickUp(Entity e) {
-		e.image = image;
 		return true;
 	}
 	

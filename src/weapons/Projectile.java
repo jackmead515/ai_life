@@ -22,4 +22,9 @@ public class Projectile extends Weapon implements IAnimate {
 		
 	}
 
+	public void shoot() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

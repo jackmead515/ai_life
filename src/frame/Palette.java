@@ -16,6 +16,7 @@ import entity.Deer;
 import entity.Wolf;
 import food.Bread;
 import food.Venison;
+import items.ArrowBundle;
 import items.Barrel;
 import items.Chest;
 import items.Crate;
@@ -128,6 +129,7 @@ public class Palette {
 		items.add(new Barrel());
 		items.add(new Chest());
 		items.add(new Crate());
+		items.add(new ArrowBundle());
 		
 		items.add(new Bread());
 		items.add(new Venison());
@@ -210,7 +212,7 @@ public class Palette {
 				
 				if(Util.inArea(new Rectangle(undoPlacement.x, undoPlacement.y-20, 20, 20), p)) {
 					if(MapCreator.realm.items.size() > 0) {
-						MapCreator.realm.items.pop();
+						MapCreator.realm.items.removeLast();
 					}
 					return;
 				}

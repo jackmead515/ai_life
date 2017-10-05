@@ -49,14 +49,18 @@ public class BMPImages {
 	public static BufferedImage wheat_seed;
 	public static BufferedImage wheat;
 	public static BufferedImage bread;
-	
-	public static BufferedImage bow;
-	public static BufferedImage bow_in_hand;
+	public static BufferedImage chest;
 	public static BufferedImage raw_venison;
 	public static BufferedImage crate;
-	public static BufferedImage arrow;
+	public static BufferedImage bow;
+	public static BufferedImage bow_in_hand;
 	public static BufferedImage barrel;
-	public static BufferedImage chest;
+	
+	public static BufferedImage arrow_up;
+	public static BufferedImage arrow_down;
+	public static BufferedImage arrow_left;
+	public static BufferedImage arrow_right;
+	
 	public static BufferedImage arrow_bundle;
 	
 	public static void load() {
@@ -65,6 +69,46 @@ public class BMPImages {
 		
 		try {
 			pickaxe = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow_up.bmp");
+		
+		try {
+			arrow_up = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow_down.bmp");
+		
+		try {
+			arrow_down = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow_left.bmp");
+		
+		try {
+			arrow_left = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow_right.bmp");
+		
+		try {
+			arrow_right = ImageIO.read(new File(i.toString().substring(6)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		i = BMPImages.class.getClassLoader().getResource("images/arrow_bundle.bmp");
+		
+		try {
+			arrow_bundle = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -85,14 +129,6 @@ public class BMPImages {
 			e.printStackTrace();
 		}
 		
-		i = BMPImages.class.getClassLoader().getResource("images/arrow.bmp");
-		
-		try {
-			arrow = ImageIO.read(new File(i.toString().substring(6)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		i = BMPImages.class.getClassLoader().getResource("images/crate.bmp");
 		
 		try {
@@ -107,7 +143,7 @@ public class BMPImages {
 			raw_venison = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} 
 		
 		i = BMPImages.class.getClassLoader().getResource("images/bow.bmp");
 		
@@ -121,13 +157,6 @@ public class BMPImages {
 		
 		try {
 			bow_in_hand = ImageIO.read(new File(i.toString().substring(6)));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		i = BMPImages.class.getClassLoader().getResource("images/arrow.bmp");
-		
-		try {
-			arrow = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

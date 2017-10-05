@@ -20,12 +20,14 @@ import items.Item;
 import items.Plant;
 import items.ShallowWater;
 import items.Stone;
+import load.MapLoader;
 import tools.Axe;
 import tools.Pickaxe;
 import util.Randomizer;
 import util.SoundEffect;
 import weapons.Arrow;
 import weapons.Bow;
+import weapons.Projectile;
 import weapons.Sword;
 
 public class Main {
@@ -49,12 +51,12 @@ public class Main {
 		BMPImages.load();
 		SoundEffect.load();
 		
-		realm = new Realm();
+		realm = MapLoader.load();
 		realmController = new RealmController();
 		
 		player = new Player();
 		
-		loadMap();
+		//loadMap();
 		
 		realmController.realms[10][10] = realm;
 		
@@ -69,7 +71,11 @@ public class Main {
 			}
 		});
 		t.start();
-		
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		/*EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -241,6 +247,10 @@ public class Main {
 		for(int x = 0; x < realm.items.size(); x++) {
 			Item i = realm.items.get(x);
 			
+			if(i instanceof IAnimate) {
+				((IAnimate) i).animate(time);
+			}
+			
 			if(i instanceof IGrow) {
 				((IGrow) i).grow(time);
 			} else if(i instanceof Entity) {
@@ -250,8 +260,8 @@ public class Main {
 				}
 			}
 			
-			if(i instanceof IAnimate) {
-				((IAnimate) i).animate(time);
+			if(i instanceof Projectile) {
+				((Projectile) i).shoot();
 			}
 		}
 	}

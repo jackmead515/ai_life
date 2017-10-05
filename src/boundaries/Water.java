@@ -17,7 +17,7 @@ public class Water extends Boundary implements IAnimate {
 		
 		startTime = System.nanoTime();
 		animationDuration = 500000000L;
-		
+		image = BMPImages.water_1;
 		animation = new BufferedImage[] {BMPImages.water_1, BMPImages.water_2, BMPImages.water_3};
 		imageIndex = 0;
 		

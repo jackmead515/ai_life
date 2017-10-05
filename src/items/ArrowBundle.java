@@ -12,7 +12,7 @@ public class ArrowBundle extends Item {
 	
 	public ArrowBundle() {
 		
-		amount = 0;
+		amount = 5;
 		image = BMPImages.arrow_bundle;
 		
 	}

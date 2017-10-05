@@ -2,6 +2,7 @@ package weapons;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
@@ -26,7 +27,7 @@ public class Arrow extends Projectile {
 	public Arrow() {
 		startTime = System.nanoTime();
 		animationDuration = 10000000L;
-		image = BMPImages.arrow;
+		image = BMPImages.arrow_up;
 		imageInHand = BMPImages.person;
 		tileLife = 20;
 		damage = 1;
@@ -38,29 +39,62 @@ public class Arrow extends Projectile {
 		int x = coords[0]*20;
 		int y = coords[1]*20;
 		
-		AffineTransform at = new AffineTransform();
-		
-		if(direction == 2) {
-			at.rotate(Math.PI);
-			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+		if(direction == 1) {
+			image = BMPImages.arrow_up;
+		} else if(direction == 2) {
+			image = BMPImages.arrow_down;
 		} else if(direction == 3) {
-			at.rotate(-Math.PI/2);
-			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+			image = BMPImages.arrow_left;
 		} else if(direction == 4) {
-			at.rotate(Math.PI/2);
-			at.translate(-image.getWidth()/2, -image.getHeight()/2);
+			image = BMPImages.arrow_right;
 		}
 		
-		
-		g2.drawImage(image, at, p);
+		g2.drawImage(image, x, y, p);
+	}
+	
+	public void shoot() {		
+		for(Item i : Main.realm.items) {
+			if(coords[0] == i.coords[0] && coords[1] == i.coords[1]) {
+				if(i instanceof Deer) {
+					((Entity) i).health-=damage;
+					Main.realm.items.remove(this);
+					if(((Entity) i).health <= 0) {
+						RawVenison a = new RawVenison();
+						a.coords = i.coords;
+						Main.realm.items.add(a);
+						Main.realm.items.remove(i);
+					}
+					
+				} else if(i instanceof Crate) {
+					Item p = Crate.generate();
+					p.coords = i.coords;
+					Main.realm.items.add(p);
+					Main.realm.items.remove(i);
+					Main.realm.items.remove(this);
+					
+				} else if(i instanceof Barrel) {
+					Item p = Barrel.generate();
+					p.coords = i.coords;
+					Main.realm.items.add(p);
+					Main.realm.items.remove(i);
+					Main.realm.items.remove(this);
+					
+				} else if(i instanceof Chest) {
+					Item p = Chest.generate();
+					p.coords = i.coords;
+					Main.realm.items.add(p);
+					Main.realm.items.remove(i);
+					Main.realm.items.remove(this);
+					
+				}
+			}
+		}
 	}
 
 	@Override
 	public void animate(long time) {
 		if(tileLife < 0) {
-			//Main.realm.items.remove(this);
-			isShot = false;
-			tileLife = 20;
+			Main.realm.items.remove(this);
 			return;
 		}
 		
@@ -79,43 +113,6 @@ public class Arrow extends Projectile {
 				coords = new int[] {coords[0]-1, coords[1]};
 			} else if(direction == 4) {
 				coords = new int[] {coords[0]+1, coords[1]};
-			}
-			
-			for(Item i : Main.realm.items) {
-				if(coords[0] == i.coords[0] && coords[1] == i.coords[1]) {
-					if(i instanceof Deer) {
-						((Entity) i).health-=damage;
-						Main.realm.items.remove(this);
-						if(((Entity) i).health <= 0) {
-							RawVenison a = new RawVenison();
-							a.coords = i.coords;
-							Main.realm.items.add(a);
-							Main.realm.items.remove(i);
-						}
-						
-					} else if(i instanceof Crate) {
-						Item p = Crate.generate();
-						p.coords = i.coords;
-						Main.realm.items.add(p);
-						Main.realm.items.remove(i);
-						Main.realm.items.remove(this);
-						
-					} else if(i instanceof Barrel) {
-						Item p = Barrel.generate();
-						p.coords = i.coords;
-						Main.realm.items.add(p);
-						Main.realm.items.remove(i);
-						Main.realm.items.remove(this);
-						
-					} else if(i instanceof Chest) {
-						Item p = Chest.generate();
-						p.coords = i.coords;
-						Main.realm.items.add(p);
-						Main.realm.items.remove(i);
-						Main.realm.items.remove(this);
-						
-					}
-				}
 			}
 			
 			tileLife -= 1;

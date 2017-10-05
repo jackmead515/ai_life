@@ -163,21 +163,13 @@ public class Player extends Entity {
 	
 	private void updateMovement() {
 		if(down) {
-			pointingDown = true;
 			up = left = right = false;
-			updatePointingDirection();
 		} else if (up) {
-			pointingUp = true;
 			down = left = right = false;
-			updatePointingDirection();
 		} else if (left) {
-			pointingLeft = true;
 			right = up = down = false;
-			updatePointingDirection();
 		} else if(right) {
-			pointingRight = true;
 			up = down = left = false;
-			updatePointingDirection();
 		}
 	}
 	
