@@ -3,6 +3,7 @@ package main;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -77,10 +78,40 @@ public class BMPImages {
 	public static BufferedImage fire_spell_right_2;
 	public static BufferedImage fire_spell_right_3;
 	public static BufferedImage fire_spell;
+	public static BufferedImage gray_brick;
+	public static BufferedImage dirt;
+	public static BufferedImage gray_brick_floor;
+	public static BufferedImage anvil;
+	public static BufferedImage ash;
+	public static BufferedImage rune;
+	public static BufferedImage spell_table;
 	
 	public static void load() {
 		
-		URL i = BMPImages.class.getClassLoader().getResource("images/pickaxe.bmp");
+		
+		Field[] fields = BMPImages.class.getFields();
+		
+		URL i = null;
+		
+		for(Field field : fields) {
+			i = BMPImages.class.getClassLoader().getResource("images/" + field.getName() + ".bmp");
+			
+			try {
+				field.set(BMPImages.class, ImageIO.read(new File(i.toString().substring(6))));
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
+		/*URL i = BMPImages.class.getClassLoader().getResource("images/pickaxe.bmp");
 		
 		try {
 			pickaxe = ImageIO.read(new File(i.toString().substring(6)));
@@ -471,7 +502,7 @@ public class BMPImages {
 			stick = ImageIO.read(new File(i.toString().substring(6)));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 	}
 

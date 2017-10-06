@@ -121,6 +121,14 @@ public class GamePanel extends JPanel {
 	private void drawItems(Graphics2D g2){ 
 		for(Item i : Main.realm.items) {
 			i.draw(g2, this);
+			
+			if(i instanceof Entity) {
+				g2.setColor(new Color(255, 0, 0, 127));
+				int p_health = 10 * ((Entity)i).health / ((Entity)i).totalHealth;
+				g2.fillRect(i.coords[0]*20, i.coords[0]*20, 10, 5);
+				g2.setColor(Color.WHITE);
+				g2.drawRect(i.coords[0]*20, i.coords[0]*20, 10, 5);
+			}
 		}
 	}
 	

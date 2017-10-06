@@ -1,7 +1,7 @@
 package tools;
 
 import entity.Entity;
-import items.Fire;
+import items.CampFire;
 import items.Item;
 import items.Wood;
 import main.BMPImages;
@@ -28,7 +28,7 @@ public class Sparker extends Tool {
 			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
 				health-=1;
 				if(i instanceof Wood) {
-					Fire s = new Fire();
+					CampFire s = new CampFire();
 					s.coords = i.coords;
 					Main.realm.items.remove(i);
 					Main.realm.items.add(s);

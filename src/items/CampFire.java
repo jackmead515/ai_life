@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import interfaces.IAnimate;
 import main.BMPImages;
 
-public class Fire extends Item implements IAnimate {
+public class CampFire extends Item implements IAnimate {
 	
 	protected BufferedImage[] animation;
 	protected int imageIndex;
@@ -13,10 +13,10 @@ public class Fire extends Item implements IAnimate {
 	protected long startTime;
 	protected long animationDuration;
 	
-	public Fire() {
+	public CampFire() {
 		
 		startTime = System.nanoTime();
-		animationDuration = 300000000L;
+		animationDuration = 100000000L;
 		
 		canPickUp = false;
 		

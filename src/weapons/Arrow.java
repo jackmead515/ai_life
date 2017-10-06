@@ -11,7 +11,7 @@ import entity.Entity;
 import items.Barrel;
 import items.Chest;
 import items.Crate;
-import items.Fire;
+import items.CampFire;
 import items.Item;
 import items.RawVenison;
 import items.Wood;

@@ -12,45 +12,16 @@ import javax.swing.JPanel;
 
 import boundaries.Boundary;
 import boundaries.Water;
-import entity.Deer;
-import entity.Wolf;
-import food.Bread;
-import food.Venison;
-import items.ArrowBundle;
-import items.Barrel;
-import items.Chest;
-import items.Crate;
-import items.Fire;
-import items.Furnace;
-import items.Iron;
-import items.IronOre;
-import items.IronTrinket;
-import items.Item;
-import items.MoltenIron;
-import items.Plant;
-import items.Rock;
-import items.ShallowWater;
-import items.Shrub;
-import items.Stick;
-import items.Stone;
-import items.Twine;
-import items.RawVenison;
-import items.Wheat;
-import items.WheatSeed;
-import items.Wood;
+import entity.*;
+import floors.*;
+import food.*;
+import items.*;
 import load.MapLoader;
 import load.MapSaver;
 import main.MapCreator;
-import tools.Axe;
-import tools.Hammer;
-import tools.Pickaxe;
-import tools.Sparker;
+import tools.*;
 import util.Util;
-import weapons.Arrow;
-import weapons.Bow;
-import weapons.FireSpell;
-import weapons.Staff;
-import weapons.Sword;
+import weapons.*;
 
 public class Palette {
 	
@@ -115,7 +86,7 @@ public class Palette {
 		items.add(new Staff());
 		items.add(new FireSpell());
 		
-		items.add(new Fire());
+		items.add(new CampFire());
 		items.add(new Furnace());
 		items.add(new Iron());
 		items.add(new IronOre());
@@ -136,6 +107,8 @@ public class Palette {
 		items.add(new Crate());
 		items.add(new ArrowBundle());
 		items.add(new Twine());
+		items.add(new Ash());
+		items.add(new Rune());
 		
 		items.add(new Bread());
 		items.add(new Venison());
@@ -144,33 +117,14 @@ public class Palette {
 		items.add(new Wolf());
 		
 		items.add(new Water());
+		
+		items.add(new Dirt());
+		items.add(new GrayBrickFloor());
 	}
 
 	private void attachListeners() {
 		attachMakeSelectionListener();
 		attachMouseMotionListener();
-		attachKeyListener();
-	}
-	
-	private void attachKeyListener() {
-		panel.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if ((e.getKeyCode() == KeyEvent.VK_S) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-					
-		        }
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_P) {
-					clicked = true;
-				}
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {}
-		});
 	}
 
 	private void attachMouseMotionListener() {
