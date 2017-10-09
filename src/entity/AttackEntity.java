@@ -9,9 +9,18 @@ public class AttackEntity extends Entity {
 	protected long movementTimeSpeed;
 	protected long startTime;
 	
+	protected long targetSwitchTime;
+	protected long idleTime;
+	protected long switchStartTime;
+	
+	protected Entity target;
+	
 	public AttackEntity() {
 		startTime = System.nanoTime();
 		movementTimeSpeed = 500000000L;
+		target = null;
+		//idleTime = 1000000000L;
+		//targetSwitchTime = 10000000000L;
 	}
 	
 	@Override
@@ -20,27 +29,14 @@ public class AttackEntity extends Entity {
 			
 			startTime = time;
 			
-			int rand = Randomizer.random(0, 4);
-			
 			int[] now = coords;
 			int[] next = null;
 			
-			switch(rand) {
-				case 0:
-					break;
-				case 1:
-					next = new int[] {now[0], now[1]+1};
-					break;
-				case 2:
-					next = new int[] {now[0], now[1]-1};
-					break;
-				case 3:
-					next = new int[] {now[0]-1, now[1]};
-					break;
-				case 4:
-					next = new int[] {now[0]+1, now[1]};
-					break;
-			}
+			Entity t = chooseTarget(time);
+			
+			
+			//TODO
+			
 			
 			if(next != null) {
 				if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
@@ -48,6 +44,11 @@ public class AttackEntity extends Entity {
 				}
 			}
 		}
+	}
+	
+	private Entity chooseTarget(long time) {
+		//TODO
+		return null;
 	}
 
 }
