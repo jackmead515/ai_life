@@ -34,9 +34,9 @@ import weapons.Weapon;
 
 public class Player extends Entity {
 	
-	private boolean pickUp;
-	private boolean use;
-	private boolean drop;
+	protected boolean pickUp;
+	protected boolean use;
+	protected boolean drop;
 
 	public boolean showHUD;
 	public long startTime;
@@ -89,7 +89,7 @@ public class Player extends Entity {
 		calculateNextMovement();
 	}
 		
-	private void shoot(long time) {
+	protected void shoot(long time) {
 		for(int x = 0; x < projectiles.size(); x++) {
 			Projectile p = projectiles.get(x);
 			p.animate(time);
@@ -136,7 +136,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void calculateNextMovement() {
+	protected void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;
 		
@@ -215,11 +215,11 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void resetMovement() {
+	protected void resetMovement() {
 		up = down = left = right = false;
 	}
 	
-	private void updateMovement() {
+	protected void updateMovement() {
 		if(down) {
 			up = left = right = false;
 		} else if (up) {
@@ -231,7 +231,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void updatePointingDirection() {
+	protected void updatePointingDirection() {
 		if(pointingDown) {
 			pointingUp = pointingLeft = pointingRight = false;
 		} else if (pointingUp) {
@@ -273,7 +273,7 @@ public class Player extends Entity {
 		updateMovement();
 	}
 	
-	public void mouseMoved(Point p) {
+	public  void mouseMoved(Point p) {
 		Point c = new Point((coords[0]*20)+10, (coords[1]*20)+10);
 		
 		if(p.y < c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x-p.y))) {
@@ -295,7 +295,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void starve(long time) {
+	protected void starve(long time) {
 		if(time - startTime >= starveRate) {
 			startTime = time;
 			
