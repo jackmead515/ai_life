@@ -1,8 +1,9 @@
 from flask import Flask
 from flask import request
-#from ai import AI
+from flask import render_template
+from ai import AI
 
-#brain = AI(500, 11, 0.9)
+brain = AI(500, 11, 0.9)
 app = Flask(__name__)
 
 #-------------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ def handle_post():
     if state is None or reward is None:
         return jsonify({"err": "400"})
     else:
+        action = brain.update(reward, state)
         return 'hello :)' #TODO
 
 

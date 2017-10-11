@@ -16,15 +16,16 @@ public class Entity extends Item implements IEntity {
 	public int health;
 	public int totalHealth;
 	
-	public boolean up;
-	public boolean down;
-	public boolean left;
-	public boolean right;
+	public volatile boolean up;
+	public volatile boolean down;
+	public volatile boolean left;
+	public volatile boolean right;
 	
-	public boolean pointingUp;
-	public boolean pointingDown;
-	public boolean pointingLeft;
-	public boolean pointingRight;
+	public volatile boolean pointingUp;
+	public volatile boolean pointingDown;
+	public volatile boolean pointingLeft;
+	public volatile boolean pointingRight;
+	
 	public LinkedList<Projectile> projectiles;
 	
 	public Entity() {

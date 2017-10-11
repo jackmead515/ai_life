@@ -34,9 +34,9 @@ import weapons.Weapon;
 
 public class Player extends Entity {
 	
-	protected boolean pickUp;
-	protected boolean use;
-	protected boolean drop;
+	protected volatile boolean pickUp;
+	protected volatile boolean use;
+	protected volatile boolean drop;
 
 	public boolean showHUD;
 	public long startTime;
@@ -273,7 +273,7 @@ public class Player extends Entity {
 		updateMovement();
 	}
 	
-	public  void mouseMoved(Point p) {
+	public void mouseMoved(Point p) {
 		Point c = new Point((coords[0]*20)+10, (coords[1]*20)+10);
 		
 		if(p.y < c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x-p.y))) {
