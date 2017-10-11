@@ -16,12 +16,12 @@ import javax.sound.sampled.*;
 public enum SoundEffect {
    PICKAXE("sounds/pickaxe.wav"),
    SWORD("sounds/sword.wav"), 
-   BOW("sounds/bow.wav"),
-   DROP("sounds/drop.wav"),
-   FIRE_SPELL("sounds/fire_spell.wav"),
-   HAMMER("sounds/hammer.wav"),
-   PICKUP("sounds/pickup.wav");
-   
+   BOW("sounds/pickaxe.wav"),
+   DROP("sounds/pickaxe.wav"),
+   FIRE_SPELL("sounds/pickaxe.wav"),
+   HAMMER("sounds/pickaxe.wav"),
+   PICKUP("sounds/pickaxe.wav");
+  
    // Nested class for specifying volume
    public static enum Volume {
       MUTE, LOW, MEDIUM, HIGH

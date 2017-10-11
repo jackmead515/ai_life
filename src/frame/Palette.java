@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import javax.swing.JPanel;
 
 import boundaries.Boundary;
+import boundaries.GrayBrick;
 import boundaries.Water;
 import entity.*;
 import floors.*;
@@ -107,8 +108,8 @@ public class Palette {
 		items.add(new Crate());
 		items.add(new ArrowBundle());
 		items.add(new Twine());
-		items.add(new Ash());
-		items.add(new Rune());
+		/*items.add(new Ash());
+		items.add(new Rune());*/
 		
 		items.add(new Bread());
 		items.add(new Venison());
@@ -117,9 +118,10 @@ public class Palette {
 		items.add(new Wolf());
 		
 		items.add(new Water());
+		items.add(new GrayBrick());
 		
 		items.add(new Dirt());
-		items.add(new GrayBrickFloor());
+		//items.add(new GrayBrickFloor());
 	}
 
 	private void attachListeners() {

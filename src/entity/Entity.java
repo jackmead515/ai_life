@@ -30,6 +30,8 @@ public class Entity extends Item implements IEntity {
 	public Entity() {
 		coords = new int[2];
 		projectiles = new LinkedList<Projectile>();
+		health = 1;
+		totalHealth = 1;
 	}
 	
 	@Override

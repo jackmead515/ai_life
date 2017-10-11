@@ -64,7 +64,6 @@ public class BMPImages {
 	
 	public static BufferedImage twine;
 	public static BufferedImage staff;
-	public static BufferedImage staff_in_hand;
 	public static BufferedImage fire_spell_up_1;
 	public static BufferedImage fire_spell_up_2;
 	public static BufferedImage fire_spell_up_3;
@@ -80,11 +79,12 @@ public class BMPImages {
 	public static BufferedImage fire_spell;
 	public static BufferedImage gray_brick;
 	public static BufferedImage dirt;
-	public static BufferedImage gray_brick_floor;
+	public static BufferedImage staff_in_hand;
+	/*public static BufferedImage gray_brick_floor;
 	public static BufferedImage anvil;
 	public static BufferedImage ash;
 	public static BufferedImage rune;
-	public static BufferedImage spell_table;
+	public static BufferedImage spell_table;*/
 	
 	public static void load() {
 		
@@ -94,6 +94,7 @@ public class BMPImages {
 		URL i = null;
 		
 		for(Field field : fields) {
+			System.out.println(field.getName());
 			i = BMPImages.class.getClassLoader().getResource("images/" + field.getName() + ".bmp");
 			
 			try {
@@ -101,10 +102,8 @@ public class BMPImages {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
