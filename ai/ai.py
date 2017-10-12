@@ -1,3 +1,4 @@
+import ast #read multi-dimensional array from string
 import numpy as np #used to manipulate array data
 import random #used to take random data
 import os #used to load and save brain models
@@ -93,26 +94,47 @@ class AI():
         self.optimizer.step()
 
     #-----------------------------------------------------------------------------------------------------------
-    #root of ai. Takes in the state of the map: l_signal, and the rewards from it: l_reward, appends it to memory,
+    #root of ai. Takes in the state of the map: state, and the rewards from it: reward, appends it to memory,
     #selects a new action to play, learns from the reward, updates the last action, state, and reward, updates
     #reward window to show how the training is going, then finally returns the new action to play
-    def update(self, l_reward, l_signal):
-        new_state = torch.Tensor(l_signal).float().unsqueeze(0)
+    def update(self, reward, state):
+        '''
+        state = np.array(ast.literal_eval(state)).flatten()
+        state = torch.Tensor(state).float().unsqueeze(0)
+
+        self.memory.append((
+            self.last_state,
+            state,
+            torch.LongTensor([int(self.last_action)]),
+            torch.Tensor([self.last_reward])
+        ))
+
+        action = self.select_action(state)
+        if len(self.memory.memory) > 100:
+                batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
+                self.learn(batch_state, batch_next_state, batch_reward, batch_action)
+
+        return action
+        '''
+
+        new_state = torch.Tensor(state).float().unsqueeze(0)
+
         self.memory.append((
                             self.last_state,
                             new_state,
                             torch.LongTensor([int(self.last_action)]),
                             torch.Tensor([self.last_reward])
                           ))
+
         action = self.select_action(new_state)
         if len(self.memory.memory) > 100:
                 batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
                 self.learn(batch_state, batch_next_state, batch_reward, batch_action)
         self.last_action = action
         self.last_state = new_state
-        self.last_reward = l_reward
+        self.last_reward = reward
 
-        self.reward_window.append(l_reward)
+        self.reward_window.append(reward)
         if len(self.reward_window) > 1000:
             del self.reward_window[0]
 

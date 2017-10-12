@@ -8,14 +8,13 @@ app = Flask(__name__)
 
 #-------------------------------------------------------------------------------------
 def handle_post():
-    json = request.get_json(silent = True)
-    state = json.get('state')
-    reward = json.get('reward')
+    state = request.args.get('state')
+    reward = request.args.get('reward')
     if state is None or reward is None:
-        return jsonify({"err": "400"})
+        return 0;
     else:
         action = brain.update(reward, state)
-        return 'hello :)' #TODO
+        return action;
 
 
 #-------------------------------------------------------------------------------------
