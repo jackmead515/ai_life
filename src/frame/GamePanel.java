@@ -25,9 +25,7 @@ import weapons.Projectile;
 
 public class GamePanel extends JPanel {
 	
-	public GamePanel(JFrame frame) {
-		setBoundaries(frame);
-	}
+	public GamePanel() {}
 
 	public boolean outOfBounds(int[] pos) {
 		int width = this.getWidth();
@@ -43,20 +41,6 @@ public class GamePanel extends JPanel {
 		}
 		
 		return false;
-	}
-	
-	private void setBoundaries(JFrame frame) {
-			
-			int width = frame.getWidth();
-			int height = frame.getHeight();
-			
-			while(width % 20 != 0) {
-				width-=1;
-			}
-			while(height % 20 != 0) {
-				height-=1;
-			}
-			setBounds(0, 0, width, height);
 	}
 	
 	public void paintComponent(Graphics g) {

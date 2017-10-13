@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 import main.Main;
+import util.RefStrings;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -27,7 +28,8 @@ public class Frame {
 		frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 		frame.pack();
 		
-		gamePanel = new GamePanel(frame);
+		gamePanel = new GamePanel();
+		gamePanel.setBounds(0, 0,RefStrings.gameWidth, RefStrings.gameHeight);
 		frame.getContentPane().add(gamePanel);
 		
 		gamePanel.addKeyListener(new KeyAdapter() {
@@ -52,7 +54,6 @@ public class Frame {
 			public void mouseMoved(MouseEvent e) {
 				Main.player.mouseMoved(e.getPoint());
 			}
-			
 		});
 	}
 		

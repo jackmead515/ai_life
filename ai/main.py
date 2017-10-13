@@ -13,8 +13,7 @@ def handle_post():
     if state is None or reward is None:
         return 0;
     else:
-        action = brain.update(reward, state)
-        return action;
+        return brain.update(reward, state)
 
 
 #-------------------------------------------------------------------------------------

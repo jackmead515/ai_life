@@ -28,6 +28,7 @@ import main.Main;
 import main.RealmController;
 import main.SoundEffect;
 import tools.Tool;
+import util.RefStrings;
 import util.Util;
 import weapons.Projectile;
 import weapons.Weapon;
@@ -158,18 +159,14 @@ public class Player extends Entity {
 				 coords = next;
 			 }
 		} else {
-			if(up) {
-				coords = new int[]{next[0], Main.window.gamePanel.getHeight() / 20};
-				Main.realmController.upRealm();
-			} else if(down) {
+			if(up && Main.realmController.upRealm()) {
+				coords = new int[]{next[0], RefStrings.gameHeight / 20};
+			} else if(down && Main.realmController.downRealm()) {
 				coords = new int[]{next[0], 0};
-				Main.realmController.downRealm();
-			} else if(left) {
-				coords = new int[]{Main.window.gamePanel.getWidth() / 20, next[1]};
-				Main.realmController.leftRealm();
-			} else if(right) {
+			} else if(left && Main.realmController.leftRealm()) {
+				coords = new int[]{RefStrings.gameWidth / 20, next[1]};
+			} else if(right && Main.realmController.rightRealm()) {
 				coords = new int[]{0, next[1]};
-				Main.realmController.rightRealm();
 			}
 		}
 		

@@ -39,16 +39,6 @@ public class Arrow extends Projectile {
 		int x = coords[0]*20;
 		int y = coords[1]*20;
 		
-		if(direction == 1) {
-			image = BMPImages.arrow_up;
-		} else if(direction == 2) {
-			image = BMPImages.arrow_down;
-		} else if(direction == 3) {
-			image = BMPImages.arrow_left;
-		} else if(direction == 4) {
-			image = BMPImages.arrow_right;
-		}
-		
 		g2.drawImage(image, x, y, p);
 	}
 
@@ -67,12 +57,16 @@ public class Arrow extends Projectile {
 			 */
 			if(direction == 1) {
 				coords = new int[] {coords[0], coords[1]-1};
+				image = BMPImages.arrow_up;
 			} else if(direction == 2) {
 				coords = new int[] {coords[0], coords[1]+1};
+				image = BMPImages.arrow_down;
 			} else if(direction == 3) {
 				coords = new int[] {coords[0]-1, coords[1]};
+				image = BMPImages.arrow_left;
 			} else if(direction == 4) {
 				coords = new int[] {coords[0]+1, coords[1]};
+				image = BMPImages.arrow_right;
 			}
 			
 			tileLife -= 1;

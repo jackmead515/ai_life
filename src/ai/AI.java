@@ -30,29 +30,19 @@ public class AI extends Player {
 	private int[][] state;
 	private double reward;
 	
+	private AISelector selector;
+	
 	public AI() {
-		state = new int[40][100];
-		initState();
+		state = new int[RefStrings.gameWidth][RefStrings.gameHeight];
+		selector = new AISelector();
 		reward = 0;
 		selecting = false;
 	}
 	
-	private void initState() {
-		for(int x = 0; x < state.length; x++) {
-			for(int i = 0; i < state[x].length; i++) {
-				state[x][i] = 0;
-			}
-		}
-		
-		LinkedList<Item> items = Main.realm.items;
-		for(int x = 0; x < items.size(); x++) {
-			Item i = items.get(x);
-			state[i.coords[0]][i.coords[1]] = new BigInteger(i.getClass().getSimpleName().getBytes()).intValue();
-		}
-	}
-	
-	private  void takeAction(int action) {
+	private void takeAction(int action) {
 		switch(action) {
+			case -1:
+				return;
 			case 0:
 				break;
 			case 1:
@@ -88,68 +78,17 @@ public class AI extends Player {
 			case 11:
 				pointingUp = true;
 				break;
+			default:
+				return;
 		}
 		
 		updateMovement();
 		updatePointingDirection();
+		selector.action = -1;
 	}
-	
-	@SuppressWarnings("finally")
-	private int fetchAction() {
 
-		HttpURLConnection connection = null;
-		int action = 0;
-
-		try {
-			String postString = "state=" + Arrays.deepToString(state) + "&reward=" + reward;
-			
-			URL url = new URL("http://" + RefStrings.AI_IP);
-			connection = (HttpURLConnection) url.openConnection();
-			
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-			connection.setDoOutput(true);
-			
-			connection.getOutputStream().write(postString.getBytes());
-			connection.getOutputStream().flush();
-			connection.getOutputStream().close();
-			
-			InputStream input = connection.getInputStream();
-			
-			action = input.read();
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
-			return action;
-		}
-	}
-	
-	public void selectAction() {
-		if(!selecting) {
-			selecting = true;
-			
-			initState();
-			
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					int action = fetchAction();
-					takeAction(action);
-					reward = 0;
-					selecting = false;
-				}
-			});
-			t.start();
-		}
-	}
-	
 	@Override
 	public void move(long time) {
-		
-		selectAction();
 		
 		starve(time);
 		
@@ -171,6 +110,10 @@ public class AI extends Player {
 		}
 		
 		calculateNextMovement();
+		
+		selector.select(state, reward);
+		takeAction(selector.action);
+
 	}
 	
 	@Override
@@ -207,7 +150,7 @@ public class AI extends Player {
 		if(inHand != null) {
 			if(!inHand.use(this)) {
 				if(inHand instanceof Food) {
-					reward += AIStats.eat_reward(((Food) inHand).health, totalHealth);
+					reward += ((Food) inHand).health;
 				}
 				
 				image = BMPImages.person;
@@ -224,7 +167,7 @@ public class AI extends Player {
 			health-=starveAmount;
 			
 			reward += AIStats.living_reward;
-			reward += AIStats.starve_reward(health, totalHealth);
+			reward += -starveAmount;
 			
 		}
 	}

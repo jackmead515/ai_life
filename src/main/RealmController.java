@@ -19,36 +19,40 @@ public class RealmController {
 		Main.realm = realms[realmIndex[0]][realmIndex[1]];
 	}
 	
-	public void upRealm() {
-		if(realmIndex[1]+1 > realms[0].length) {
-			return;
-		}
-		realmIndex[1]+=1;
-		createNewRealm();
-	}
-	
-	public void downRealm() {
-		if(realmIndex[1]-1 < realms[0].length) {
-			return;
-		}
-		realmIndex[1]-=1;
-		createNewRealm();
-	}
-	
-	public void leftRealm() {
-		if(realmIndex[0]-1 < realms[0].length) {
-			return;
+	public boolean upRealm() {
+		if(realmIndex[0]-1 < realms.length-1) {
+			return false;
 		}
 		realmIndex[0]-=1;
 		createNewRealm();
+		return true;
 	}
 	
-	public void rightRealm() {
-		if(realmIndex[0]+1 > realms[0].length) {
-			return;
+	public boolean downRealm() {
+		if(realmIndex[0]+1 > realms.length-1) {
+			return false;
 		}
 		realmIndex[0]+=1;
 		createNewRealm();
+		return true;
+	}
+	
+	public boolean leftRealm() {
+		if(realmIndex[1]-1 < realms.length-1) {
+			return false;
+		}
+		realmIndex[1]-=1;
+		createNewRealm();
+		return true;
+	}
+	
+	public boolean rightRealm() {
+		if(realmIndex[1]+1 > realms.length-1) {
+			return false;
+		}
+		realmIndex[1]+=1;
+		createNewRealm();
+		return true;
 	}
 
 }

@@ -68,7 +68,7 @@ class AI():
         self.gamma = gamma
         self.reward_window = [] #mean of last 100 rewards to print out to screen
         self.model = Network(inputNeurons, outputNeurons)
-        self.memory = ReplayMemory(100000)
+        self.memory = Memory(100000)
         self.optimizer = optim.Adam(self.model.parameters(), lr = 0.001)
         self.last_state = torch.Tensor(inputNeurons).unsqueeze(0) #adding a fake dimension? Whhhaaaa
         self.last_action = 0
@@ -79,7 +79,7 @@ class AI():
         # Tempurature parameter T=7
         # softmax([1,2,3]) => [0.04,0.11,0.85]   softmax([1,2,3]*3) => [0, 0.02, 0.98]
         # increases the rate at which the softmax function is certain of which action to take
-        probs = F.softmax(self.model(Variable(state, volatile = True))*7)
+        probs = F.softmax(self.model(Variable(state, volatile = True))*60)
         action = probs.multinomial() #picking a random action
         return action.data[0,0] #getting rid of fake dimension
 
