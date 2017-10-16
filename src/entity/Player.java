@@ -28,15 +28,16 @@ import main.Main;
 import main.RealmController;
 import main.SoundEffect;
 import tools.Tool;
+import util.RefStrings;
 import util.Util;
 import weapons.Projectile;
 import weapons.Weapon;
 
 public class Player extends Entity {
 	
-	private boolean pickUp;
-	private boolean use;
-	private boolean drop;
+	protected volatile boolean pickUp;
+	protected volatile boolean use;
+	protected volatile boolean drop;
 
 	public boolean showHUD;
 	public long startTime;
@@ -89,7 +90,7 @@ public class Player extends Entity {
 		calculateNextMovement();
 	}
 		
-	private void shoot(long time) {
+	protected void shoot(long time) {
 		for(int x = 0; x < projectiles.size(); x++) {
 			Projectile p = projectiles.get(x);
 			p.animate(time);
@@ -136,7 +137,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void calculateNextMovement() {
+	protected void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;
 		
@@ -158,18 +159,14 @@ public class Player extends Entity {
 				 coords = next;
 			 }
 		} else {
-			if(up) {
-				coords = new int[]{next[0], Main.window.gamePanel.getHeight() / 20};
-				Main.realmController.upRealm();
-			} else if(down) {
+			if(up && Main.realmController.upRealm()) {
+				coords = new int[]{next[0], RefStrings.gameHeight / 20};
+			} else if(down && Main.realmController.downRealm()) {
 				coords = new int[]{next[0], 0};
-				Main.realmController.downRealm();
-			} else if(left) {
-				coords = new int[]{Main.window.gamePanel.getWidth() / 20, next[1]};
-				Main.realmController.leftRealm();
-			} else if(right) {
+			} else if(left && Main.realmController.leftRealm()) {
+				coords = new int[]{RefStrings.gameWidth / 20, next[1]};
+			} else if(right && Main.realmController.rightRealm()) {
 				coords = new int[]{0, next[1]};
-				Main.realmController.rightRealm();
 			}
 		}
 		
@@ -215,11 +212,11 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void resetMovement() {
+	protected void resetMovement() {
 		up = down = left = right = false;
 	}
 	
-	private void updateMovement() {
+	protected void updateMovement() {
 		if(down) {
 			up = left = right = false;
 		} else if (up) {
@@ -231,7 +228,7 @@ public class Player extends Entity {
 		}
 	}
 	
-	private void updatePointingDirection() {
+	protected void updatePointingDirection() {
 		if(pointingDown) {
 			pointingUp = pointingLeft = pointingRight = false;
 		} else if (pointingUp) {
@@ -295,7 +292,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void starve(long time) {
+	protected void starve(long time) {
 		if(time - startTime >= starveRate) {
 			startTime = time;
 			

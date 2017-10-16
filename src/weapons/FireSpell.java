@@ -22,7 +22,7 @@ public class FireSpell extends Spell {
 	
 	public FireSpell() {
 		startTime = System.nanoTime();
-		animationDuration = 10000000L;
+		animationDuration = 50000000L;
 		image = BMPImages.fire_spell;
 		imageInHand = BMPImages.person;
 		iIndex = 0;
@@ -52,24 +52,6 @@ public class FireSpell extends Spell {
 		int x = coords[0]*20;
 		int y = coords[1]*20;
 		
-		if(direction == 1) {
-			image = animation[0][iIndex];
-			iIndex+=1;
-		} else if(direction == 2) {
-			image = animation[1][iIndex];
-			iIndex+=1;
-		} else if(direction == 3) {
-			image = animation[2][iIndex];
-			iIndex+=1;
-		} else if(direction == 4) {
-			image = animation[3][iIndex];
-			iIndex+=1;
-		}
-		
-		if(iIndex >= 2) {
-			iIndex = 0;
-		}
-		
 		g2.drawImage(image, x, y, p);
 	}
 
@@ -88,12 +70,24 @@ public class FireSpell extends Spell {
 			 */
 			if(direction == 1) {
 				coords = new int[] {coords[0], coords[1]-1};
+				image = animation[0][iIndex];
+				iIndex+=1;
 			} else if(direction == 2) {
 				coords = new int[] {coords[0], coords[1]+1};
+				image = animation[1][iIndex];
+				iIndex+=1;
 			} else if(direction == 3) {
 				coords = new int[] {coords[0]-1, coords[1]};
+				image = animation[2][iIndex];
+				iIndex+=1;
 			} else if(direction == 4) {
 				coords = new int[] {coords[0]+1, coords[1]};
+				image = animation[3][iIndex];
+				iIndex+=1;
+			}
+			
+			if(iIndex >= 2) {
+				iIndex = 0;
 			}
 			
 			tileLife -= 1;

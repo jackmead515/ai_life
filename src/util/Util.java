@@ -13,6 +13,10 @@ public class Util {
 		return a.getBounds().contains(p);
 	}
 	
+	public static int distanceTo(int x, int y, int x1, int y1) {
+		return (int) Math.sqrt(Math.pow(Math.abs(x - x1), 2) + Math.pow(Math.abs(y - y1), 2));
+	}
+	
 	public static boolean inBoundary(int[] next) {
 		int x = next[0];
 		int y = next[1];

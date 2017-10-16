@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import main.Main;
 import main.MapCreator;
 import main.Realm;
+import util.RefStrings;
 
 public class MapCreatorFrame {
 	
@@ -26,7 +27,8 @@ public class MapCreatorFrame {
 		frame.getContentPane().setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 		frame.pack();
 		
-		creatorPanel = new CreatorPanel(frame);
+		creatorPanel = new CreatorPanel();
+		creatorPanel.setBounds(0, 0, RefStrings.gameWidth, RefStrings.gameHeight);
 		frame.getContentPane().add(creatorPanel);
 		
 		palette = new Palette(creatorPanel);

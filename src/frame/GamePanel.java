@@ -25,9 +25,7 @@ import weapons.Projectile;
 
 public class GamePanel extends JPanel {
 	
-	public GamePanel(JFrame frame) {
-		setBoundaries(frame);
-	}
+	public GamePanel() {}
 
 	public boolean outOfBounds(int[] pos) {
 		int width = this.getWidth();
@@ -43,20 +41,6 @@ public class GamePanel extends JPanel {
 		}
 		
 		return false;
-	}
-	
-	private void setBoundaries(JFrame frame) {
-			
-			int width = frame.getWidth();
-			int height = frame.getHeight();
-			
-			while(width % 20 != 0) {
-				width-=1;
-			}
-			while(height % 20 != 0) {
-				height-=1;
-			}
-			setBounds(0, 0, width, height);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -95,7 +79,6 @@ public class GamePanel extends JPanel {
 			//In hand
 			if(Main.player.inHand != null) {
 				g2.drawString(Main.player.inHand.description(), 210, 20);
-				g2.drawRect(200, 5, 75, 75);
 				try {
 					Object p = Main.player.inHand.getClass().newInstance();
 					int type = ((Item) p).image.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : ((Item) p).image.getType();
@@ -125,9 +108,7 @@ public class GamePanel extends JPanel {
 			if(i instanceof Entity) {
 				g2.setColor(new Color(255, 0, 0, 127));
 				int p_health = 10 * ((Entity)i).health / ((Entity)i).totalHealth;
-				g2.fillRect(i.coords[0]*20, i.coords[0]*20, 10, 5);
-				g2.setColor(Color.WHITE);
-				g2.drawRect(i.coords[0]*20, i.coords[0]*20, 10, 5);
+				g2.fillRect(i.coords[0]*20, i.coords[1]*20, 10, 2);
 			}
 		}
 	}

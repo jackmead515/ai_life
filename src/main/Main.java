@@ -3,6 +3,7 @@ package main;
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
 
+import ai.AI;
 import boundaries.Boundary;
 import boundaries.Water;
 import entity.Animal;
@@ -36,6 +37,7 @@ public class Main {
 	public static RealmController realmController;
 	
 	public static Player player;
+	public static AI aiplayer;
 
 	public static void main(String[] args) {
 		
@@ -54,6 +56,7 @@ public class Main {
 		realmController = new RealmController();
 		
 		player = new Player();
+		//aiplayer = new AI();
 		
 		realmController.realms[10][10] = realm;
 		
@@ -78,6 +81,7 @@ public class Main {
 	private static void update(double delta, long time) {
 		
 		player.move(time);
+		//aiplayer.move(time);
 		
 		for(int x = 0; x < realm.items.size(); x++) {
 			Item i = realm.items.get(x);

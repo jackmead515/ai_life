@@ -15,11 +15,11 @@ import main.SoundEffect;
 
 public class Staff extends Weapon {
 	
-	public LinkedList<Spell> ammo;
+	public LinkedList<FireSpell> ammo;
 	
 	public Staff() {
 		health = 50;
-		ammo = new LinkedList<Spell>();
+		ammo = new LinkedList<FireSpell>();
 		image = BMPImages.staff;
 		imageInHand = BMPImages.staff_in_hand;
 		damage = 1;
@@ -34,11 +34,12 @@ public class Staff extends Weapon {
 	public boolean use(Entity e) {
 		if(ammo.size() > 0) {
 			health -= 1;
-			Spell p = ammo.pop();
+			FireSpell p = ammo.pop();
 			p.isShot = true;
 			if(p instanceof FireSpell) {
 				SoundEffect.FIRE_SPELL.play();
 			}
+			
 			if(e.pointingDown) {
 				p.direction = 2;
 			} else if (e.pointingUp) {

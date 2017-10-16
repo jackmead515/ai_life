@@ -3,7 +3,7 @@ package floors;
 import items.Item;
 import main.BMPImages;
 
-public class GrayBrickFloor extends Item {
+public class GrayBrickFloor extends Floor {
 	
 	public GrayBrickFloor() {
 		

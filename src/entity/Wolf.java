@@ -12,6 +12,7 @@ public class Wolf extends Predator {
 		multipleRate = 120000000000L;
 		image = BMPImages.wolf;
 		canPickUp = false;
+		startTime = System.nanoTime();
 	}
 	
 	@Override

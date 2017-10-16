@@ -3,55 +3,122 @@ package ai;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.Entity;
+import entity.Player;
+import food.Food;
 import frame.GamePanel;
 import interfaces.IActions;
 import items.Item;
 import main.BMPImages;
 import main.Main;
+import util.RefStrings;
 import util.Util;
 
-public class AI extends Entity implements IActions {
+public class AI extends Player {
 	
-	private boolean up;
-	private boolean down;
-	private boolean left;
-	private boolean right;
+	private int[][] state;
+	private double reward;
+	
+	private AISelector selector;
 	
 	public AI() {
-		super();
-		
-		image = BMPImages.person;
-		
-		up = down = left = right = false;
-		
-		setName("AI");
-	
-		coords = new int[]{5, 5};
+		state = new int[RefStrings.gameWidth/20][RefStrings.gameHeight/20];
+		selector = new AISelector();
+		reward = 0;
 	}
 	
-	public void reward(double r) {
-		// TODO Auto-generated method stub
+	private void takeAction(int action) {
+		switch(action) {
+			case -1:
+				return;
+			case 0:
+				break;
+			case 1:
+				drop = true;
+				break;
+			case 2:
+				pickUp = true;
+				break;
+			case 3:
+				use = true;
+				break;
+			case 4:
+				left = true;
+				break;
+			case 5:
+				right = true;
+				break;
+			case 6:
+				up = true;
+				break;
+			case 7:
+				down = true;
+				break;
+			case 8:
+				pointingLeft = true;
+				break;
+			case 9:
+				pointingRight = true;
+				break;
+			case 10:
+				pointingDown = true;
+				break;
+			case 11:
+				pointingUp = true;
+				break;
+			default:
+				return;
+		}
 		
+		updateMovement();
+		updatePointingDirection();
+		selector.action = -1;
 	}
 
-	public void punish(double p) {
-		// TODO Auto-generated method stub
+	@Override
+	public void move(long time) {
 		
+		starve(time);
+		
+		shoot(time);
+		
+		if(drop) {
+			drop();
+			drop = false;
+		}
+		
+		if(pickUp) {
+			pickUp();
+			pickUp = false;
+		}
+		
+		if(use) {
+			use();
+			use = false;
+		}
+		
+		calculateNextMovement();
+		
+		selector.select(state, reward);
+		takeAction(selector.action);
+
 	}
 	
 	@Override
-	public void move() {
+	protected void calculateNextMovement() {
 		int[] now = coords;
 		int[] next = null;
 		
-		//TODO
 		if(down) {
 			next = new int[]{ now[0], now[1]+1 };
 		} else if (up) {
@@ -60,77 +127,47 @@ public class AI extends Entity implements IActions {
 			next = new int[]{ now[0]-1, now[1] };
 		} else if(right) {
 			next = new int[]{ now[0]+1, now[1] };
+		} else {
+			return;
 		}
-		
-		if(next != null) {
-			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
-				coords = next;
-				punish(AIStats.p_living);	//living penalty 
-			} else {
-				punish(AIStats.p_outOfBounds); 	// moving into boundary/out of bounds penalty
-			}
-			resetMovement();
-		}
-	}
-	
-	private void resetMovement() {
-		up = down = left = right = false;
-	}
-	
-	private void updateMovement() {
-		
-		//TODO
-		
-		if(down) {
-			up = left = right = false;
-		} else if (up) {
-			down = left = right = false;
-		} else if (left) {
-			right = up = down = false;
-		} else if(right) {
-			up = down = left = false;
-		}
-	}
-	
-	@Override
-	public void pickUp() {
-		int x = coords[0];
-		int y = coords[1];
-		
-		LinkedList<Item> items = Main.registry.items;
-		
-		for(Item i : items) {
-			int xi = i.coords[0];
-			int yi = i.coords[1];
 			
-			if(x == xi && y == yi) {
-				
-				inventory.add(i);
-				Main.registry.items.remove(i);
-				break;
-				
-			}
+		if(!Main.window.gamePanel.outOfBounds(next)) {
+			 if(!Util.inBoundary(next)) {
+				 resetMovement();
+				 coords = next;
+			 }
+		} else {
+			reward += AIStats.outOfBounds_reward;
 		}
+		
+		resetMovement();
 	}
-
+	
 	@Override
 	public void use() {
-		// TODO Auto-generated method stub
-		
+		if(inHand != null) {
+			if(!inHand.use(this)) {
+				if(inHand instanceof Food) {
+					reward += ((Food) inHand).health;
+				}
+				
+				image = BMPImages.person;
+				inHand = null;
+			}
+		}
 	}
 	
 	@Override
-	public void draw(Graphics2D g2, JPanel panel) {
-		int x = coords[0];
-		int y = coords[1];
-		
-		g2.drawImage(image, x*20, y*20, panel);
-	}
-
-	@Override
-	public void drop() {
-		// TODO Auto-generated method stub
-		
+	protected void starve(long time) {
+		if(time - startTime >= starveRate) {
+			startTime = time;
+			
+			health-=starveAmount;
+			
+			reward += AIStats.living_reward;
+			reward += -starveAmount;
+			
+		}
 	}
 	
 }

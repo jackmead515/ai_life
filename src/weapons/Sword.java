@@ -2,6 +2,7 @@ package weapons;
 
 import entity.Deer;
 import entity.Entity;
+import floors.Floor;
 import items.Barrel;
 import items.Chest;
 import items.Crate;
@@ -28,7 +29,7 @@ public class Sword extends Weapon {
 	@Override
 	public boolean use(Entity e) {
 		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
 				health -= 1;
 				if(i instanceof Deer) {
@@ -41,17 +42,17 @@ public class Sword extends Weapon {
 					}
 				} else if(i instanceof Crate) {
 					Item p = Crate.generate();
-					p.coords = e.coords;
+					p.coords = i.coords;
 					Main.realm.items.add(p);
 					Main.realm.items.remove(i);
 				} else if(i instanceof Barrel) {
 					Item p = Barrel.generate();
-					p.coords = e.coords;
+					p.coords = i.coords;
 					Main.realm.items.add(p);
 					Main.realm.items.remove(i);
 				} else if(i instanceof Chest) {
 					Item p = Chest.generate();
-					p.coords = e.coords;
+					p.coords = i.coords;
 					Main.realm.items.add(p);
 					Main.realm.items.remove(i);
 				}
