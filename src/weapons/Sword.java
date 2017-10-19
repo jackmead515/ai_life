@@ -31,8 +31,8 @@ public class Sword extends Weapon {
 		for(Item i : Main.realm.items) {
 			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
-				health -= 1;
 				if(i instanceof Deer) {
+					health -= 1;
 					((Entity) i).health-=damage;
 					if(((Entity) i).health <= 0) {
 						RawVenison a = new RawVenison();
@@ -41,16 +41,19 @@ public class Sword extends Weapon {
 						Main.realm.items.remove(i);
 					}
 				} else if(i instanceof Crate) {
+					health -= 1;
 					Item p = Crate.generate();
 					p.coords = i.coords;
 					Main.realm.items.add(p);
 					Main.realm.items.remove(i);
 				} else if(i instanceof Barrel) {
+					health -= 1;
 					Item p = Barrel.generate();
 					p.coords = i.coords;
 					Main.realm.items.add(p);
 					Main.realm.items.remove(i);
 				} else if(i instanceof Chest) {
+					health -= 1;
 					Item p = Chest.generate();
 					p.coords = i.coords;
 					Main.realm.items.add(p);

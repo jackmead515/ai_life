@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import boundaries.Boundary;
 import food.Food;
 import frame.GamePanel;
 import interfaces.IActions;
@@ -97,6 +98,12 @@ public class Player extends Entity {
 			for(int x1 = 0; x1 < Main.realm.items.size(); x1++) {
 				Item i = Main.realm.items.get(x1);
 				if(p.coords[0] == i.coords[0] && p.coords[1] == i.coords[1]) {
+					
+					if(i instanceof Boundary) {
+						projectiles.remove(p);
+						break;
+					}
+					
 					if(i instanceof Deer) {
 						((Entity) i).health-=p.damage;
 						projectiles.remove(p);
@@ -106,28 +113,28 @@ public class Player extends Entity {
 							Main.realm.items.add(a);
 							Main.realm.items.remove(i);
 						}
-						
+						break;
 					} else if(i instanceof Crate) {
 						Item p1 = Crate.generate();
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
 						projectiles.remove(p);
-						
+						break;
 					} else if(i instanceof Barrel) {
 						Item p1 = Barrel.generate();
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
 						projectiles.remove(p);
-						
+						break;
 					} else if(i instanceof Chest) {
 						Item p1 = Chest.generate();
 						p1.coords = i.coords;
 						Main.realm.items.add(p1);
 						Main.realm.items.remove(i);
 						projectiles.remove(p);
-						
+						break;
 					}
 				}
 			}

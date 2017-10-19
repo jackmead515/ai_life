@@ -103,7 +103,6 @@ public class FireSpell extends Spell {
 					((Staff) i).ammo.add(this);
 					Main.realm.items.remove(this);
 					return false;
-					
 				}
 			}
 		}

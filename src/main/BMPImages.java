@@ -79,12 +79,12 @@ public class BMPImages {
 	public static BufferedImage gray_brick;
 	public static BufferedImage dirt;
 	public static BufferedImage staff_in_hand;
-	
 	public static BufferedImage gray_brick_floor;
 	public static BufferedImage anvil;
 	public static BufferedImage ash;
 	public static BufferedImage rune;
 	public static BufferedImage spell_table;
+	public static BufferedImage bag;
 	
 	public static void load() {
 		

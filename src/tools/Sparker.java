@@ -1,6 +1,7 @@
 package tools;
 
 import entity.Entity;
+import floors.Floor;
 import items.CampFire;
 import items.Item;
 import items.Wood;
@@ -25,7 +26,7 @@ public class Sparker extends Tool {
 	@Override
 	public boolean use(Entity e) {
 		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
 				health-=1;
 				if(i instanceof Wood) {
 					CampFire s = new CampFire();

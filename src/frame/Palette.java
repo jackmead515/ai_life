@@ -111,6 +111,7 @@ public class Palette {
 		items.add(new Ash());
 		items.add(new Rune());
 		items.add(new SpellTable());
+		items.add(new Bag());
 		
 		items.add(new Bread());
 		items.add(new Venison());

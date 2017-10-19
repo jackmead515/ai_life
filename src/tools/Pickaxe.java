@@ -1,6 +1,7 @@
 package tools;
 
 import entity.Entity;
+import floors.Floor;
 import items.Iron;
 import items.IronOre;
 import items.Item;
@@ -26,7 +27,7 @@ public class Pickaxe extends Tool {
 	@Override
 	public boolean use(Entity e) {
 		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
 				SoundEffect.PICKAXE.play();
 				health-=1;
 				if(i instanceof Stone) {

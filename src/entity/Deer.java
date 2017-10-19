@@ -8,7 +8,7 @@ public class Deer extends Animal {
 	
 	public Deer() {
 		health = 5;
-		maxSpawns = 1;
+		maxSpawns = 2;
 		multipleRate = 60000000000L;
 		image = BMPImages.deer;
 		canPickUp = false;
@@ -26,6 +26,7 @@ public class Deer extends Animal {
 			startTime = time;
 			
 			Deer d = new Deer();
+			d.maxSpawns = 0;
 			d.coords = new int[] {coords[0], coords[1]+1};
 			if(!Main.window.gamePanel.outOfBounds(d.coords) && !Util.inBoundary(d.coords)) {
 				Main.realm.items.add(d);

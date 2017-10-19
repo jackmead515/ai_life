@@ -20,7 +20,8 @@ public enum SoundEffect {
    DROP("sounds/drop.wav"),
    FIRE_SPELL("sounds/fire_spell.wav"),
    HAMMER("sounds/hammer.wav"),
-   PICKUP("sounds/pickup.wav");
+   PICKUP("sounds/pickup.wav"),
+   AXE("sounds/axe.wav");
   
    // Nested class for specifying volume
    public static enum Volume {
