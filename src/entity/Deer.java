@@ -27,7 +27,7 @@ public class Deer extends Animal {
 			
 			Deer d = new Deer();
 			d.maxSpawns = 0;
-			d.coords = coords;
+			d.coords.set(coords.x(), coords.y());
 			if(!Main.window.gamePanel.outOfBounds(d.coords) && !Util.inBoundary(d.coords)) {
 				Main.realm.add(d);
 				maxSpawns -= 1;

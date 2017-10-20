@@ -40,7 +40,7 @@ public class Bow extends Weapon {
 			} else if(e.pointingRight) {
 				p.direction = 4;
 			}
-			p.coords = e.coords;
+			p.coords.set(e.coords.x(), e.coords.y());
 			e.projectiles.add(p);
 		}
 		

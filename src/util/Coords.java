@@ -24,16 +24,14 @@ public class Coords implements Comparable {
 		return coords[1];
 	}
 	
-	 //Depends only on account number
-    /*@Override
+    @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + coords[0] + coords[1]; 
+        int result = (coords[0]*3) * coords[1];
+        result = prime * result; 
         return result;
-    }*/
+    }
  
-    //Compare only account numbers
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

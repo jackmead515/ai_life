@@ -17,28 +17,28 @@ public class Test {
 		HashMultimap<Coords, Item> items = HashMultimap.create();
 		
 		Item s = new Item();
-		s.coords.set(0, 0);
 		Item w = new Item();
-		w.coords.set(0, 0);
 		
 		Item p = new Item();
-		p.coords.set(1, 1);
 		
-		items.put(s.coords, s);
-		items.put(w.coords, w);
-		items.put(p.coords, p);
+		Coords one = new Coords(1, 1);
+		Coords two = new Coords(2, 2);
 		
-		Collection<Item> bucket = items.get(s.coords);
+		items.put(new Coords(1, 1), s);
+		items.put(new Coords(1, 1), w);
+		items.put(new Coords(2, 2), p);
+		
+		/*Collection<Item> bucket = items.get(new Coords(1, 1));
 		bucket.add(s);
-		items.putAll(s.coords, bucket);
+		items.putAll(new Coords(1, 1), bucket);
 		
-		bucket = items.get(w.coords);
+		bucket = items.get(new Coords(1, 1));
 		bucket.add(w);
-		items.putAll(w.coords, bucket);
+		items.putAll(new Coords(1, 1), bucket);
 		
-		bucket = items.get(p.coords);
+		bucket = items.get(new Coords(2, 2));
 		bucket.add(p);
-		items.putAll(p.coords, bucket);
+		items.putAll(new Coords(2, 2), bucket);*/
 		
 		for(Coords key : items.keySet()) {
 			System.out.println(key.x() + " " + key.y());
