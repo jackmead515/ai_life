@@ -113,6 +113,9 @@ class AI():
         if len(self.memory.memory) > 100:
                 batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
                 self.learn(batch_state, batch_next_state, batch_reward, batch_action)
+        self.last_action = action
+        self.last_state = new_state
+        self.last_reward = reward
 
         return action
         '''

@@ -56,7 +56,7 @@ public class Item implements IItem {
 	
 	@Override
 	public boolean place(Coords coords) {
-		this.coords.set(coords.x(), coords.y());
+		this.coords.set(coords);
 		Main.realm.add(this);
 		return true;
 	}

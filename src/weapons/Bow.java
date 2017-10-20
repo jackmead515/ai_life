@@ -27,10 +27,8 @@ public class Bow extends Weapon {
 	@Override
 	public boolean use(Entity e) {
 		if(ammo.size() > 0) {
-			SoundEffect.BOW.play();
-			health -= 1;
 			Arrow p = ammo.pop();
-			p.isShot = true;
+			
 			if(e.pointingDown) {
 				p.direction = 2;
 			} else if (e.pointingUp) {
@@ -39,7 +37,13 @@ public class Bow extends Weapon {
 				p.direction = 3;
 			} else if(e.pointingRight) {
 				p.direction = 4;
+			} else {
+				ammo.add(p);
+				return false;
 			}
+			SoundEffect.BOW.play();
+			health -= 1;
+			p.isShot = true;
 			p.coords.set(e.coords.x(), e.coords.y());
 			e.projectiles.add(p);
 		}

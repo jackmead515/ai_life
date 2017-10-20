@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.google.common.collect.HashMultimap;
@@ -9,40 +11,41 @@ import items.Shrub;
 import items.Stick;
 import items.Wood;
 import util.Coords;
+import util.Util;
 
 public class Test {
 	
 	public static void main(String[] args) {
 		
-		HashMultimap<Coords, Item> items = HashMultimap.create();
+		Point origin = new Point(100, 100);
 		
-		Item s = new Item();
-		Item w = new Item();
+		ArrayList<Point> points = new ArrayList<Point>();
 		
-		Item p = new Item();
+		points.add(new Point(50, 140));
+		points.add(new Point(50, 100));
+		points.add(new Point(50,60));
+		points.add(new Point(10,73));
 		
-		Coords one = new Coords(1, 1);
-		Coords two = new Coords(2, 2);
+		points.add(new Point(150, 140));
+		points.add(new Point(150, 100));
+		points.add(new Point(150,60));
+		points.add(new Point(122,105));
 		
-		items.put(new Coords(1, 1), s);
-		items.put(new Coords(1, 1), w);
-		items.put(new Coords(2, 2), p);
+		points.add(new Point(90, 140));
+		points.add(new Point(70, 200));
+		points.add(new Point(120, 340));
 		
-		/*Collection<Item> bucket = items.get(new Coords(1, 1));
-		bucket.add(s);
-		items.putAll(new Coords(1, 1), bucket);
+		points.add(new Point(40, 20));
+		points.add(new Point(80, 40));
+		points.add(new Point(145, 10));
 		
-		bucket = items.get(new Coords(1, 1));
-		bucket.add(w);
-		items.putAll(new Coords(1, 1), bucket);
+		points.add(new Point(150,150));
+	
 		
-		bucket = items.get(new Coords(2, 2));
-		bucket.add(p);
-		items.putAll(new Coords(2, 2), bucket);*/
-		
-		for(Coords key : items.keySet()) {
-			System.out.println(key.x() + " " + key.y());
+		for(Point test : points) {
+			System.out.println(Util.directionFrom(origin, test));
 		}
+		
 			
 	}
 	

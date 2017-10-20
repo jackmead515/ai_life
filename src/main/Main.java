@@ -88,10 +88,6 @@ public class Main {
 					((IMultiple) i).multiple(time);
 				}
 			}
-			
-			if(i instanceof Projectile) {
-				((Projectile) i).shoot();
-			}
 		}
 	}
 	

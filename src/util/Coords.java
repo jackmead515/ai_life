@@ -16,6 +16,10 @@ public class Coords {
 		coords[0] = x; coords[1] = y;
 	}
 	
+	public void set(Coords o) {
+		coords[0] = o.x(); coords[1] = o.y();
+	}
+	
 	public int x() {
 		return coords[0];
 	}

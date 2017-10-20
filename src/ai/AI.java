@@ -136,8 +136,6 @@ public class AI extends Player {
 			startTime = time;
 			
 			health-=starveAmount;
-			
-			reward += AIStats.living_reward;
 			reward += -starveAmount;
 			
 		}
