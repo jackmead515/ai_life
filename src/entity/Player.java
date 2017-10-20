@@ -165,9 +165,7 @@ public class Player extends Entity {
 			
 		if(!Main.window.gamePanel.outOfBounds(next)) {
 			 if(!Util.inBoundary(next)) {
-				 resetMovement();
-				 coords.set(next.x(), next.y());;
-				 System.out.println(coords.x() + " " + coords.y());
+				 coords.set(next.x(), next.y());
 			 }
 		} else {
 			if(up && Main.realmController.upRealm()) {
@@ -250,30 +248,14 @@ public class Player extends Entity {
 	
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
-			case KeyEvent.VK_S:
-				down = true;
-				break;
-			case KeyEvent.VK_W:
-				up = true;
-				break;
-			case KeyEvent.VK_A:
-				left = true;
-				break;
-			case KeyEvent.VK_D:
-				right = true;
-				break;
-			case KeyEvent.VK_SPACE:
-				pickUp = true;
-				return;
-			case KeyEvent.VK_ENTER:
-				use = true;
-				return;
-			case KeyEvent.VK_SHIFT:
-				dropItem = true;
-				return;
-			case KeyEvent.VK_H:
-				showHUD = !showHUD;
-				return;
+			case KeyEvent.VK_S: down = true; break;
+			case KeyEvent.VK_W: up = true; break;
+			case KeyEvent.VK_A: left = true; break;
+			case KeyEvent.VK_D: right = true; break;
+			case KeyEvent.VK_SPACE: pickUp = true; return;
+			case KeyEvent.VK_ENTER: use = true; return;
+			case KeyEvent.VK_SHIFT: dropItem = true; return;
+			case KeyEvent.VK_H: showHUD = !showHUD; return;
 		}
 		updateMovement();
 	}
@@ -284,20 +266,11 @@ public class Player extends Entity {
 		int direction = Util.directionFrom(c, p);
 		
 		switch(direction) {
-			case 1:
-				pointingUp = true;
-				break;
-			case 2:
-				pointingDown = true;
-				break;
-			case 3:
-				pointingLeft = true;
-				break;
-			case 4:
-				pointingRight = true;
-				break;
-			default:
-				return;
+			case 1: pointingUp = true; break;
+			case 2: pointingDown = true; break;
+			case 3: pointingLeft = true; break;
+			case 4: pointingRight = true; break;
+			default: return;
 		}
 		
 		updatePointingDirection();

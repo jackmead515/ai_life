@@ -21,6 +21,7 @@ import interfaces.IActions;
 import items.Item;
 import main.BMPImages;
 import main.Main;
+import util.Coords;
 import util.RefStrings;
 import util.Util;
 
@@ -39,45 +40,20 @@ public class AI extends Player {
 	
 	private void takeAction(int action) {
 		switch(action) {
-			case -1:
-				return;
-			case 0:
-				break;
-			case 1:
-				drop = true;
-				break;
-			case 2:
-				pickUp = true;
-				break;
-			case 3:
-				use = true;
-				break;
-			case 4:
-				left = true;
-				break;
-			case 5:
-				right = true;
-				break;
-			case 6:
-				up = true;
-				break;
-			case 7:
-				down = true;
-				break;
-			case 8:
-				pointingLeft = true;
-				break;
-			case 9:
-				pointingRight = true;
-				break;
-			case 10:
-				pointingDown = true;
-				break;
-			case 11:
-				pointingUp = true;
-				break;
-			default:
-				return;
+			case -1: return;
+			case 0: break;
+			case 1: dropItem = true; break;
+			case 2: pickUp = true; break;
+			case 3: use = true; break;
+			case 4: left = true; break;
+			case 5: right = true; break;
+			case 6: up = true; break;
+			case 7: down = true; break;
+			case 8: pointingLeft = true; break;
+			case 9: pointingRight = true; break;
+			case 10: pointingDown = true; break;
+			case 11: pointingUp = true; break;
+			default: return;
 		}
 		
 		updateMovement();
@@ -92,9 +68,9 @@ public class AI extends Player {
 		
 		shoot(time);
 		
-		if(drop) {
+		if(dropItem) {
 			drop();
-			drop = false;
+			dropItem = false;
 		}
 		
 		if(pickUp) {
@@ -116,29 +92,26 @@ public class AI extends Player {
 	
 	@Override
 	protected void calculateNextMovement() {
-		int[] now = coords;
-		int[] next = null;
+		int[] now = new int[] {coords.x(), coords.y()};
+		Coords next = new Coords(0,0);
 		
 		if(down) {
-			next = new int[]{ now[0], now[1]+1 };
+			next.set(now[0], now[1]+1);
 		} else if (up) {
-			next = new int[]{ now[0], now[1]-1 };
+			next.set(now[0], now[1]-1);
 		} else if (left) {
-			next = new int[]{ now[0]-1, now[1] };
+			next.set(now[0]-1, now[1]);
 		} else if(right) {
-			next = new int[]{ now[0]+1, now[1] };
+			next.set(now[0]+1, now[1]);
 		} else {
 			return;
 		}
 			
-		if(!Main.window.gamePanel.outOfBounds(next)) {
-			 if(!Util.inBoundary(next)) {
-				 resetMovement();
-				 coords = next;
-			 }
+		if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
+			coords.set(next.x(), next.y());;
 		} else {
 			reward += AIStats.outOfBounds_reward;
-		}
+		}	
 		
 		resetMovement();
 	}

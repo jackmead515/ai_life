@@ -111,8 +111,8 @@ public class AttackEntity extends Entity {
 				if(a != null) {
 					a.coords.set(target.coords.x(), target.coords.y());
 					Main.realm.add(a);
-					Main.realm.remove(target);
 				}
+				Main.realm.remove(target);
 			}
 		}
 	}

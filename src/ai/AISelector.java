@@ -28,7 +28,7 @@ public class AISelector {
 		LinkedList<Item> items = Main.realm.items;
 		for(int x = 0; x < items.size(); x++) {
 			Item i = items.get(x);
-			state[i.coords[0]][i.coords[1]] = new BigInteger(i.getClass().getSimpleName().getBytes()).intValue();
+			state[i.coords.x()][i.coords.y()] = new BigInteger(i.getClass().getSimpleName().getBytes()).intValue();
 		}
 	}
 	
