@@ -27,6 +27,7 @@ public class Entity extends Item implements IEntity {
 		projectiles = new LinkedList<Projectile>();
 		health = 1;
 		totalHealth = 1;
+		canPickUp = false;
 	}
 	
 	@Override

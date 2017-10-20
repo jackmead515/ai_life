@@ -12,121 +12,123 @@ import util.Util;
 public class AttackEntity extends Entity {
 	
 	protected long movementTimeSpeed;
-	protected long startTime;
+	protected long movementStartTime;
 	
-	protected long targetSwitchTime;
-	protected long idleTime;
-	protected long switchStartTime;
+	protected long changeTargetStartTime;
+	protected long changeTargetTimeSpeed;
+	
+	protected long idleStartTime;
+	protected long idleTimeSpeed;
 	
 	protected Entity target;
 	
 	public AttackEntity() {
-		startTime = System.nanoTime();
-		movementTimeSpeed = 500000000L;
+		movementStartTime = changeTargetStartTime = idleStartTime = System.nanoTime();
+		movementTimeSpeed = 600000000L;
+		changeTargetTimeSpeed = 30000000000L;
+		idleTimeSpeed = 30000000000L;
 		target = null;
-		//idleTime = 1000000000L;
-		//targetSwitchTime = 10000000000L;
 	}
 	
 	@Override
 	public void move(long time) {
-		if(time - startTime >= movementTimeSpeed) {
+		/*
+		 * If it's time to make a move:
+		 * 	If it's time to change the target:
+		 * 	 If it's time to pursue:
+		 * 		choose a target
+		 * 	 else:
+		 * 		return
+		 * 
+		 *  make a move
+		 */
+		if(time - movementStartTime >= movementTimeSpeed) {
+			movementStartTime = time;
 			
-			startTime = time;
-			
-			int[] now = new int[] {coords.x(), coords.y()};
-			Coords next = new Coords(0,0);
-			
-			Entity t = chooseTarget(time);
-			if(t == null) {
-				int rand = Randomizer.random(0, 4);
+			if(time - changeTargetStartTime >= changeTargetTimeSpeed) {
+				changeTargetStartTime = time;
 				
-				switch(rand) {
-					case 0:
-						break;
-					case 1:
-						next.set(now[0], now[1]+1);
-						break;
-					case 2:
-						next.set(now[0], now[1]-1);
-						break;
-					case 3:
-						next.set(now[0]-1, now[1]);
-						break;
-					case 4:
-						next.set(now[0]+1, now[1]);
-						break;
+				if(time - idleStartTime >= idleTimeSpeed) {
+					idleStartTime = time; 
+					target = chooseTarget();
+				} else {
+					return;
 				}
-			} else {
 				
-				int x =	now[0]*20;
-				int y = now[1]*20;
-				int x1 = t.coords.x()*20;
-				int y1 = t.coords.y()*20;
-				
-				if(Util.distanceTo(x+20, y, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
-					next.set(now[0]+1, now[1]);
-				} else if(Util.distanceTo(x-20, y, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
-					next.set(now[0]-1, now[1]);
-				} else if(Util.distanceTo(x, y+20, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
-					next.set(now[0], now[1]+1);
-				} else if(Util.distanceTo(x, y-20, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
-					next.set(now[0], now[1]-1);
-				}
 				
 			}
 			
-			if(next != null) {
-				if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
-					coords = next;
-					if(t != null) {
-						attackTarget(t);
-					}
+			makeMove();
+		}
+	}
+	
+	private void makeMove() {
+		int[] now = new int[] {coords.x(), coords.y()};
+		Coords next = null;
+		
+		if(target == null) {
+			//Random Movement
+			int rand = Randomizer.random(0, 4);
+			
+			switch(rand) {
+				case 0: return;
+				case 1: next = new Coords(now[0], now[1]+1); break;
+				case 2: next = new Coords(now[0], now[1]-1); break;
+				case 3: next = new Coords(now[0]-1, now[1]); break;
+				case 4: next = new Coords(now[0]+1, now[1]); break;
+			}
+		} else {
+			//Attacking Movement
+			int x =	now[0]*20; int x1 = target.coords.x()*20;
+			int y = now[1]*20; int y1 = target.coords.y()*20;
+			
+			if(Util.distanceTo(x+20, y, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
+				next = new Coords(now[0]+1, now[1]);
+			} else if(Util.distanceTo(x-20, y, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
+				next = new Coords(now[0]-1, now[1]);
+			} else if(Util.distanceTo(x, y+20, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
+				next = new Coords(now[0], now[1]+1);
+			} else if(Util.distanceTo(x, y-20, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
+				next = new Coords(now[0], now[1]-1);
+			}
+		}
+		
+		if(next != null) {
+			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
+				coords.set(next.x(), next.y());
+				if(target != null) {
+					attackTarget();
 				}
 			}
 		}
 	}
 	
-	private void attackTarget(Entity t) {
-		if(coords == t.coords) {
-			if(t instanceof Deer) {
-				((Entity) t).health-=1;
-				if(((Entity) t).health <= 0) {
+	private void attackTarget() {
+		if(coords.x() == target.coords.x() && coords.y() == target.coords.y()) {
+			target.health-=1;
+			if(target.health <= 0) {
+				if(target instanceof Deer) {
 					RawVenison a = new RawVenison();
-					a.coords = t.coords;
+					a.coords.set(target.coords.x(),target.coords.y());
 					Main.realm.add(a);
-					Main.realm.remove(t);
+					Main.realm.remove(target);
 				}
-			} else if(t == Main.player) {
-				Main.player.health -= 1;
 			}
 		}
 	}
 	
-	private Entity chooseTarget(long time) {
-		
-		int x = coords.x()*20;
-		int y = coords.y()*20;
-		
-		if(Util.distanceTo(x,y,Main.player.coords.x(),Main.player.coords.y()) <= 300) {
-			return (Entity) Main.player;
-		}
-		
-		for(int p = 0; p < Main.realm.items.size(); p++) {
-			Item i = Main.realm.items.get(p);
-			
-			if(i instanceof Entity && !(i instanceof AttackEntity)) {
-			
-				int x1 = i.coords.x()*20;
-				int y1 = i.coords.y()*20;
+	private Entity chooseTarget() {
+		for(int p = 0; p < Main.realm.entities.size(); p++) {
+			Entity i = Main.realm.entities.get(p);
+			if(!(i instanceof AttackEntity)) {
+				int px = i.coords.x()*20;
+				int py = i.coords.y()*20;
 				
-				if(Util.distanceTo(x,y,x1,y1) <= 300) {
-					return (Entity) i;
+				if(Util.distanceTo(coords.x()*20,coords.y()*20,px,py) <= 300) {
+					return i;
 				}
-				
 			}
 		}
-		
 		return null;
 	}
 

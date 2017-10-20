@@ -9,10 +9,9 @@ public class Deer extends Animal {
 	public Deer() {
 		health = 5;
 		maxSpawns = 2;
-		multipleRate = 60000000000L;
+		multipleStartTime = System.nanoTime();;
+		multipleTimeSpeed = 60000000000L;
 		image = BMPImages.deer;
-		canPickUp = false;
-		startTime = System.nanoTime();
 	}
 	
 	@Override
@@ -21,9 +20,9 @@ public class Deer extends Animal {
 			return;
 		}
 		
-		if(time - startTime >= multipleRate) {
+		if(time - multipleStartTime >= multipleTimeSpeed) {
 			
-			startTime = time;
+			multipleStartTime = time;
 			
 			Deer d = new Deer();
 			d.maxSpawns = 0;

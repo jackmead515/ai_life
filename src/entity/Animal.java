@@ -4,8 +4,8 @@ import interfaces.IMultiple;
 
 public class Animal extends WanderEntity implements IMultiple {
 	
-	protected long startTime;
-	protected long multipleRate;
+	protected long multipleStartTime;
+	protected long multipleTimeSpeed;
 	protected int maxSpawns;
 	
 	public Animal() {

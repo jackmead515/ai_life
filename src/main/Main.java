@@ -46,9 +46,7 @@ public class Main {
 		
 		realmController.realms[10][10] = realm;
 		
-		for(Coords key : realm.hmitems.keySet()) {
-			System.out.println(key.x() + " " + key.y());
-		}
+		realm.entities.add(player);
 		
 		Thread t = new Thread(new Runnable() {
 			public void run() {

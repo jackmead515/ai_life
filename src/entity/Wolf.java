@@ -9,10 +9,9 @@ public class Wolf extends Predator {
 	public Wolf() {
 		health = 5;
 		maxSpawns = 1;
-		multipleRate = 120000000000L;
+		multipleStartTime = System.nanoTime();
+		multipleTimeSpeed = 120000000000L;
 		image = BMPImages.wolf;
-		canPickUp = false;
-		startTime = System.nanoTime();
 	}
 	
 	@Override
@@ -21,13 +20,13 @@ public class Wolf extends Predator {
 			return;
 		}
 		
-		if(time - startTime >= multipleRate) {
+		if(time - multipleStartTime >= multipleTimeSpeed) {
 			
-			startTime = time;
+			multipleStartTime = time;
 			
 			Wolf d = new Wolf();
 			d.maxSpawns = 0;
-			d.coords = coords;
+			d.coords.set(coords.x(), coords.y());
 			if(!Main.window.gamePanel.outOfBounds(d.coords) && !Util.inBoundary(d.coords)) {
 				Main.realm.add(d);
 				maxSpawns -= 1;
