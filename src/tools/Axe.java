@@ -40,14 +40,14 @@ public class Axe extends Tool {
 				if(i instanceof Wood) {
 					health-=1;
 					Stick s = new Stick();
-					s.coords = i.coords;
+					s.coords.set(i.coords.x(), i.coords.y()); 
 					Main.realm.remove(i);
 					Main.realm.add(s);
 					break;
 				} else if(i instanceof Plant || i instanceof Shrub) {
 					health-=1;
 					WheatSeed s = new WheatSeed();
-					s.coords = i.coords;
+					s.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.add(s);
 					break;

@@ -107,9 +107,9 @@ public class AttackEntity extends Entity {
 		if(coords.x() == target.coords.x() && coords.y() == target.coords.y()) {
 			target.health-=1;
 			if(target.health <= 0) {
-				if(target instanceof Deer) {
-					RawVenison a = new RawVenison();
-					a.coords.set(target.coords.x(),target.coords.y());
+				Item a = target.drop();
+				if(a != null) {
+					a.coords.set(target.coords.x(), target.coords.y());
 					Main.realm.add(a);
 					Main.realm.remove(target);
 				}

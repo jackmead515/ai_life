@@ -27,7 +27,7 @@ public class Wheat extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Furnace) {
 					Bread a = new Bread();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;

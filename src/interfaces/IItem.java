@@ -21,6 +21,8 @@ public interface IItem extends Serializable {
 
 	public String description();
 
-	boolean place(Coords coords);
+	public boolean place(Coords coords);
+
+	public Item drop();
 
 }

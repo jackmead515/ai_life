@@ -25,6 +25,7 @@ import interfaces.IActions;
 import items.Barrel;
 import items.CampFire;
 import items.Chest;
+import items.Container;
 import items.Crate;
 import items.Furnace;
 import items.Item;
@@ -46,7 +47,7 @@ public class Player extends Entity {
 	
 	protected volatile boolean pickUp;
 	protected volatile boolean use;
-	protected volatile boolean drop;
+	protected volatile boolean dropItem;
 
 	public boolean showHUD;
 	public long startTime;
@@ -69,7 +70,7 @@ public class Player extends Entity {
 		showHUD = true;
 		
 		pointingUp = pointingDown = pointingLeft = pointingRight = false;
-		up = down = left = right = pickUp = use = drop = false;
+		up = down = left = right = pickUp = use = dropItem = false;
 	
 		coords = new Coords(1,1);
 	}
@@ -81,9 +82,9 @@ public class Player extends Entity {
 		
 		shoot(time);
 		
-		if(drop) {
-			drop();
-			drop = false;
+		if(dropItem) {
+			dropItem();
+			dropItem = false;
 		}
 		
 		if(pickUp) {
@@ -113,36 +114,26 @@ public class Player extends Entity {
 						projectiles.remove(p);
 						break;
 					}
-					if(i instanceof Deer) {
+					if(i instanceof Entity) {
 						((Entity) i).health-=p.damage;
 						projectiles.remove(p);
 						if(((Entity) i).health <= 0) {
-							RawVenison a = new RawVenison();
-							a.coords = i.coords;
-							Main.realm.add(a);
+							Item a = i.drop();
+							if(a != null) {
+								a.coords.set(i.coords.x(), i.coords.y());
+								Main.realm.add(a);
+							}
 							Main.realm.remove(i);
 						}
 						break;
-					} else if(i instanceof Crate) {
-						Item p1 = Crate.generate();
-						p1.coords = i.coords;
-						Main.realm.add(p1);
-						Main.realm.remove(i);
-						projectiles.remove(p);
-						break;
-					} else if(i instanceof Barrel) {
-						Item p1 = Barrel.generate();
-						p1.coords = i.coords;
-						Main.realm.add(p1);
-						Main.realm.remove(i);
-						projectiles.remove(p);
-						break;
-					} else if(i instanceof Chest) {
-						Item p1 = Chest.generate();
-						p1.coords = i.coords;
-						Main.realm.add(p1);
-						Main.realm.remove(i);
-						projectiles.remove(p);
+					} else if(i instanceof Container) {
+						health -= 1;
+						Item a = i.drop();
+						if(a != null) {
+							a.coords.set(i.coords.x(), i.coords.y());
+							Main.realm.add(a);
+							Main.realm.remove(i);
+						}
 						break;
 					}
 				}
@@ -193,7 +184,7 @@ public class Player extends Entity {
 		resetMovement();
 	}
 	
-	public void drop() {
+	public void dropItem() {
 		if(inHand != null) {
 			SoundEffect.DROP.play();
 			if(inHand.place(coords)) {
@@ -215,18 +206,15 @@ public class Player extends Entity {
 	public void pickUp() {
 		if(inHand == null) {
 			Collection<Item> bucket = Main.realm.hmitems.get(coords);
-			System.out.println(bucket.size());
 			Iterator<Item> iter = bucket.iterator();
 			while(iter.hasNext()) {
 				Item i = iter.next();
-				if(!(i instanceof Floor)) {
-					if(i.canPickUp) {
+				if(!(i instanceof Floor) && i.canPickUp) {
 						SoundEffect.PICKUP.play();
 						Main.realm.remove(i);
 						i.pickUp(this);
 						inHand = i;
 						break;
-					}
 				}
 			}
 		}
@@ -281,7 +269,7 @@ public class Player extends Entity {
 				use = true;
 				return;
 			case KeyEvent.VK_SHIFT:
-				drop = true;
+				dropItem = true;
 				return;
 			case KeyEvent.VK_H:
 				showHUD = !showHUD;

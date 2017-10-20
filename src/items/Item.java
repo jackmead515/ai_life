@@ -44,6 +44,10 @@ public class Item implements IItem {
 		return true;
 	}
 	
+	public Item drop() {
+		return null;
+	}
+	
 	@Override
 	public String description() {
 		return this.getClass().getSimpleName();

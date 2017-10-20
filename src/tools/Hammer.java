@@ -35,7 +35,7 @@ public class Hammer extends Tool {
 				if(i instanceof MoltenIron) {
 					health -= 1;
 					IronTrinket a = new IronTrinket();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.add(a);
 					break;

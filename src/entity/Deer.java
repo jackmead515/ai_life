@@ -1,5 +1,7 @@
 package entity;
 
+import items.Item;
+import items.RawVenison;
 import main.BMPImages;
 import main.Main;
 import util.Util;
@@ -33,6 +35,11 @@ public class Deer extends Animal {
 			}
 
 		}
+	}
+	
+	@Override
+	public Item drop() {
+		return new RawVenison();
 	}
 
 }

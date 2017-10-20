@@ -40,14 +40,14 @@ public class Pickaxe extends Tool {
 				if(i instanceof Stone) {
 					health-=1;
 					Rock s = new Rock();
-					s.coords = i.coords;
+					s.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.add(s);
 					break;
 				} else if(i instanceof IronOre) {
 					health-=1;
 					Iron s = new Iron();
-					s.coords = i.coords;
+					s.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.add(s);
 					break;

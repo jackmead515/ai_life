@@ -25,7 +25,7 @@ public class RawVenison extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof CampFire || i instanceof Furnace) {
 					Venison a = new Venison();
-					a.coords = e.coords;
+					a.coords.set(e.coords.x(), e.coords.y());
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;

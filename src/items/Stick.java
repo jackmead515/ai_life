@@ -30,28 +30,28 @@ public class Stick extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Wood) {
 					Axe a = new Axe();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;
 				} else if(i instanceof Stone) {
 					Pickaxe a = new Pickaxe();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;
 				} else if(i instanceof IronTrinket) {
 					Sword a = new Sword();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;
 				} else if(i instanceof Rock) {
 					Hammer a = new Hammer();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);

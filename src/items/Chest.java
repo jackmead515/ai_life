@@ -10,7 +10,7 @@ import weapons.Arrow;
 import weapons.Bow;
 import weapons.Sword;
 
-public class Chest extends Item {
+public class Chest extends Container {
 	
 	public Chest() {
 		
@@ -18,7 +18,8 @@ public class Chest extends Item {
 		
 	}
 	
-	public static Item generate() {
+	@Override
+	public Item drop() {
 		int rand = Randomizer.random(1, 5);
 		switch(rand) {
 			case 1:

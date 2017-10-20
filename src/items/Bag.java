@@ -35,9 +35,11 @@ public class Bag extends Item {
 			}
 		}
 		
-		Item p = inventory.pop();
-		p.coords.set(e.coords.x(), e.coords.y());
-		Main.realm.add(p);
+		if(inventory.size() > 0) {
+			Item p = inventory.pop();
+			p.coords.set(e.coords.x(), e.coords.y());
+			Main.realm.add(p);
+		}
 		
 		return true;
 	}

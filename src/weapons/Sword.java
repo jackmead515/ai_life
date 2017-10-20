@@ -8,6 +8,7 @@ import entity.Entity;
 import floors.Floor;
 import items.Barrel;
 import items.Chest;
+import items.Container;
 import items.Crate;
 import items.Item;
 import items.Plant;
@@ -42,34 +43,23 @@ public class Sword extends Weapon {
 			Item i = iter.next();
 			if(!(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
-				if(i instanceof Deer) {
+				if(i instanceof Entity) {
 					health -= 1;
 					((Entity) i).health-=damage;
 					if(((Entity) i).health <= 0) {
-						RawVenison a = new RawVenison();
-						a.coords = i.coords;
-						Main.realm.add(a);
+						Item a = i.drop();
+						if(a != null) {
+							a.coords.set(i.coords.x(), i.coords.y());
+							Main.realm.add(a);
+							Main.realm.remove(i);
+						}
 						Main.realm.remove(i);
 					}
 					break;
-				} else if(i instanceof Crate) {
+				} else if(i instanceof Container) {
 					health -= 1;
-					Item p = Crate.generate();
-					p.coords = i.coords;
-					Main.realm.add(p);
-					Main.realm.remove(i);
-					break;
-				} else if(i instanceof Barrel) {
-					health -= 1;
-					Item p = Barrel.generate();
-					p.coords = i.coords;
-					Main.realm.add(p);
-					Main.realm.remove(i);
-					break;
-				} else if(i instanceof Chest) {
-					health -= 1;
-					Item p = Chest.generate();
-					p.coords = i.coords;
+					Item p = i.drop();
+					p.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.add(p);
 					Main.realm.remove(i);
 					break;

@@ -7,7 +7,7 @@ import tools.Pickaxe;
 import tools.Sparker;
 import util.Randomizer;
 
-public class Barrel extends Item {
+public class Barrel extends Container {
 	
 	public Barrel() {
 		
@@ -15,7 +15,8 @@ public class Barrel extends Item {
 		
 	}
 	
-	public static Item generate() {
+	@Override
+	public Item drop() {
 		int rand = Randomizer.random(1, 5);
 		switch(rand) {
 			case 1:

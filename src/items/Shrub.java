@@ -34,7 +34,7 @@ public class Shrub extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Shrub) {
 					Stick a = new Stick();
-					a.coords = i.coords;
+					a.coords.set(i.coords.x(), i.coords.y());
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);

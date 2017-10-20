@@ -5,7 +5,7 @@ import main.Main;
 import main.SoundEffect;
 import util.Randomizer;
 
-public class Crate extends Item {
+public class Crate extends Container {
 	
 	public Crate() {
 		
@@ -13,7 +13,8 @@ public class Crate extends Item {
 		
 	}
 	
-	public static Item generate() {
+	@Override
+	public Item drop() {
 		int rand = Randomizer.random(1, 6);
 		switch(rand) {
 			case 1:
