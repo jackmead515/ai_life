@@ -1,5 +1,8 @@
 package weapons;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Deer;
 import entity.Entity;
 import floors.Floor;
@@ -7,7 +10,12 @@ import items.Barrel;
 import items.Chest;
 import items.Crate;
 import items.Item;
+import items.Plant;
 import items.RawVenison;
+import items.Shrub;
+import items.Stick;
+import items.WheatSeed;
+import items.Wood;
 import main.BMPImages;
 import main.Main;
 import main.SoundEffect;
@@ -28,8 +36,11 @@ public class Sword extends Weapon {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
 				if(i instanceof Deer) {
 					health -= 1;
@@ -37,37 +48,39 @@ public class Sword extends Weapon {
 					if(((Entity) i).health <= 0) {
 						RawVenison a = new RawVenison();
 						a.coords = i.coords;
-						Main.realm.items.add(a);
-						Main.realm.items.remove(i);
+						Main.realm.add(a);
+						Main.realm.remove(i);
 					}
+					break;
 				} else if(i instanceof Crate) {
 					health -= 1;
 					Item p = Crate.generate();
 					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
+					Main.realm.add(p);
+					Main.realm.remove(i);
+					break;
 				} else if(i instanceof Barrel) {
 					health -= 1;
 					Item p = Barrel.generate();
 					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
+					Main.realm.add(p);
+					Main.realm.remove(i);
+					break;
 				} else if(i instanceof Chest) {
 					health -= 1;
 					Item p = Chest.generate();
 					p.coords = i.coords;
-					Main.realm.items.add(p);
-					Main.realm.items.remove(i);
+					Main.realm.add(p);
+					Main.realm.remove(i);
+					break;
 				}
-				
-				if(health <= 0) {
-					return false;
-				} else {
-					return true;
-				}
-			
 			}
 		}
-		return true;
+		
+		if(health <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

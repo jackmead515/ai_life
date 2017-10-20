@@ -2,14 +2,23 @@ package weapons;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import entity.Entity;
+import floors.Floor;
 import interfaces.IAnimate;
 import items.Item;
+import items.Plant;
+import items.Shrub;
+import items.Stick;
+import items.WheatSeed;
+import items.Wood;
 import main.BMPImages;
 import main.Main;
+import main.SoundEffect;
 
 public class FireSpell extends Spell {
 	
@@ -46,14 +55,6 @@ public class FireSpell extends Spell {
 		damage = 3;
 		direction = 1;
 	}
-	
-	@Override
-	public void draw(Graphics2D g2, JPanel p) {
-		int x = coords[0]*20;
-		int y = coords[1]*20;
-		
-		g2.drawImage(image, x, y, p);
-	}
 
 	@Override
 	public void animate(long time) {
@@ -69,19 +70,19 @@ public class FireSpell extends Spell {
 			 * Direction: 1 for up, 2 for down, 3 for left, and 4 for right.
 			 */
 			if(direction == 1) {
-				coords = new int[] {coords[0], coords[1]-1};
+				coords.set(coords.x(), coords.y()-1);
 				image = animation[0][iIndex];
 				iIndex+=1;
 			} else if(direction == 2) {
-				coords = new int[] {coords[0], coords[1]+1};
+				coords.set(coords.x(), coords.y()+1);
 				image = animation[1][iIndex];
 				iIndex+=1;
 			} else if(direction == 3) {
-				coords = new int[] {coords[0]-1, coords[1]};
+				coords.set(coords.x()-1, coords.y());
 				image = animation[2][iIndex];
 				iIndex+=1;
 			} else if(direction == 4) {
-				coords = new int[] {coords[0]+1, coords[1]};
+				coords.set(coords.x()+1, coords.y());
 				image = animation[3][iIndex];
 				iIndex+=1;
 			}
@@ -97,15 +98,18 @@ public class FireSpell extends Spell {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
-				if(i instanceof Staff) {
-					((Staff) i).ammo.add(this);
-					Main.realm.items.remove(this);
-					return false;
-				}
+		
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(i instanceof Staff) {
+				((Staff) i).ammo.add(this);
+				Main.realm.remove(this);
+				return false;
 			}
 		}
+		
 		return true;
 		
 	}

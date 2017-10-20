@@ -2,15 +2,12 @@ package frame;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import javax.swing.JPanel;
 
-import boundaries.Boundary;
 import boundaries.GrayBrick;
 import boundaries.Water;
 import entity.*;
@@ -59,7 +56,7 @@ public class Palette {
 		int y = 40;
 		for(Item i : items) {
 			
-			i.coords = new int[] {x/20, y/20}; 
+			i.coords.set(x/20, y/20);
 			
 			if(x >= panel.getWidth()-40) {
 				y+=40;
@@ -145,7 +142,7 @@ public class Palette {
 				}
 				
 				for(Item b : items) {
-					if(Util.inArea(new Rectangle(b.coords[0]*20, b.coords[1]*20, 20, 20), p)) {
+					if(Util.inArea(new Rectangle(b.coords.x()*20, b.coords.y()*20, 20, 20), p)) {
 						item_description = b.description();
 						return;
 					}
@@ -176,7 +173,7 @@ public class Palette {
 				
 				if(Util.inArea(new Rectangle(undoPlacement.x, undoPlacement.y-20, 20, 20), p)) {
 					if(MapCreator.realm.items.size() > 0) {
-						MapCreator.realm.items.removeLast();
+						MapCreator.realm.items.removeLast(); //TODO
 					}
 					return;
 				}
@@ -206,7 +203,7 @@ public class Palette {
 					}
 					try {
 						Object o = selection.getClass().newInstance();
-						((Item) o).coords = new int[] {(p.x-5)/20,(p.y-5)/20};
+						((Item) o).coords.set((p.x-5)/20,(p.y-5)/20);
 						MapCreator.item = (Item) o;
 					} catch (InstantiationException e1) {
 						e1.printStackTrace();
@@ -216,7 +213,7 @@ public class Palette {
 				} else {
 					//get selection
 					for(Item b : items) {
-						if(Util.inArea(new Rectangle(b.coords[0]*20, b.coords[1]*20, 20, 20), p)) {
+						if(Util.inArea(new Rectangle(b.coords.x()*20, b.coords.y()*20, 20, 20), p)) {
 							selection = b;
 							return;
 						}

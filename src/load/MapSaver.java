@@ -50,7 +50,7 @@ public class MapSaver {
 	
 	private static String parseItem(Item i) {
 		String s = i.getClass().getName();
-		s += "(" + i.coords[0] + "," + i.coords[1] + ")";
+		s += "(" + i.coords.x() + "," + i.coords.y() + ")";
 		return s;
 	}
 

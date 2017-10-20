@@ -9,18 +9,24 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import boundaries.Boundary;
+import floors.Floor;
 import food.Food;
+import food.Venison;
 import frame.GamePanel;
 import interfaces.IActions;
 import items.Barrel;
+import items.CampFire;
 import items.Chest;
 import items.Crate;
+import items.Furnace;
 import items.Item;
 import items.RawVenison;
 import items.Wood;
@@ -29,8 +35,10 @@ import main.Main;
 import main.RealmController;
 import main.SoundEffect;
 import tools.Tool;
+import util.Coords;
 import util.RefStrings;
 import util.Util;
+import weapons.Bow;
 import weapons.Projectile;
 import weapons.Weapon;
 
@@ -63,7 +71,7 @@ public class Player extends Entity {
 		pointingUp = pointingDown = pointingLeft = pointingRight = false;
 		up = down = left = right = pickUp = use = drop = false;
 	
-		coords = new int[]{0, 0};
+		coords = new Coords(1,1);
 	}
 	
 	@Override
@@ -95,67 +103,71 @@ public class Player extends Entity {
 		for(int x = 0; x < projectiles.size(); x++) {
 			Projectile p = projectiles.get(x);
 			p.animate(time);
-			for(int x1 = 0; x1 < Main.realm.items.size(); x1++) {
-				Item i = Main.realm.items.get(x1);
-				if(p.coords[0] == i.coords[0] && p.coords[1] == i.coords[1]) {
-					
+			
+			Collection<Item> bucket = Main.realm.hmitems.get(p.coords);
+			Iterator<Item> iter = bucket.iterator();
+			while(iter.hasNext()) {
+				Item i = iter.next();
+				if(!(i instanceof Floor)) {
 					if(i instanceof Boundary) {
 						projectiles.remove(p);
 						break;
 					}
-					
 					if(i instanceof Deer) {
 						((Entity) i).health-=p.damage;
 						projectiles.remove(p);
 						if(((Entity) i).health <= 0) {
 							RawVenison a = new RawVenison();
 							a.coords = i.coords;
-							Main.realm.items.add(a);
-							Main.realm.items.remove(i);
+							Main.realm.add(a);
+							Main.realm.remove(i);
 						}
 						break;
 					} else if(i instanceof Crate) {
 						Item p1 = Crate.generate();
 						p1.coords = i.coords;
-						Main.realm.items.add(p1);
-						Main.realm.items.remove(i);
+						Main.realm.add(p1);
+						Main.realm.remove(i);
 						projectiles.remove(p);
 						break;
 					} else if(i instanceof Barrel) {
 						Item p1 = Barrel.generate();
 						p1.coords = i.coords;
-						Main.realm.items.add(p1);
-						Main.realm.items.remove(i);
+						Main.realm.add(p1);
+						Main.realm.remove(i);
 						projectiles.remove(p);
 						break;
 					} else if(i instanceof Chest) {
 						Item p1 = Chest.generate();
 						p1.coords = i.coords;
-						Main.realm.items.add(p1);
-						Main.realm.items.remove(i);
+						Main.realm.add(p1);
+						Main.realm.remove(i);
 						projectiles.remove(p);
 						break;
 					}
 				}
-			}
-			if(p.tileLife <= 0) {
-				projectiles.remove(p);
+				
+				if(p.tileLife <= 0) {
+					projectiles.remove(p);
+					break;
+				}
 			}
 		}
 	}
 
 	protected void calculateNextMovement() {
-		int[] now = coords;
-		int[] next = null;
+		
+		int[] now = new int[] {coords.x(), coords.y()};
+		Coords next = new Coords(0,0);
 		
 		if(down) {
-			next = new int[]{ now[0], now[1]+1 };
+			next.set(now[0], now[1]+1);
 		} else if (up) {
-			next = new int[]{ now[0], now[1]-1 };
+			next.set(now[0], now[1]-1);
 		} else if (left) {
-			next = new int[]{ now[0]-1, now[1] };
+			next.set(now[0]-1, now[1]);
 		} else if(right) {
-			next = new int[]{ now[0]+1, now[1] };
+			next.set(now[0]+1, now[1]);
 		} else {
 			return;
 		}
@@ -163,17 +175,18 @@ public class Player extends Entity {
 		if(!Main.window.gamePanel.outOfBounds(next)) {
 			 if(!Util.inBoundary(next)) {
 				 resetMovement();
-				 coords = next;
+				 coords.set(next.x(), next.y());;
+				 System.out.println(coords.x() + " " + coords.y());
 			 }
 		} else {
 			if(up && Main.realmController.upRealm()) {
-				coords = new int[]{next[0], RefStrings.gameHeight / 20};
+				coords.set(next.x(), RefStrings.gameHeight / 20);
 			} else if(down && Main.realmController.downRealm()) {
-				coords = new int[]{next[0], 0};
+				coords.set(next.x(), 0);
 			} else if(left && Main.realmController.leftRealm()) {
-				coords = new int[]{RefStrings.gameWidth / 20, next[1]};
+				coords.set(RefStrings.gameWidth / 20, next.y());
 			} else if(right && Main.realmController.rightRealm()) {
-				coords = new int[]{0, next[1]};
+				coords.set(0, next.y());
 			}
 		}
 		
@@ -201,19 +214,19 @@ public class Player extends Entity {
 	
 	public void pickUp() {
 		if(inHand == null) {
-			LinkedList<Item> items = Main.realm.items;
-			
-			for(Item i : items) {
-				int xi = i.coords[0];
-				int yi = i.coords[1];
-				
-				if(coords[0] == xi && coords[1] == yi && i.canPickUp) {	
-					SoundEffect.PICKUP.play();
-					Main.realm.items.remove(i);
-					i.pickUp(this);
-					inHand = i;
-					break;
-						
+			Collection<Item> bucket = Main.realm.hmitems.get(coords);
+			System.out.println(bucket.size());
+			Iterator<Item> iter = bucket.iterator();
+			while(iter.hasNext()) {
+				Item i = iter.next();
+				if(!(i instanceof Floor)) {
+					if(i.canPickUp) {
+						SoundEffect.PICKUP.play();
+						Main.realm.remove(i);
+						i.pickUp(this);
+						inHand = i;
+						break;
+					}
 				}
 			}
 		}
@@ -278,25 +291,28 @@ public class Player extends Entity {
 	}
 	
 	public void mouseMoved(Point p) {
-		Point c = new Point((coords[0]*20)+10, (coords[1]*20)+10);
+		Point c = new Point((coords.x()*20)+10, (coords.y()*20)+10);
 		
-		if(p.y < c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x-p.y))) {
-			pointingUp = true;
-			updatePointingDirection();
-			return;
-		} else if(p.y > c.y && (p.x > (p.y-c.y+c.x)) && (p.x < (c.y+c.x+p.y))) {
-			pointingDown = true;
-			updatePointingDirection();
-			return;
-		} else if(p.x < c.x && (p.y > (p.x-c.x+c.y)) && (p.y < (c.x+c.y-p.x))) {
-			pointingLeft = true;
-			updatePointingDirection();
-			return;
-		} else if(p.x > c.x && (p.y < (p.x-c.x+c.y)) && (p.y > (c.x+c.y-p.x))) {
-			pointingRight = true;
-			updatePointingDirection();
-			return;
+		int direction = Util.directionFrom(c, p);
+		
+		switch(direction) {
+			case 1:
+				pointingUp = true;
+				break;
+			case 2:
+				pointingDown = true;
+				break;
+			case 3:
+				pointingLeft = true;
+				break;
+			case 4:
+				pointingRight = true;
+				break;
+			default:
+				return;
 		}
+		
+		updatePointingDirection();
 	}
 
 	protected void starve(long time) {

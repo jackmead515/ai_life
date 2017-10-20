@@ -20,6 +20,7 @@ import entity.Entity;
 import items.Item;
 import main.BMPImages;
 import main.Main;
+import util.Coords;
 import util.Randomizer;
 import weapons.Projectile;
 
@@ -27,14 +28,14 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel() {}
 
-	public boolean outOfBounds(int[] pos) {
+	public boolean outOfBounds(Coords pos) {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		int gw = width / 20;
 		int gh = height / 20;
 		
-		int x = pos[0];
-		int y = pos[1];
+		int x = pos.x();
+		int y = pos.y();
 		
 		if((y < 0 || x < 0) || (y > gh || x > gw)) {
 			return true;
@@ -108,7 +109,7 @@ public class GamePanel extends JPanel {
 			if(i instanceof Entity) {
 				g2.setColor(new Color(255, 0, 0, 127));
 				int p_health = 10 * ((Entity)i).health / ((Entity)i).totalHealth;
-				g2.fillRect(i.coords[0]*20, i.coords[1]*20, 10, 2);
+				g2.fillRect(i.coords.x()*20, i.coords.x()*20, 10, 2);
 			}
 		}
 	}

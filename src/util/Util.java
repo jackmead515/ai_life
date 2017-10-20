@@ -2,6 +2,8 @@ package util;
 
 import java.awt.Point;
 import java.awt.Shape;
+import java.util.Collection;
+import java.util.Iterator;
 
 import boundaries.Boundary;
 import items.Item;
@@ -13,25 +15,41 @@ public class Util {
 		return a.getBounds().contains(p);
 	}
 	
+	/**
+	 * @param origin - Point from which to base direction from
+	 * @param tester - Point away from origin to judge direction
+	 * @return 1 - up, 2 - down, 3 - left, 4 - right, -1 undefined
+	 */
+	public static int directionFrom(Point origin, Point tester) {
+		int ox = origin.x; int tx = tester.x;
+		int oy = origin.y; int ty = tester.y;
+		
+		if(oy > ty && tx < (oy - ty + ox) && tx > (ty + ox - oy)) {
+			return 1;
+		} else if(oy < ty && tx < (ty + ox - oy) && tx > (oy - ty + ox)) {
+			return 2;
+		} else if(ox > tx && ty < (ox - tx + oy) && ty > (oy + tx - ox)) {
+			return 3;
+		} else if(ox < tx && ty < (oy + tx - ox) && ty > (ox - tx + oy)) {
+			return 4;
+		}
+		
+		return -1;
+	}
+	
 	public static int distanceTo(int x, int y, int x1, int y1) {
 		return (int) Math.sqrt(Math.pow(Math.abs(x - x1), 2) + Math.pow(Math.abs(y - y1), 2));
 	}
 	
-	public static boolean inBoundary(int[] next) {
-		int x = next[0];
-		int y = next[1];
-		
-		for(Item b : Main.realm.items) {
-			int bx = b.coords[0];
-			int by = b.coords[1];
-			
-			if(x == bx && y == by) {
-				if(!b.canWalkOver) {
-					return true;
-				}
+	public static boolean inBoundary(Coords next) {
+		Collection<Item> bucket = Main.realm.hmitems.get(next);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!i.canWalkOver) {
+				return true;
 			}
 		}
-		
 		return false;
 	}
 	

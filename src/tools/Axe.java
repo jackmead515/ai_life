@@ -1,5 +1,8 @@
 package tools;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Entity;
 import floors.Floor;
 import items.Item;
@@ -27,34 +30,36 @@ public class Axe extends Tool {
 
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
+		
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				SoundEffect.AXE.play();
 				if(i instanceof Wood) {
 					health-=1;
 					Stick s = new Stick();
 					s.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.add(s);
-					
+					Main.realm.remove(i);
+					Main.realm.add(s);
+					break;
 				} else if(i instanceof Plant || i instanceof Shrub) {
 					health-=1;
 					WheatSeed s = new WheatSeed();
 					s.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.add(s);
-					
-				}
-				
-				if(health <= 0) {
-					return false;
-				} else {
-					return true;
+					Main.realm.remove(i);
+					Main.realm.add(s);
+					break;
 				}
 			}
 		}
 		
-		return true;
+		if(health <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }

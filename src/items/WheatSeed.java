@@ -8,7 +8,6 @@ public class WheatSeed extends Item implements IGrow {
 	
 	protected long cycleTime;
 	protected long startTime;
-	//public boolean startGrowing;
 	
 	public WheatSeed() {
 		
@@ -18,16 +17,10 @@ public class WheatSeed extends Item implements IGrow {
 		
 		startTime = System.nanoTime();
 		
-		//startGrowing = false;
-		
 	}
 
 	@Override
 	public void grow(long time) {
-		
-		/*if(!startGrowing) {
-			return;
-		}*/
 		
 		if(time - startTime >= cycleTime) {
 			

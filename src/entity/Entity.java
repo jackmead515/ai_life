@@ -1,11 +1,6 @@
 package entity;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.LinkedList;
-
-import javax.swing.JPanel;
 
 import interfaces.IEntity;
 import items.Item;
@@ -29,7 +24,6 @@ public class Entity extends Item implements IEntity {
 	public LinkedList<Projectile> projectiles;
 	
 	public Entity() {
-		coords = new int[2];
 		projectiles = new LinkedList<Projectile>();
 		health = 1;
 		totalHealth = 1;

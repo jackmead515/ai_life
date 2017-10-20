@@ -1,10 +1,17 @@
 package tools;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Entity;
 import floors.Floor;
+import items.Iron;
+import items.IronOre;
 import items.IronTrinket;
 import items.Item;
 import items.MoltenIron;
+import items.Rock;
+import items.Stone;
 import main.BMPImages;
 import main.Main;
 import main.SoundEffect;
@@ -19,27 +26,28 @@ public class Hammer extends Tool {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
-				health -= 1;
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				SoundEffect.HAMMER.play();
 				if(i instanceof MoltenIron) {
+					health -= 1;
 					IronTrinket a = new IronTrinket();
 					a.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.add(a);
-					
+					Main.realm.remove(i);
+					Main.realm.add(a);
+					break;
 				}
-				
-				if(health <= 0) {
-					return false;
-				} else {
-					return true;
-				}
-			
 			}
 		}
-		return true;
+		
+		if(health <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 }

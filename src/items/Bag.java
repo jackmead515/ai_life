@@ -1,8 +1,11 @@
 package items;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import entity.Entity;
+import floors.Floor;
 import main.BMPImages;
 import main.Main;
 
@@ -21,23 +24,21 @@ public class Bag extends Item {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] != i.coords[0] && e.coords[1] != i.coords[1] && inventory.size() > 0) {
-				
-				Item p = inventory.pop();
-				p.coords = e.coords;
-				Main.realm.items.add(p);
-				return true;
-				
-			} else if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && 
-					  inventory.size() < capacity && i.canPickUp) {
-				
-				Main.realm.items.remove(i);
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(inventory.size() < capacity && i.canPickUp) {
+				Main.realm.remove(i);
 				inventory.add(i);
 				return true;
-				
 			}
 		}
+		
+		Item p = inventory.pop();
+		p.coords = e.coords;
+		Main.realm.add(p);
+		
 		return true;
 	}
 

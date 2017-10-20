@@ -1,12 +1,17 @@
 package tools;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Entity;
 import floors.Floor;
+import items.CampFire;
 import items.Iron;
 import items.IronOre;
 import items.Item;
 import items.Rock;
 import items.Stone;
+import items.Wood;
 import main.BMPImages;
 import main.Main;
 import main.SoundEffect;
@@ -26,32 +31,35 @@ public class Pickaxe extends Tool {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1] && !(i instanceof Floor)) {
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				SoundEffect.PICKAXE.play();
-				health-=1;
 				if(i instanceof Stone) {
+					health-=1;
 					Rock s = new Rock();
 					s.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.add(s);
-					
+					Main.realm.remove(i);
+					Main.realm.add(s);
+					break;
 				} else if(i instanceof IronOre) {
+					health-=1;
 					Iron s = new Iron();
 					s.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.add(s);
-					
-				}
-				
-				if(health <= 0) {
-					return false;
-				} else {
-					return true;
+					Main.realm.remove(i);
+					Main.realm.add(s);
+					break;
 				}
 			}
 		}
-		return true;
+		
+		if(health <= 0) {
+			return false;
+		} else {
+			return true;
+		}
 		
 	}
 

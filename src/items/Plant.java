@@ -3,13 +3,22 @@ package items;
 import interfaces.IGrow;
 import main.BMPImages;
 import main.Main;
+import util.Randomizer;
 
 public class Plant extends Item implements IGrow {
 	
 	protected long cycleTime;
 	protected long startTime;
+	protected boolean canGrow;
 	
 	public Plant() {
+		
+		if(Randomizer.random(1, 5) == 3) {
+			canGrow = true;
+		} else {
+			canGrow = false;
+		}
+		
 		
 		cycleTime = 30000000000L;
 		
@@ -21,14 +30,18 @@ public class Plant extends Item implements IGrow {
 	
 	@Override
 	public void grow(long time) {
+		if(!canGrow) {
+			return;
+		}
+		
 		if(time - startTime >= cycleTime) {
 		
-			Main.realm.items.remove(this);
+			Main.realm.remove(this);
 			
 			Shrub c = new Shrub();
 			c.coords = coords;
 		
-			Main.realm.items.add(c);
+			Main.realm.add(c);
 			
 		}
 	

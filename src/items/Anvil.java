@@ -1,8 +1,8 @@
-package tools;
+package items;
 
 import main.BMPImages;
 
-public class Anvil extends Tool {
+public class Anvil extends Item {
 	
 	public Anvil() {
 		

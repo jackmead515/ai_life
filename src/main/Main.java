@@ -1,34 +1,20 @@
 package main;
 
-import java.awt.EventQueue;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import ai.AI;
-import boundaries.Boundary;
-import boundaries.Water;
-import entity.Animal;
-import entity.Deer;
 import entity.Entity;
 import entity.Player;
-import entity.Predator;
-import entity.Wolf;
 import frame.Frame;
 import interfaces.IAnimate;
 import interfaces.IGrow;
 import interfaces.IMultiple;
-import items.IronOre;
 import items.Item;
-import items.Plant;
-import items.ShallowWater;
-import items.Stone;
 import load.MapLoader;
-import tools.Axe;
-import tools.Pickaxe;
-import util.Randomizer;
-import weapons.Arrow;
-import weapons.Bow;
+import util.Coords;
 import weapons.Projectile;
-import weapons.Sword;
 
 public class Main {
 	
@@ -59,6 +45,10 @@ public class Main {
 		//aiplayer = new AI();
 		
 		realmController.realms[10][10] = realm;
+		
+		for(Coords key : realm.hmitems.keySet()) {
+			System.out.println(key.x() + " " + key.y());
+		}
 		
 		Thread t = new Thread(new Runnable() {
 			public void run() {
@@ -92,7 +82,9 @@ public class Main {
 			
 			if(i instanceof IGrow) {
 				((IGrow) i).grow(time);
-			} else if(i instanceof Entity) {
+			}
+			
+			if(i instanceof Entity) {
 				((Entity) i).move(time);
 				if(i instanceof IMultiple) {
 					((IMultiple) i).multiple(time);

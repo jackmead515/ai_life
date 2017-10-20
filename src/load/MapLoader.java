@@ -44,7 +44,7 @@ public class MapLoader {
 				Scanner scan = new Scanner(selectedFile);
 				
 				while(scan.hasNextLine()) {
-					realm.items.add(parseItem(scan.nextLine()));
+					realm.add(parseItem(scan.nextLine()));
 				}
 				
 				scan.close();
@@ -68,7 +68,7 @@ public class MapLoader {
 		try {
 			cls = Class.forName(objName);
 			i = (Item) cls.newInstance();
-			i.coords = new int[] {x, y};
+			i.coords.set(x, y);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

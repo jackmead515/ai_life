@@ -1,6 +1,7 @@
 package entity;
 
 import main.Main;
+import util.Coords;
 import util.Randomizer;
 import util.Util;
 
@@ -22,23 +23,23 @@ public class WanderEntity extends Entity {
 			
 			int rand = Randomizer.random(0, 4);
 			
-			int[] now = coords;
-			int[] next = null;
+			int[] now = new int[] {coords.x(), coords.y()};
+			Coords next = new Coords(0,0);
 			
 			switch(rand) {
 				case 0:
 					break;
 				case 1:
-					next = new int[] {now[0], now[1]+1};
+					next.set(now[0], now[1]+1);
 					break;
 				case 2:
-					next = new int[] {now[0], now[1]-1};
+					next.set(now[0], now[1]-1);
 					break;
 				case 3:
-					next = new int[] {now[0]-1, now[1]};
+					next.set(now[0]-1, now[1]);
 					break;
 				case 4:
-					next = new int[] {now[0]+1, now[1]};
+					next.set(now[0]+1, now[1]);
 					break;
 			}
 			

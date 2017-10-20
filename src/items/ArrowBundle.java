@@ -1,6 +1,11 @@
 package items;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Entity;
+import floors.Floor;
+import food.Venison;
 import main.BMPImages;
 import main.Main;
 import weapons.Arrow;
@@ -24,15 +29,17 @@ public class ArrowBundle extends Item {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				if(i instanceof Bow) {
 					for(int x = 0; x < amount; x++) {
 						((Bow) i).ammo.add(new Arrow());
 					}
-					Main.realm.items.remove(this);
+					Main.realm.remove(this);
 					return false;
-					
 				}
 			}
 		}

@@ -9,17 +9,18 @@ import javax.swing.JPanel;
 import entity.Entity;
 import frame.GamePanel;
 import items.Item;
+import util.Coords;
 
 public interface IItem extends Serializable {
 	
 	public void draw(Graphics2D g2, JPanel panel);
-	
-	public boolean place(int[] coords);
 
 	public boolean use(Entity e);
 
 	public boolean pickUp(Entity e);
 
 	public String description();
+
+	boolean place(Coords coords);
 
 }

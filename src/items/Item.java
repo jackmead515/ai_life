@@ -10,26 +10,24 @@ import entity.Entity;
 import frame.GamePanel;
 import interfaces.IItem;
 import main.Main;
+import util.Coords;
 
 public class Item implements IItem {
 	
-	public int[] coords;
+	public Coords coords;
 	public BufferedImage image;
 	public boolean canPickUp;
 	public boolean canWalkOver;
 	
 	public Item() {
-		coords = new int[2];
+		coords = new Coords();
 		canPickUp = true;
 		canWalkOver = true;
 	}
 	
 	@Override
 	public void draw(Graphics2D g2, JPanel panel) {
-		int x = coords[0];
-		int y = coords[1];
-		
-		g2.drawImage(image, x*20, y*20, panel);
+		g2.drawImage(image, coords.x()*20, coords.y()*20, panel);
 	}
 	
 	/**
@@ -52,9 +50,9 @@ public class Item implements IItem {
 	}
 	
 	@Override
-	public boolean place(int[] coords) {
-		this.coords = coords;
-		Main.realm.items.add(this);
+	public boolean place(Coords coords) {
+		this.coords.set(coords.x(), coords.y());
+		Main.realm.add(this);
 		return true;
 	}
 	

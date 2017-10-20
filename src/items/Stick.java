@@ -1,11 +1,16 @@
 package items;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import entity.Entity;
+import floors.Floor;
 import main.BMPImages;
 import main.Main;
 import tools.Axe;
 import tools.Hammer;
 import tools.Pickaxe;
+import weapons.Bow;
 import weapons.Sword;
 
 public class Stick extends Item {
@@ -18,44 +23,39 @@ public class Stick extends Item {
 	
 	@Override
 	public boolean use(Entity e) {
-		for(Item i : Main.realm.items) {
-			if(e.coords[0] == i.coords[0] && e.coords[1] == i.coords[1]) {
+		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(!(i instanceof Floor)) {
 				if(i instanceof Wood) {
-					
 					Axe a = new Axe();
 					a.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					Main.realm.items.add(a);
+					Main.realm.remove(i);
+					Main.realm.remove(this);
+					Main.realm.add(a);
 					return false;
-					
 				} else if(i instanceof Stone) {
-					
 					Pickaxe a = new Pickaxe();
 					a.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					Main.realm.items.add(a);
+					Main.realm.remove(i);
+					Main.realm.remove(this);
+					Main.realm.add(a);
 					return false;
-					
 				} else if(i instanceof IronTrinket) {
-					
 					Sword a = new Sword();
 					a.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					Main.realm.items.add(a);
+					Main.realm.remove(i);
+					Main.realm.remove(this);
+					Main.realm.add(a);
 					return false;
-					
 				} else if(i instanceof Rock) {
-					
 					Hammer a = new Hammer();
 					a.coords = i.coords;
-					Main.realm.items.remove(i);
-					Main.realm.items.remove(this);
-					Main.realm.items.add(a);
+					Main.realm.remove(i);
+					Main.realm.remove(this);
+					Main.realm.add(a);
 					return false;
-					
 				}
 			}
 		}
