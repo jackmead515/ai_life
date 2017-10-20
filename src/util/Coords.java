@@ -1,6 +1,6 @@
 package util;
 
-public class Coords implements Comparable {
+public class Coords {
 	
 	private int[] coords;
 	
@@ -42,21 +42,7 @@ public class Coords implements Comparable {
 
         Coords o = (Coords) obj;
         
-        return Integer.compare(x(), o.x()) == 0 && Integer.compare(y(), o.y()) == 0;
+        return x() == o.x() && y() == o.x();
     }
-
-	@Override
-	public int compareTo(Object obj) {
-		if (this == obj)
-            return 1;
-        if (obj == null || getClass() != obj.getClass())
-            return 1;
-        
-        Coords o = (Coords) obj;
-        if(Integer.compare(x(), o.x()) == 0 && Integer.compare(y(), o.y()) == 0) {
-        	return 0;
-        }
-		return 1;
-	}
 
 }
