@@ -18,6 +18,7 @@ public class Realm {
 	public Realm() {
 		items = new LinkedList<Item>();
 		hmitems = HashMultimap.create();
+		entities = new LinkedList<Entity>();
 	}
 	
 	public void add(Item i) {

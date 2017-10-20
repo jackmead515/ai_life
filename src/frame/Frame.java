@@ -29,7 +29,12 @@ public class Frame {
 		frame.pack();
 		
 		gamePanel = new GamePanel();
-		gamePanel.setBounds(0, 0,RefStrings.gameWidth, RefStrings.gameHeight);
+		
+		//center game inside of the frame
+		gamePanel.setBounds((frame.getWidth() - RefStrings.gameWidth) / 2,
+						    (frame.getHeight() - RefStrings.gameHeight) / 2,
+						    RefStrings.gameWidth, RefStrings.gameHeight);
+		
 		frame.getContentPane().add(gamePanel);
 		
 		gamePanel.addKeyListener(new KeyAdapter() {
