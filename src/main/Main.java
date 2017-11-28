@@ -46,7 +46,8 @@ public class Main {
 		
 		realmController.realms[10][10] = realm;
 		
-		realm.entities.add(player);
+		realm.items.add(player);
+		//realm.items.add(aiplayer);
 		
 		Thread t = new Thread(new Runnable() {
 			public void run() {

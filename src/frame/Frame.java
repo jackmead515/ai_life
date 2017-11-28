@@ -31,9 +31,11 @@ public class Frame {
 		gamePanel = new GamePanel();
 		
 		//center game inside of the frame
-		gamePanel.setBounds((frame.getWidth() - RefStrings.gameWidth) / 2,
-						    (frame.getHeight() - RefStrings.gameHeight) / 2,
-						    RefStrings.gameWidth, RefStrings.gameHeight);
+		gamePanel.setBounds(
+				(frame.getWidth() - RefStrings.gameWidth) / 2, 
+				((frame.getHeight() - RefStrings.gameHeight) / 2) - 50, 
+				RefStrings.gameWidth, 
+				RefStrings.gameHeight);
 		
 		frame.getContentPane().add(gamePanel);
 		

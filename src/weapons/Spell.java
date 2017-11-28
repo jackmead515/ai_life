@@ -8,6 +8,7 @@ import entity.Entity;
 import items.Item;
 import main.BMPImages;
 import main.Main;
+import util.Coords;
 
 public class Spell extends Projectile {
 	

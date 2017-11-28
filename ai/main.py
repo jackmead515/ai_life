@@ -3,31 +3,64 @@ from flask import request
 from flask import render_template
 from ai import AI
 
-brain = AI(500, 11, 0.9)
+brain = AI(3000, 11, 0.9)
 app = Flask(__name__)
 
 #-------------------------------------------------------------------------------------
-def handle_post():
-    state = request.args.get('state')
-    reward = request.args.get('reward')
-    if state is None or reward is None:
-        return 0;
-    else:
-        return brain.update(reward, state)
-
-
-#-------------------------------------------------------------------------------------
 def handle_get():
-    return render_template('index.html')
+    content = request.get_json()
+    state = content['state']
+    reward = content['reward']
+    if state is None or reward is None:
+        return '0';
+    else:
+        action = brain.update(reward, state)
+        print('Reward: ' + str(reward) + '  -----  Action: ' + str(action))
+        return str(action)
 
 
 #-------------------------------------------------------------------------------------
-@app.route('/', methods = ['POST', 'GET'])
+#def handle_get():
+#    return render_template('index.html')
+
+
+#-------------------------------------------------------------------------------------
+def handle_create():
+    inputNeurons = int(request.args.get('input'))
+    brain = AI(inputNeurons, 11, 0.9)
+    print('AI created: ' + str(inputNeurons) + ' inputs')
+    return 'status=1'
+
+
+#-------------------------------------------------------------------------------------
+@app.route('/', methods = ['POST'])
 def api():
-    if request.method == 'POST':
-        return handle_post()
-    elif request.method == 'GET':
-        return handle_get()
+    return handle_get()
+
+
+#-------------------------------------------------------------------------------------
+@app.route('/create', methods = ['POST'])
+def create():
+    return handle_create()
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host='0.0.0.0', debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------

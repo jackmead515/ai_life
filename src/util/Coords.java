@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+
 public class Coords {
 	
 	private int[] coords;
@@ -30,11 +32,11 @@ public class Coords {
 	
     @Override
     public int hashCode() {
-    		int hash = 1;
-        for (int e : coords)
-            hash = 31 * hash + e;
-
-        return hash;
+    	final int prime = 31;
+    	int result = (coords[0]*3) * coords[1];
+    	 result = prime * result; 
+    	 return result;
+    	//return Arrays.hashCode(this.coords);
     }
  
     @Override
@@ -46,7 +48,9 @@ public class Coords {
 
         Coords o = (Coords) obj;
         
-        return x() == o.x() && y() == o.x();
+        return Integer.compare(x(), o.x()) == 0 && Integer.compare(y(), o.y()) == 0;
+        
+        //return x() == o.x() && y() == o.x();
     }
 
 }

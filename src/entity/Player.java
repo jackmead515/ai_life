@@ -72,13 +72,13 @@ public class Player extends Entity {
 		pointingUp = pointingDown = pointingLeft = pointingRight = false;
 		up = down = left = right = pickUp = use = dropItem = false;
 	
-		coords = new Coords(1,1);
+		coords.set(1, 1);
 	}
 	
 	@Override
 	public void move(long time) {
 		
-		starve(time);
+		//starve(time);
 		
 		shoot(time);
 		
@@ -105,10 +105,9 @@ public class Player extends Entity {
 			Projectile p = projectiles.get(x);
 			p.animate(time);
 			
-			Collection<Item> bucket = Main.realm.hmitems.get(p.coords);
-			Iterator<Item> iter = bucket.iterator();
-			while(iter.hasNext()) {
-				Item i = iter.next();
+			for(int y = 0; y < Main.realm.items.size(); y++) {
+				Item i = Main.realm.items.get(y);
+				
 				if(!(i instanceof Floor)) {
 					if(i instanceof Boundary) {
 						projectiles.remove(p);
@@ -120,7 +119,7 @@ public class Player extends Entity {
 						if(((Entity) i).health <= 0) {
 							Item a = i.drop();
 							if(a != null) {
-								a.coords.set(i.coords.x(), i.coords.y());
+								a.coords.set(i.coords);
 								Main.realm.add(a);
 							}
 							Main.realm.remove(i);
@@ -128,20 +127,20 @@ public class Player extends Entity {
 						break;
 					} else if(i instanceof Container) {
 						health -= 1;
+						projectiles.remove(p);
 						Item a = i.drop();
 						if(a != null) {
-							a.coords.set(i.coords.x(), i.coords.y());
+							a.coords.set(i.coords);
 							Main.realm.add(a);
 							Main.realm.remove(i);
 						}
 						break;
 					}
 				}
-				
-				if(p.tileLife <= 0) {
-					projectiles.remove(p);
-					break;
-				}
+			}
+			
+			if(p.tileLife <= 0) {
+				projectiles.remove(p);
 			}
 		}
 	}
@@ -204,15 +203,16 @@ public class Player extends Entity {
 	public void pickUp() {
 		if(inHand == null) {
 			Collection<Item> bucket = Main.realm.hmitems.get(coords);
+			System.out.println(bucket.size());
 			Iterator<Item> iter = bucket.iterator();
 			while(iter.hasNext()) {
 				Item i = iter.next();
-				if(!(i instanceof Floor) && i.canPickUp) {
-						SoundEffect.PICKUP.play();
-						Main.realm.remove(i);
-						i.pickUp(this);
-						inHand = i;
-						break;
+				if(i.canPickUp) {
+					SoundEffect.PICKUP.play();
+					Main.realm.remove(i);
+					i.pickUp(this);
+					inHand = i;
+					break;
 				}
 			}
 		}

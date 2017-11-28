@@ -13,7 +13,7 @@ public class WheatSeed extends Item implements IGrow {
 	
 	public WheatSeed() {
 		
-		if(Randomizer.random(1, 5) == 3) {
+		if(Randomizer.random(1, 100) <= 80) {
 			canGrow = true;
 		} else {
 			canGrow = false;
@@ -35,12 +35,12 @@ public class WheatSeed extends Item implements IGrow {
 		
 		if(time - startTime >= cycleTime) {
 			
-			Main.realm.items.remove(this);
+			Main.realm.remove(this);
 			
 			Wheat c = new Wheat();
-			c.coords.set(coords.x(), coords.y());
+			c.coords.set(coords);
 		
-			Main.realm.items.add(c);
+			Main.realm.add(c);
 			
 		}
 	

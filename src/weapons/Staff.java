@@ -53,7 +53,7 @@ public class Staff extends Weapon {
 			if(p instanceof FireSpell) {
 				SoundEffect.FIRE_SPELL.play();
 			}
-			p.coords.set(e.coords.x(), e.coords.y());
+			p.coords.set(e.coords);
 			e.projectiles.add(p);
 		}
 		

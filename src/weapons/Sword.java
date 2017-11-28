@@ -24,10 +24,10 @@ import main.SoundEffect;
 public class Sword extends Weapon {
 	
 	public Sword() {
-		health = 20;
+		health = 100;
 		image = BMPImages.sword;
 		imageInHand = BMPImages.sword_in_hand;
-		damage = 1;
+		damage = 3;
 	}
 	
 	@Override
@@ -41,6 +41,8 @@ public class Sword extends Weapon {
 		Iterator<Item> iter = bucket.iterator();
 		while(iter.hasNext()) {
 			Item i = iter.next();
+			System.out.println("Entity: " + e.coords.x() + " " + e.coords.y());
+			System.out.println(i.getClass().getSimpleName() + " " + i.coords.x() + " " + i.coords.y());
 			if(!(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
 				if(i instanceof Entity) {
@@ -49,7 +51,7 @@ public class Sword extends Weapon {
 					if(((Entity) i).health <= 0) {
 						Item a = i.drop();
 						if(a != null) {
-							a.coords.set(i.coords.x(), i.coords.y());
+							a.coords.set(e.coords);
 							Main.realm.add(a);
 							Main.realm.remove(i);
 						}
@@ -59,7 +61,7 @@ public class Sword extends Weapon {
 				} else if(i instanceof Container) {
 					health -= 1;
 					Item p = i.drop();
-					p.coords.set(i.coords.x(), i.coords.y());
+					p.coords.set(e.coords);
 					Main.realm.add(p);
 					Main.realm.remove(i);
 					break;

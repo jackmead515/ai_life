@@ -7,7 +7,7 @@ import util.Util;
 public class Wolf extends Predator {
 	
 	public Wolf() {
-		health = 5;
+		health = 40;
 		maxSpawns = 1;
 		multipleStartTime = System.nanoTime();
 		multipleTimeSpeed = 120000000000L;
@@ -26,7 +26,7 @@ public class Wolf extends Predator {
 			
 			Wolf d = new Wolf();
 			d.maxSpawns = 0;
-			d.coords.set(coords.x(), coords.y());
+			d.coords.set(coords);
 			if(!Main.window.gamePanel.outOfBounds(d.coords) && !Util.inBoundary(d.coords)) {
 				Main.realm.add(d);
 				maxSpawns -= 1;

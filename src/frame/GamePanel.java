@@ -109,7 +109,7 @@ public class GamePanel extends JPanel {
 			if(i instanceof Entity) {
 				g2.setColor(new Color(255, 0, 0, 127));
 				int p_health = 10 * ((Entity)i).health / ((Entity)i).totalHealth;
-				g2.fillRect(i.coords.x()*20, i.coords.x()*20, 10, 2);
+				g2.fillRect(i.coords.x()*20, i.coords.y()*20, 10, 2);
 			}
 		}
 	}

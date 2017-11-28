@@ -35,7 +35,9 @@ public class WanderEntity extends Entity {
 			}
 			
 			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
-					coords.set(next.x(), next.y());
+				Main.realm.remove(this);
+				coords.set(next.x(), next.y());
+				Main.realm.add(this);
 			}
 		}
 	}

@@ -95,7 +95,9 @@ public class AttackEntity extends Entity {
 		
 		if(next != null) {
 			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
+				Main.realm.remove(this);
 				coords.set(next.x(), next.y());
+				Main.realm.add(this);
 				if(target != null) {
 					attackTarget();
 				}
@@ -104,28 +106,29 @@ public class AttackEntity extends Entity {
 	}
 	
 	private void attackTarget() {
-		if(coords.x() == target.coords.x() && coords.y() == target.coords.y()) {
-			target.health-=1;
+		if(coords.equals(target.coords)) {
+			target.health-=5;
 			if(target.health <= 0) {
 				Item a = target.drop();
 				if(a != null) {
-					a.coords.set(target.coords.x(), target.coords.y());
+					a.coords.set(target.coords);
 					Main.realm.add(a);
 				}
 				Main.realm.remove(target);
+				target = null;
 			}
 		}
 	}
 	
 	private Entity chooseTarget() {
-		for(int p = 0; p < Main.realm.entities.size(); p++) {
-			Entity i = Main.realm.entities.get(p);
-			if(!(i instanceof AttackEntity)) {
+		for(int p = 0; p < Main.realm.items.size(); p++) {
+			Item i = Main.realm.items.get(p);
+			if(i instanceof Entity && !(i instanceof AttackEntity)) {
 				int px = i.coords.x()*20;
 				int py = i.coords.y()*20;
 				
 				if(Util.distanceTo(coords.x()*20,coords.y()*20,px,py) <= 300) {
-					return i;
+					return (Entity) i;
 				}
 			}
 		}

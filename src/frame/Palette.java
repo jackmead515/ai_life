@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 import javax.swing.JPanel;
 
+import ai.AI;
 import boundaries.GrayBrick;
 import boundaries.Water;
 import entity.*;
@@ -115,6 +116,7 @@ public class Palette {
 		
 		items.add(new Deer());
 		items.add(new Wolf());
+		items.add(new AI());
 		
 		items.add(new Water());
 		items.add(new GrayBrick());

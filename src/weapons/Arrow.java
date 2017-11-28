@@ -22,10 +22,6 @@ import main.Main;
 
 public class Arrow extends Projectile {
 	
-	protected long startTime;
-	protected long animationDuration;
-	public boolean isShot;
-	
 	public Arrow() {
 		startTime = System.nanoTime();
 		animationDuration = 10000000L;

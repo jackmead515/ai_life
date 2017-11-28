@@ -23,6 +23,11 @@ public class Bag extends Item {
 	}
 	
 	@Override
+	public String description() {
+		return "Bag (" + inventory.size() + "/" + capacity + ")";
+	}
+	
+	@Override
 	public boolean use(Entity e) {
 		Collection<Item> bucket = Main.realm.hmitems.get(e.coords);
 		Iterator<Item> iter = bucket.iterator();
@@ -37,7 +42,7 @@ public class Bag extends Item {
 		
 		if(inventory.size() > 0) {
 			Item p = inventory.pop();
-			p.coords.set(e.coords.x(), e.coords.y());
+			p.coords.set(e.coords);
 			Main.realm.add(p);
 		}
 		

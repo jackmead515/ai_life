@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -21,21 +23,25 @@ import interfaces.IActions;
 import items.Item;
 import main.BMPImages;
 import main.Main;
+import main.SoundEffect;
 import util.Coords;
 import util.RefStrings;
 import util.Util;
+import weapons.Weapon;
 
 public class AI extends Player {
 	
 	private int[][] state;
-	private double reward;
+	public double reward;
 	
 	private AISelector selector;
 	
 	public AI() {
 		state = new int[RefStrings.gameWidth/20][RefStrings.gameHeight/20];
-		selector = new AISelector();
+		selector = new AISelector(this);
 		reward = 0;
+		
+		coords.set(1, 1);
 	}
 	
 	private void takeAction(int action) {
@@ -69,7 +75,7 @@ public class AI extends Player {
 		shoot(time);
 		
 		if(dropItem) {
-			drop();
+			dropItem();
 			dropItem = false;
 		}
 		
@@ -85,7 +91,7 @@ public class AI extends Player {
 		
 		calculateNextMovement();
 		
-		selector.select(state, reward);
+		selector.select(state);
 		takeAction(selector.action);
 
 	}
@@ -108,7 +114,7 @@ public class AI extends Player {
 		}
 			
 		if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
-			coords.set(next.x(), next.y());;
+			coords.set(next);
 		} else {
 			reward += AIStats.outOfBounds_reward;
 		}	
@@ -117,15 +123,56 @@ public class AI extends Player {
 	}
 	
 	@Override
+	public void dropItem() {
+		if(inHand != null) {
+			SoundEffect.DROP.play();
+			if(inHand.place(coords)) {
+				reward += AIStats.dropItem_reward;
+				image = BMPImages.person;
+				inHand = null; 
+			}
+		}
+	}
+	
+	@Override
+	public void pickUp() {
+		if(inHand == null) {
+			Collection<Item> bucket = Main.realm.hmitems.get(coords);
+			System.out.println(bucket.size());
+			Iterator<Item> iter = bucket.iterator();
+			while(iter.hasNext()) {
+				Item i = iter.next();
+				if(i.canPickUp) {
+					reward += AIStats.pickUpItem_reward;
+					if(i instanceof Food || i instanceof Weapon) {
+						reward += AIStats.pickUpItem_reward;
+					}
+					SoundEffect.PICKUP.play();
+					Main.realm.remove(i);
+					i.pickUp(this);
+					inHand = i;
+					break;
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void use() {
 		if(inHand != null) {
 			if(!inHand.use(this)) {
+				reward += AIStats.useItem_reward;
+				
 				if(inHand instanceof Food) {
-					reward += ((Food) inHand).health;
+					reward += (((Food) inHand).health*AIStats.eatFoodMultipler_reward);
+				} else if(inHand instanceof Weapon) {
+					reward += AIStats.attack_reward;
 				}
 				
 				image = BMPImages.person;
 				inHand = null;
+			} else if(inHand instanceof Weapon) {
+				reward += AIStats.attack_reward;
 			}
 		}
 	}
@@ -135,7 +182,7 @@ public class AI extends Player {
 		if(time - startTime >= starveRate) {
 			startTime = time;
 			
-			health-=starveAmount;
+			health -= starveAmount;
 			reward += -starveAmount;
 			
 		}

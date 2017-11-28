@@ -12,19 +12,19 @@ import util.Coords;
 public class Realm {
 	
 	public volatile LinkedList<Item> items;
-	public volatile LinkedList<Entity> entities;
+	//public volatile LinkedList<Entity> entities;
 	public volatile HashMultimap<Coords, Item> hmitems;
 	
 	public Realm() {
 		items = new LinkedList<Item>();
 		hmitems = HashMultimap.create();
-		entities = new LinkedList<Entity>();
+		//entities = new LinkedList<Entity>();
 	}
 	
 	public void add(Item i) {
 		items.add(i);
 		if(i instanceof Entity) {
-			entities.add((Entity) i);
+			//entities.add((Entity) i);
 		}
 		hmitems.put(i.coords, i);
 		/*Collection<Item> bucket = hmitems.get(i.coords);
@@ -35,7 +35,7 @@ public class Realm {
 	public void remove(Item i) {
 		items.remove(i);
 		if(i instanceof Entity) {
-			entities.remove((Entity) i);
+			//entities.remove((Entity) i);
 		}
 		hmitems.remove(i.coords, i);
 		/*Collection<Item> bucket = hmitems.get(i.coords);

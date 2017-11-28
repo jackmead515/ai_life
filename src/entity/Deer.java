@@ -9,7 +9,7 @@ import util.Util;
 public class Deer extends Animal {
 	
 	public Deer() {
-		health = 5;
+		health = 20;
 		maxSpawns = 2;
 		multipleStartTime = System.nanoTime();;
 		multipleTimeSpeed = 60000000000L;
@@ -28,7 +28,7 @@ public class Deer extends Animal {
 			
 			Deer d = new Deer();
 			d.maxSpawns = 0;
-			d.coords.set(coords.x(), coords.y());
+			d.coords.set(coords);
 			if(!Main.window.gamePanel.outOfBounds(d.coords) && !Util.inBoundary(d.coords)) {
 				Main.realm.add(d);
 				maxSpawns -= 1;

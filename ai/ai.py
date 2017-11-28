@@ -20,15 +20,15 @@ class Network(nn.Module): #extends neural networks module class functions
         self.inputNeurons = inputNeurons
         self.outputNeurons = outputNeurons
 
-        self.c1 = nn.Linear(inputNeurons, 30)
-
-        self.c2 = nn.Linear(30, outputNeurons)
+        self.c1 = nn.Linear(inputNeurons, 200)
+        self.c2 = nn.Linear(200, 200)
+        self.c3 = nn.Linear(200, outputNeurons)
 
     #-----------------------------------------------------------------------------------------------------------
     def forward(self, state):
         x = F.relu(self.c1(state))
-        q_values = self.c2(x)
-        return q_values
+        y = F.relu(self.c2(x))
+        return self.c3(x)
 
 ################################################################################################################
 ################################################################################################################
@@ -68,8 +68,8 @@ class AI():
         self.gamma = gamma
         self.reward_window = [] #mean of last 100 rewards to print out to screen
         self.model = Network(inputNeurons, outputNeurons)
-        self.memory = Memory(100000)
-        self.optimizer = optim.Adam(self.model.parameters(), lr = 0.001)
+        self.memory = Memory(500000)
+        self.optimizer = optim.Adam(self.model.parameters(), lr = 0.01)
         self.last_state = torch.Tensor(inputNeurons).unsqueeze(0) #adding a fake dimension? Whhhaaaa
         self.last_action = 0
         self.last_reward = 0
@@ -79,18 +79,18 @@ class AI():
         # Tempurature parameter T=7
         # softmax([1,2,3]) => [0.04,0.11,0.85]   softmax([1,2,3]*3) => [0, 0.02, 0.98]
         # increases the rate at which the softmax function is certain of which action to take
-        probs = F.softmax(self.model(Variable(state, volatile = True))*60)
+        probs = F.softmax(self.model(Variable(state, volatile = True))*2)
         action = probs.multinomial() #picking a random action
         return action.data[0,0] #getting rid of fake dimension
 
     #-----------------------------------------------------------------------------------------------------------
     def learn(self, batch_state, batch_next_state, batch_reward, batch_action):
-        outputs = self.model(batch_state).gather(1, batch_action.unsqeeze(1)).squeeze(1)
+        outputs = self.model(batch_state).gather(1, batch_action.unsqueeze(1)).squeeze(1)
         next_outputs = self.model(batch_next_state).detach().max(1)[0]
         target = self.gamma*next_outputs + batch_reward
-        temporaldiff_loss = F.smooth_l1_loss(outputs, target)
+        temporaldiffloss = F.smooth_l1_loss(outputs, target)
         self.optimizer.zero_grad()
-        temporaldiff_loss.backward(retain_variables = True)
+        temporaldiffloss.backward(retain_variables = True)
         self.optimizer.step()
 
     #-----------------------------------------------------------------------------------------------------------
@@ -98,28 +98,27 @@ class AI():
     #selects a new action to play, learns from the reward, updates the last action, state, and reward, updates
     #reward window to show how the training is going, then finally returns the new action to play
     def update(self, reward, state):
-        '''
         state = np.array(ast.literal_eval(state)).flatten()
-        state = torch.Tensor(state).float().unsqueeze(0)
+        state = torch.Tensor(state.tolist()).float().unsqueeze(0)
 
         self.memory.append((
             self.last_state,
             state,
             torch.LongTensor([int(self.last_action)]),
-            torch.Tensor([self.last_reward])
+            torch.Tensor([float(self.last_reward)])
         ))
 
         action = self.select_action(state)
-        if len(self.memory.memory) > 100:
-                batch_state, batch_next_state, batch_reward, batch_action = self.memory.sample(100)
+        if len(self.memory.memory) > 700:
+                batch_state, batch_next_state, batch_action, batch_reward = self.memory.sample(700)
                 self.learn(batch_state, batch_next_state, batch_reward, batch_action)
         self.last_action = action
-        self.last_state = new_state
+        self.last_state = state
         self.last_reward = reward
 
         return action
-        '''
 
+        '''
         new_state = torch.Tensor(state).float().unsqueeze(0)
 
         self.memory.append((
@@ -142,3 +141,4 @@ class AI():
             del self.reward_window[0]
 
         return action
+        '''

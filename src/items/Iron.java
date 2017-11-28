@@ -26,7 +26,7 @@ public class Iron extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Furnace) {
 					MoltenIron a = new MoltenIron();
-					a.coords.set(i.coords.x(), i.coords.y());
+					a.coords.set(e.coords);
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;
