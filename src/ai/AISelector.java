@@ -58,8 +58,6 @@ public class AISelector {
 		try {
 			String postString = "{\"state\":\"" + Arrays.deepToString(state) + "\",\"reward\":\"" + reward + "\"}";
 			
-			System.out.println(postString);
-			
 			URL url = new URL("http://" + RefStrings.AI_IP + "/");
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
