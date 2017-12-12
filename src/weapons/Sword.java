@@ -41,8 +41,6 @@ public class Sword extends Weapon {
 		Iterator<Item> iter = bucket.iterator();
 		while(iter.hasNext()) {
 			Item i = iter.next();
-			System.out.println("Entity: " + e.coords.x() + " " + e.coords.y());
-			System.out.println(i.getClass().getSimpleName() + " " + i.coords.x() + " " + i.coords.y());
 			if(!(i instanceof Floor)) {
 				SoundEffect.SWORD.play();
 				if(i instanceof Entity) {

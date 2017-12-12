@@ -39,7 +39,7 @@ public class Plant extends Item implements IGrow {
 			Main.realm.remove(this);
 			
 			Shrub c = new Shrub();
-			c.coords.set(coords.x(), coords.y());
+			c.coords.set(coords);
 		
 			Main.realm.add(c);
 			

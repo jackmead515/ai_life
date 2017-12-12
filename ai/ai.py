@@ -15,20 +15,18 @@ from torch.autograd import Variable
 class Network(nn.Module): #extends neural networks module class functions
 
     #-----------------------------------------------------------------------------------------------------------
-    def __init__(self, inputNeurons, outputNeurons):
+    def __init__(self, inputNeurons, outputNeurons, hiddenNeurons):
         super(Network, self).__init__()
         self.inputNeurons = inputNeurons
         self.outputNeurons = outputNeurons
 
-        self.c1 = nn.Linear(inputNeurons, 200)
-        self.c2 = nn.Linear(200, 200)
-        self.c3 = nn.Linear(200, outputNeurons)
+        self.c1 = nn.Linear(inputNeurons, hiddenNeurons)
+        self.c2 = nn.Linear(hiddenNeurons, outputNeurons)
 
     #-----------------------------------------------------------------------------------------------------------
     def forward(self, state):
         x = F.relu(self.c1(state))
-        y = F.relu(self.c2(x))
-        return self.c3(x)
+        return self.c2(x)
 
 ################################################################################################################
 ################################################################################################################
@@ -64,22 +62,23 @@ class Memory(object):
 class AI():
 
     #-----------------------------------------------------------------------------------------------------------
-    def __init__(self, inputNeurons, outputNeurons, gamma):
+    def __init__(self, inputNeurons, outputNeurons, hiddenNeurons, gamma, learnRate, temp):
         self.gamma = gamma
         self.reward_window = [] #mean of last 100 rewards to print out to screen
-        self.model = Network(inputNeurons, outputNeurons)
+        self.model = Network(inputNeurons, outputNeurons, hiddenNeurons)
         self.memory = Memory(500000)
-        self.optimizer = optim.Adam(self.model.parameters(), lr = 0.01)
+        self.optimizer = optim.Adam(self.model.parameters(), lr = learnRate)
         self.last_state = torch.Tensor(inputNeurons).unsqueeze(0) #adding a fake dimension? Whhhaaaa
         self.last_action = 0
         self.last_reward = 0
+        self.temperature = temp
 
     #-----------------------------------------------------------------------------------------------------------
     def select_action(self, state): # state is defined at what comes out of the output neurons "Q values"
         # Tempurature parameter T=7
         # softmax([1,2,3]) => [0.04,0.11,0.85]   softmax([1,2,3]*3) => [0, 0.02, 0.98]
         # increases the rate at which the softmax function is certain of which action to take
-        probs = F.softmax(self.model(Variable(state, volatile = True))*2)
+        probs = F.softmax(self.model(Variable(state, volatile = True))*self.temperature)
         action = probs.multinomial() #picking a random action
         return action.data[0,0] #getting rid of fake dimension
 

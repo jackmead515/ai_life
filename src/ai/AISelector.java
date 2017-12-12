@@ -42,8 +42,8 @@ public class AISelector {
 		for(int x = 0; x < items.size(); x++) {
 			Item i = items.get(x);
 			//System.out.println(i.coords.x() + " " + i.coords.y() + " " + i.getClass().getName());
-			if(i.coords.x() <= state.length-1 && i.coords.y() <= state[0].length-1) {
-				state[i.coords.x()][i.coords.y()] = new BigInteger(i.getClass().getSimpleName().getBytes()).intValue();
+			if(i.coords.x <= state.length-1 && i.coords.y <= state[0].length-1) {
+				state[i.coords.x][i.coords.y] = new BigInteger(i.getClass().getSimpleName().getBytes()).intValue();
 			}
 			
 		}

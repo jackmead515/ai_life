@@ -37,7 +37,7 @@ public class Sparker extends Tool {
 				if(i instanceof Wood) {
 					health-=1;
 					CampFire s = new CampFire();
-					s.coords.set(i.coords.x(), i.coords.y());
+					s.coords.set(i.coords);
 					Main.realm.remove(i);
 					Main.realm.add(s);
 					break;

@@ -56,7 +56,7 @@ public class CampFire extends Item implements IAnimate, IGrow {
 			
 			Main.realm.remove(this);
 			Ash c = new Ash();
-			c.coords.set(coords.x(), coords.y());
+			c.coords.set(this.coords);
 			Main.realm.add(c);
 			
 		}

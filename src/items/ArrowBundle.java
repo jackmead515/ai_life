@@ -35,10 +35,10 @@ public class ArrowBundle extends Item {
 			Item i = iter.next();
 			if(!(i instanceof Floor)) {
 				if(i instanceof Bow) {
+					Main.realm.remove(this);
 					for(int x = 0; x < amount; x++) {
 						((Bow) i).ammo.add(new Arrow());
 					}
-					Main.realm.remove(this);
 					return false;
 				}
 			}

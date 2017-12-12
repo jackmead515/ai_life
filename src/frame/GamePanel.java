@@ -34,8 +34,8 @@ public class GamePanel extends JPanel {
 		int gw = width / 20;
 		int gh = height / 20;
 		
-		int x = pos.x();
-		int y = pos.y();
+		int x = pos.x;
+		int y = pos.y;
 		
 		if((y < 0 || x < 0) || (y > gh || x > gw)) {
 			return true;
@@ -69,7 +69,7 @@ public class GamePanel extends JPanel {
 		}
 		
 		if(Main.player.showHUD) {
-			int p_health = 100 * Main.player.health / Main.player.totalHealth;
+			int p_health = 100 * (Main.player.health / Main.player.totalHealth);
 			//Health
 			g2.setColor(new Color(255, 0, 0, 127));
 			g2.fillRect(55, 10, p_health, 10);
@@ -108,8 +108,10 @@ public class GamePanel extends JPanel {
 			
 			if(i instanceof Entity) {
 				g2.setColor(new Color(255, 0, 0, 127));
-				int p_health = 10 * ((Entity)i).health / ((Entity)i).totalHealth;
-				g2.fillRect(i.coords.x()*20, i.coords.y()*20, 10, 2);
+				int p_health = 10 * (((Entity)i).health / ((Entity)i).totalHealth);
+				g2.fillRect((i.coords.x*20)-5, (i.coords.y*20)-5, p_health, 2);
+				g2.setColor(Color.WHITE);
+				g2.drawRect((i.coords.x*20)-6, (i.coords.y*20)-6, 10, 3);
 			}
 		}
 	}

@@ -88,7 +88,6 @@ public class BMPImages {
 	
 	public static void load() {
 		
-		
 		Field[] fields = BMPImages.class.getFields();
 		
 		URL i = null;

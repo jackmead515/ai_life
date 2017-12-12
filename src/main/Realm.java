@@ -1,7 +1,9 @@
 package main;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
 
@@ -22,25 +24,38 @@ public class Realm {
 	}
 	
 	public void add(Item i) {
-		items.add(i);
+		if(!items.contains(i)) items.add(i);
 		if(i instanceof Entity) {
 			//entities.add((Entity) i);
 		}
 		hmitems.put(i.coords, i);
-		/*Collection<Item> bucket = hmitems.get(i.coords);
-		bucket.add(i);
-		hmitems.putAll(i.coords, bucket);*/
 	}
 	
 	public void remove(Item i) {
-		items.remove(i);
+		if(items.contains(i)) items.remove(i);
 		if(i instanceof Entity) {
 			//entities.remove((Entity) i);
 		}
 		hmitems.remove(i.coords, i);
-		/*Collection<Item> bucket = hmitems.get(i.coords);
-		bucket.remove(i);
-		hmitems.putAll(i.coords, bucket);*/
+	}
+	
+	public void drop(Item i) {
+		SoundEffect.DROP.play();
+		Main.realm.add(i);
+	}
+	
+	public Item pickUp(Coords c) {
+		Collection<Item> bucket = Main.realm.hmitems.get(c);
+		Iterator<Item> iter = bucket.iterator();
+		while(iter.hasNext()) {
+			Item i = iter.next();
+			if(i.canPickUp) {
+				SoundEffect.PICKUP.play();
+				Main.realm.remove(i);
+				return i;
+			}
+		}
+		return null;
 	}
 
 }

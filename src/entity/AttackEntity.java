@@ -63,7 +63,7 @@ public class AttackEntity extends Entity {
 	}
 	
 	private void makeMove() {
-		int[] now = new int[] {coords.x(), coords.y()};
+		int[] now = new int[] {coords.x, coords.y};
 		Coords next = null;
 		
 		if(target == null) {
@@ -79,8 +79,8 @@ public class AttackEntity extends Entity {
 			}
 		} else {
 			//Attacking Movement
-			int x =	now[0]*20; int x1 = target.coords.x()*20;
-			int y = now[1]*20; int y1 = target.coords.y()*20;
+			int x =	now[0]*20; int x1 = target.coords.x*20;
+			int y = now[1]*20; int y1 = target.coords.y*20;
 			
 			if(Util.distanceTo(x+20, y, x1, y1) < Util.distanceTo(x,y,x1,y1)) {
 				next = new Coords(now[0]+1, now[1]);
@@ -96,7 +96,7 @@ public class AttackEntity extends Entity {
 		if(next != null) {
 			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
 				Main.realm.remove(this);
-				coords.set(next.x(), next.y());
+				coords.set(next);
 				Main.realm.add(this);
 				if(target != null) {
 					attackTarget();
@@ -109,12 +109,12 @@ public class AttackEntity extends Entity {
 		if(coords.equals(target.coords)) {
 			target.health-=5;
 			if(target.health <= 0) {
+				Main.realm.remove(target);
 				Item a = target.drop();
 				if(a != null) {
 					a.coords.set(target.coords);
 					Main.realm.add(a);
 				}
-				Main.realm.remove(target);
 				target = null;
 			}
 		}
@@ -124,10 +124,10 @@ public class AttackEntity extends Entity {
 		for(int p = 0; p < Main.realm.items.size(); p++) {
 			Item i = Main.realm.items.get(p);
 			if(i instanceof Entity && !(i instanceof AttackEntity)) {
-				int px = i.coords.x()*20;
-				int py = i.coords.y()*20;
+				int px = i.coords.x*20;
+				int py = i.coords.y*20;
 				
-				if(Util.distanceTo(coords.x()*20,coords.y()*20,px,py) <= 300) {
+				if(Util.distanceTo(coords.x*20,coords.y*20,px,py) <= 300) {
 					return (Entity) i;
 				}
 			}

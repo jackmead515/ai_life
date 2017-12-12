@@ -27,7 +27,7 @@ public class Twine extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Stick) {
 					Bow s = new Bow();
-					s.coords.set(i.coords.x(), i.coords.y());
+					s.coords.set(i.coords);
 					Main.realm.remove(this);
 					Main.realm.remove(i);
 					Main.realm.add(s);

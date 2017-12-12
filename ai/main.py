@@ -3,11 +3,13 @@ from flask import request
 from flask import render_template
 from ai import AI
 
-brain = AI(3000, 11, 0.9)
+global brain
+brain = AI(3000, 11, 1000, 0.9, 0.005, 2);
 app = Flask(__name__)
 
 #-------------------------------------------------------------------------------------
-def handle_get():
+@app.route('/', methods = ['POST'])
+def api():
     content = request.get_json()
     state = content['state']
     reward = content['reward']
@@ -17,31 +19,25 @@ def handle_get():
         action = brain.update(reward, state)
         print('Reward: ' + str(reward) + '  -----  Action: ' + str(action))
         return str(action)
+#-------------------------------------------------------------------------------------
 
 
 #-------------------------------------------------------------------------------------
-#def handle_get():
-#    return render_template('index.html')
-
-
-#-------------------------------------------------------------------------------------
-def handle_create():
-    inputNeurons = int(request.args.get('input'))
-    brain = AI(inputNeurons, 11, 0.9)
-    print('AI created: ' + str(inputNeurons) + ' inputs')
-    return 'status=1'
-
-
-#-------------------------------------------------------------------------------------
-@app.route('/', methods = ['POST'])
-def api():
-    return handle_get()
-
-
-#-------------------------------------------------------------------------------------
-@app.route('/create', methods = ['POST'])
+@app.route('/ai', methods = ['POST'])
 def create():
-    return handle_create()
+    content = request.get_json()
+    hNeurons = content['hNeurons']
+    learnRate = content['learnRate']
+    temp = content['temp']
+    gamma = content['gamma']
+
+    brain = AI(3000, 11, hNeurons, gamma, learnRate, temp)
+    print('New AI created!')
+
+    response = flask.jsonify({'status': '200'})
+    return response
+#-------------------------------------------------------------------------------------
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

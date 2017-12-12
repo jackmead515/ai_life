@@ -46,16 +46,16 @@ public class Arrow extends Projectile {
 			 * Direction: 1 for up, 2 for down, 3 for left, and 4 for right.
 			 */
 			if(direction == 1) {
-				coords.set(coords.x(), coords.y()-1);
+				coords.set(coords.x, coords.y-1);
 				image = BMPImages.arrow_up;
 			} else if(direction == 2) {
-				coords.set(coords.x(), coords.y()+1);
+				coords.set(coords.x, coords.y+1);
 				image = BMPImages.arrow_down;
 			} else if(direction == 3) {
-				coords.set(coords.x()-1, coords.y());
+				coords.set(coords.x-1, coords.y);
 				image = BMPImages.arrow_left;
 			} else if(direction == 4) {
-				coords.set(coords.x()+1, coords.y());
+				coords.set(coords.x+1, coords.y);
 				image = BMPImages.arrow_right;
 			}
 			

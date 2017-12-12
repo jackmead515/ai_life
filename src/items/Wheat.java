@@ -9,6 +9,7 @@ import food.Bread;
 import main.BMPImages;
 import main.Main;
 import main.SoundEffect;
+import util.Coords;
 
 public class Wheat extends Item {
 	
@@ -26,9 +27,10 @@ public class Wheat extends Item {
 			Item i = iter.next();
 			if(!(i instanceof Floor)) {
 				if(i instanceof Furnace) {
-					Bread a = new Bread();
-					a.coords.set(i.coords);
 					Main.realm.remove(this);
+					Bread a = new Bread();
+					i.coords.set(e.coords);
+					a.coords.set(e.coords);
 					Main.realm.add(a);
 					return false;
 				}

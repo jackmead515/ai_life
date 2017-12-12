@@ -98,7 +98,7 @@ public class AI extends Player {
 	
 	@Override
 	protected void calculateNextMovement() {
-		int[] now = new int[] {coords.x(), coords.y()};
+		int[] now = new int[] {coords.x, coords.y};
 		Coords next = new Coords(0,0);
 		
 		if(down) {
@@ -126,11 +126,10 @@ public class AI extends Player {
 	public void dropItem() {
 		if(inHand != null) {
 			SoundEffect.DROP.play();
-			if(inHand.place(coords)) {
-				reward += AIStats.dropItem_reward;
-				image = BMPImages.person;
-				inHand = null; 
-			}
+			Main.realm.drop(inHand);
+			reward += AIStats.dropItem_reward;
+			image = BMPImages.person;
+			inHand = null; 
 		}
 	}
 	

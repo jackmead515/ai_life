@@ -44,7 +44,7 @@ public class Bow extends Weapon {
 			SoundEffect.BOW.play();
 			health -= 1;
 			p.isShot = true;
-			p.coords.set(coords);
+			p.coords.set(e.coords);
 			e.projectiles.add(p);
 		}
 		

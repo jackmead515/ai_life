@@ -10,6 +10,7 @@ public class Deer extends Animal {
 	
 	public Deer() {
 		health = 20;
+		totalHealth = 20;
 		maxSpawns = 2;
 		multipleStartTime = System.nanoTime();;
 		multipleTimeSpeed = 60000000000L;

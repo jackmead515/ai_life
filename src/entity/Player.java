@@ -80,6 +80,8 @@ public class Player extends Entity {
 		
 		//starve(time);
 		
+		calculateNextMovement();
+		
 		shoot(time);
 		
 		if(dropItem) {
@@ -96,8 +98,6 @@ public class Player extends Entity {
 			use();
 			use = false;
 		}
-		
-		calculateNextMovement();
 	}
 		
 	protected void shoot(long time) {
@@ -105,8 +105,10 @@ public class Player extends Entity {
 			Projectile p = projectiles.get(x);
 			p.animate(time);
 			
-			for(int y = 0; y < Main.realm.items.size(); y++) {
-				Item i = Main.realm.items.get(y);
+			Collection<Item> bucket = Main.realm.hmitems.get(p.coords);
+			Iterator<Item> iter = bucket.iterator();
+			while(iter.hasNext()) {
+				Item i = iter.next();
 				
 				if(!(i instanceof Floor)) {
 					if(i instanceof Boundary) {
@@ -147,7 +149,7 @@ public class Player extends Entity {
 
 	protected void calculateNextMovement() {
 		
-		int[] now = new int[] {coords.x(), coords.y()};
+		int[] now = new int[] {coords.x, coords.y};
 		Coords next = new Coords(0,0);
 		
 		if(down) {
@@ -164,17 +166,17 @@ public class Player extends Entity {
 			
 		if(!Main.window.gamePanel.outOfBounds(next)) {
 			 if(!Util.inBoundary(next)) {
-				 coords.set(next.x(), next.y());
+				 coords.set(next);
 			 }
 		} else {
 			if(up && Main.realmController.upRealm()) {
-				coords.set(next.x(), RefStrings.gameHeight / 20);
+				coords.set(next.x, RefStrings.gameHeight / 20);
 			} else if(down && Main.realmController.downRealm()) {
-				coords.set(next.x(), 0);
+				coords.set(next.x, 0);
 			} else if(left && Main.realmController.leftRealm()) {
-				coords.set(RefStrings.gameWidth / 20, next.y());
+				coords.set(RefStrings.gameWidth / 20, next.y);
 			} else if(right && Main.realmController.rightRealm()) {
-				coords.set(0, next.y());
+				coords.set(0, next.y);
 			}
 		}
 		
@@ -183,11 +185,10 @@ public class Player extends Entity {
 	
 	public void dropItem() {
 		if(inHand != null) {
-			SoundEffect.DROP.play();
-			if(inHand.place(coords)) {
-				image = BMPImages.person;
-				inHand = null; 
-			}
+			inHand.coords.set(this.coords);
+			Main.realm.drop(inHand);
+			image = BMPImages.person;
+			inHand = null; 
 		}
 	}
 	
@@ -202,18 +203,10 @@ public class Player extends Entity {
 	
 	public void pickUp() {
 		if(inHand == null) {
-			Collection<Item> bucket = Main.realm.hmitems.get(coords);
-			System.out.println(bucket.size());
-			Iterator<Item> iter = bucket.iterator();
-			while(iter.hasNext()) {
-				Item i = iter.next();
-				if(i.canPickUp) {
-					SoundEffect.PICKUP.play();
-					Main.realm.remove(i);
-					i.pickUp(this);
-					inHand = i;
-					break;
-				}
+			Item i = Main.realm.pickUp(this.coords);
+			if(i != null) {
+				i.pickUp(this);
+				inHand = i;
 			}
 		}
 	}
@@ -261,7 +254,7 @@ public class Player extends Entity {
 	}
 	
 	public void mouseMoved(Point p) {
-		Point c = new Point((coords.x()*20)+10, (coords.y()*20)+10);
+		Point c = new Point((coords.x*20)+10, (coords.y*20)+10);
 		
 		int direction = Util.directionFrom(c, p);
 		

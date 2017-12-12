@@ -23,7 +23,7 @@ public class WanderEntity extends Entity {
 			
 			int rand = Randomizer.random(0, 4);
 			
-			int[] now = new int[] {coords.x(), coords.y()};
+			int[] now = new int[] {coords.x, coords.y};
 			Coords next = null;
 			
 			switch(rand) {
@@ -36,7 +36,7 @@ public class WanderEntity extends Entity {
 			
 			if(!Main.window.gamePanel.outOfBounds(next) && !Util.inBoundary(next)) {
 				Main.realm.remove(this);
-				coords.set(next.x(), next.y());
+				coords.set(next);
 				Main.realm.add(this);
 			}
 		}

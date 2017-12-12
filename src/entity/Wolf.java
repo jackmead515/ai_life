@@ -8,6 +8,7 @@ public class Wolf extends Predator {
 	
 	public Wolf() {
 		health = 40;
+		totalHealth = 40;
 		maxSpawns = 1;
 		multipleStartTime = System.nanoTime();
 		multipleTimeSpeed = 120000000000L;

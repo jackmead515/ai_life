@@ -44,19 +44,19 @@ public class Spell extends Projectile {
 			 * Direction: 1 for up, 2 for down, 3 for left, and 4 for right.
 			 */
 			if(direction == 1) {
-				coords.set(coords.x(), coords.y()-1);
+				coords.set(coords.x, coords.y-1);
 				image = animation[0][iIndex];
 				iIndex+=1;
 			} else if(direction == 2) {
-				coords.set(coords.x(), coords.y()+1);
+				coords.set(coords.x, coords.y+1);
 				image = animation[1][iIndex];
 				iIndex+=1;
 			} else if(direction == 3) {
-				coords.set(coords.x()-1, coords.y());
+				coords.set(coords.x-1, coords.y);
 				image = animation[2][iIndex];
 				iIndex+=1;
 			} else if(direction == 4) {
-				coords.set(coords.x()+1, coords.y());
+				coords.set(coords.x+1, coords.y);
 				image = animation[3][iIndex];
 				iIndex+=1;
 			}

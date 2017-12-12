@@ -26,14 +26,14 @@ public class Rock extends Item {
 			if(!(i instanceof Floor)) {
 				if(i instanceof Stone) {
 					Furnace a = new Furnace();
-					a.coords.set(i.coords.x(), i.coords.y());
+					a.coords.set(i.coords);
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);
 					return false;
 				} else if(i instanceof IronTrinket) {
 					Sparker a = new Sparker();
-					a.coords.set(i.coords.x(), i.coords.y());
+					a.coords.set(i.coords);
 					Main.realm.remove(i);
 					Main.realm.remove(this);
 					Main.realm.add(a);

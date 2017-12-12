@@ -27,7 +27,7 @@ public class Item implements IItem {
 	
 	@Override
 	public void draw(Graphics2D g2, JPanel panel) {
-		g2.drawImage(image, coords.x()*20, coords.y()*20, panel);
+		g2.drawImage(image, coords.x*20, coords.y*20, panel);
 	}
 	
 	/**
@@ -52,13 +52,6 @@ public class Item implements IItem {
 	@Override
 	public String description() {
 		return this.getClass().getSimpleName();
-	}
-	
-	@Override
-	public boolean place(Coords coords) {
-		this.coords.set(coords);
-		Main.realm.add(this);
-		return true;
 	}
 	
 }

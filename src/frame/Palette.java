@@ -144,7 +144,7 @@ public class Palette {
 				}
 				
 				for(Item b : items) {
-					if(Util.inArea(new Rectangle(b.coords.x()*20, b.coords.y()*20, 20, 20), p)) {
+					if(Util.inArea(new Rectangle(b.coords.x*20, b.coords.y*20, 20, 20), p)) {
 						item_description = b.description();
 						return;
 					}
@@ -215,7 +215,7 @@ public class Palette {
 				} else {
 					//get selection
 					for(Item b : items) {
-						if(Util.inArea(new Rectangle(b.coords.x()*20, b.coords.y()*20, 20, 20), p)) {
+						if(Util.inArea(new Rectangle(b.coords.x*20, b.coords.y*20, 20, 20), p)) {
 							selection = b;
 							return;
 						}

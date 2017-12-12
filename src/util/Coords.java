@@ -2,41 +2,35 @@ package util;
 
 import java.util.Arrays;
 
+import items.Item;
+
 public class Coords {
 	
-	private int[] coords;
+	public int x;
+	public int y;
 	
-	public Coords() {
-		coords = new int[2];
-	}
+	public Coords() {}
 	
 	public Coords(int x, int y) {
-		coords = new int[] {x, y};
+		this.x = x; this.y = y;
 	}
 	
 	public void set(int x, int y) {
-		coords[0] = x; coords[1] = y;
+		this.x = x; this.y = y;
 	}
 	
 	public void set(Coords o) {
-		coords[0] = o.x(); coords[1] = o.y();
+		this.x = o.x; this.y = o.y;
 	}
 	
-	public int x() {
-		return coords[0];
-	}
-	
-	public int y() {
-		return coords[1];
+	@Override
+	public String toString() {
+		return "x:" + x + "y:" + y;
 	}
 	
     @Override
     public int hashCode() {
-    	final int prime = 31;
-    	int result = (coords[0]*3) * coords[1];
-    	 result = prime * result; 
-    	 return result;
-    	//return Arrays.hashCode(this.coords);
+    	return this.toString().hashCode();
     }
  
     @Override
@@ -48,9 +42,8 @@ public class Coords {
 
         Coords o = (Coords) obj;
         
-        return Integer.compare(x(), o.x()) == 0 && Integer.compare(y(), o.y()) == 0;
-        
-        //return x() == o.x() && y() == o.x();
+        System.out.println(o.toString() + " " + this.toString());
+        return Integer.compare(o.x, this.x) == 0 && Integer.compare(o.y, this.y) == 0;
     }
 
 }
